@@ -1,0 +1,75 @@
+﻿@model ShirtOrder
+
+@{
+    ViewBag.Title = "New Shirt Order";
+}
+<!-- Implement jQuery interactivity requirements here -->
+@section ScriptSection
+{
+    <script>
+        function SetShirtColor() {
+            var selectedColor = $(this).val();
+            $("#imgShirt").css("background-color", selectedColor);
+        }
+
+        function SetPokemon() {
+            var pokeid = $(this).val();
+            var newsrc = "/images/" + pokeid + "-200.png";
+            $("#imgPokeFront").attr("src", newsrc);
+            $("#imgPokeBack").attr("src", newsrc);
+        }//for positioning of the pokemon logo
+
+        function SetLogoPosition() {
+            var left = "60px";
+            var right = "130px";
+            var poslogo = $(this).val() == 0 ? left : right;
+            $("#imgPokeFront").css("left", poslogo);
+        }
+
+        $(document).ready(function () {
+            $("#rdColor1").change(SetShirtColor);
+            $("#rdColor2").change(SetShirtColor);
+            $("#rdColor3").change(SetShirtColor);
+            $("#rdColor4").change(SetShirtColor);
+
+            $("#ddlPoke").change(SetPokemon);
+
+            $("#rdPosLeft").change(SetLogoPosition);
+            $("#rdPosRight").change(SetLogoPosition);
+
+            $("form").submit(function () {
+                confirm("Proceed? Press OK to confirm");
+            });
+        });
+    </script>
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="row">
+    <div class="col-6">
+        <form asp-controller="ShirtOrder" asp-action="Create" method="post" class="form-horizontal" role="form">
+            <div class="form-horizontal">
+
+                <!-- The common UI code should be shifted to partial view _ShirtOrder and then render partial view _ShirtOrder here -->
+                <partial name="_ShirtOrder" />
+
+
+
+                <div class="form-group row">
+                    <div class="offset-sm-4 col-8">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div id="divPreview" class="col-6">
+        <img id="imgShirt" src="~/images/shirt.png" style="position:absolute;left:0;top:0;width:480px;height:400px" />
+        <img id="imgPokeBack" src="~/images/0-200.png" style="position:absolute;left:300px;top:130px;height:130px;width:130px" />
+        <img id="imgPokeFront" src="~/images/0-200.png" style="position:absolute;left:60px;top:150px;height:40px;width:40px" />
+    </div>
+</div>
+
+
+//18043018 khai

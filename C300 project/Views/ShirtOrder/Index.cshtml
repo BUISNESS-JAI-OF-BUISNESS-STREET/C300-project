@@ -1,0 +1,59 @@
+﻿@model List<ShirtOrder>
+
+@{
+    ViewBag.Title = "Shirt Orders";
+}
+
+<h2>Shirt Orders</h2>
+
+<span style="color:red">@TempData["Msg"]</span><br />
+<p>
+    <a asp-controller="ShirtOrder" asp-action="Create">Create New</a>
+</p>
+
+<table class="table">
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Qty</th>
+        <th>Subtotal</th>
+        @if (User.IsInRole("Admin"))
+        {
+            <th>Created By</th>
+
+        }
+        <th>Action</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.Id
+            </td>
+            <td>
+                @item.Name
+            </td>
+            <td>
+                @item.Price
+            </td>
+            <td>
+                @item.Qty
+            </td>
+            <td>
+                @String.Format("{0:0.00}", item.Price * item.Qty)
+            </td>
+            @if (User.IsInRole("Admin"))
+            {
+                <td>
+                    @item.CreatedBy
+                </td>
+
+            }
+            <td>
+                <a asp-action="Update" asp-route-id="@item.Id">Update</a>
+            </td>
+        </tr>
+    }
+</table>
