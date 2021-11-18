@@ -1,0 +1,63 @@
+﻿@model MugOrder
+
+@{
+    ViewBag.Title = "New Mug Order";
+}
+
+<!-- TODO Lesson04 Task 2-6 Use section directive to render the script in ScriptSection section defined in Layout.cshtml -->
+@section ScriptSection {
+<script>
+    function SetMugColor() {
+        var selectedColor = $(this).val();
+        $("#imgMug").css("background-color", selectedColor);
+    };
+
+    function SetPokemon() {
+        // TODO Lesson04 Task 2-3 use jQuery this selector and val() method to assign the value of the element that trigger this function to a variable named pokeid
+        var pokeid = $(this).val();
+
+        var newsrc = "/images/" + pokeid + "-200.png";
+
+        // TODO Lesson04 Task 2-4: use jQuery attr method to set the "src" attribute of element with id "imgPoke" to the value of the variable named newsrc
+        $("#imgPoke").attr("src", newsrc);
+    }
+
+    $(document).ready(function () {
+        // Change the colour of the Mug when different radio button is selected
+        $("#rdColor1").change(SetMugColor);
+        $("#rdColor2").change(SetMugColor);
+
+        // TODO Lesson04 Task 2-5: use jQuery change Event method to call SetPokemon function whenever the value of select element with id ddlPoke changes
+        $("#ddlPoke").change(SetPokemon);
+
+        // TODO Lesson04 Task 2-6: use jQuery submit Event method to call javascript confirmation box with text "Proceed? Press OK to confirm" whenver there is a form submission
+        $("form").submit(function () {
+            confirm("Proceed? Press okay to confirm");
+        });
+    });
+</script>
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="row">
+    <div class="col-6">
+        <form asp-controller="MugOrder" asp-action="Create" method="post" class="form-horizontal" role="form">
+            <div class="form-horizontal">
+
+                <partial name="_MugOrder" />
+
+                <div class="form-group row">
+                    <div class="offset-sm-2 col-10">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div id="divPreview" class="col-6">
+        <img id="imgMug" src="~/images/mug.png" style="position:absolute;left:0;top:0;width:300px;height:300px;" />
+        <img id="imgPoke" src="~/images/0-200.png" style="position:absolute;left:20px;top:70px;height:180px;width:180px" />
+    </div>
+
+</div>

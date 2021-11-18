@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Lesson02
+namespace fyp
 {
     public class Startup
     {
@@ -16,17 +18,21 @@ namespace Lesson02
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddDbContext<Models.AppDbContext>(
+                options =>
+                    options.UseSqlServer(
+                        Configuration.GetConnectionString("DefaultConnection")));
             services
-               .AddAuthentication("SingRoom")
-               .AddCookie("SingRoom",
-                        options =>
-                        {
-                            options.LoginPath = "/SRAccount/Login/";
-                            options.AccessDeniedPath = "/SRAccount/Forbidden/";
-                        });
+               .AddAuthentication("UserSecurity")
+               .AddCookie("UserSecurity",
+                   options =>
+                   {
+                       options.LoginPath = "/Account/Login/";
+                       options.AccessDeniedPath = "/Account/Forbidden/";
+                   });
         }
 
-        public void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseDefaultFiles();
             app.UseStaticFiles();
@@ -42,3 +48,4 @@ namespace Lesson02
         }
     }
 }
+
