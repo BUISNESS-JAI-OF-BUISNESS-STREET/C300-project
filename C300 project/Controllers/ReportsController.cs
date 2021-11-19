@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Data;
 using System.Security.Claims;
-using C300_project.Models;
+using fyp.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
 
