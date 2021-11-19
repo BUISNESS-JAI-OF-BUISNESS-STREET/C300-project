@@ -33,13 +33,13 @@ namespace fyp.Controllers
             // uncomment code below to pass the list of mug orders
             // , shirt orders and users to the SalesReport view
 
-            DbSet<MugOrder> dbsMug = _dbContext.MugOrder;
-            DbSet<ShirtOrder> dbsShirt = _dbContext.ShirtOrder;
-            DbSet<AppUser> dbsUser = _dbContext.AppUser;
+            //DbSet<MugOrder> dbsMug = _dbContext.MugOrder;
+            //DbSet<ShirtOrder> dbsShirt = _dbContext.ShirtOrder;
+            //DbSet<AppUser> dbsUser = _dbContext.AppUser;
 
-            ViewData["mugOrders"] = dbsMug.ToList<MugOrder>();
-            ViewData["shirtOrders"] = dbsShirt.ToList<ShirtOrder>();
-            ViewData["users"] = dbsUser.ToList<AppUser>();
+            //ViewData["mugOrders"] = dbsMug.ToList<MugOrder>();
+            //ViewData["shirtOrders"] = dbsShirt.ToList<ShirtOrder>();
+            //ViewData["users"] = dbsUser.ToList<AppUser>();
 
             return View();
         }

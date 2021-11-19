@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace C300_project.Models
+namespace fyp.Models
 {
     public partial class Event
     {

@@ -8,6 +8,9 @@ namespace fyp.Models
 {
     public partial class AppDbContext : DbContext
     {
+        public virtual DbSet<Course> Course { get; set; }
+        public virtual DbSet<Results> Results { get; set; }
+
         public AppDbContext()
         {
         }
