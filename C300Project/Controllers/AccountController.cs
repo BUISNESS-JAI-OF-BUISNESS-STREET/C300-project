@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Data;
 using System.Security.Claims;
-using Lesson04.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
+using fyp.Models;
 
 namespace Lesson04.Controllers
 {
