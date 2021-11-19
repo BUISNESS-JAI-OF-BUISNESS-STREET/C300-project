@@ -8,19 +8,19 @@ using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
 using fyp.Models;
 
-namespace Lesson04.Controllers
+namespace fyp.Controllers
 {
 
     public class AccountController : Controller
     {
         private const string AUTHSCHEME = "UserSecurity";
         private const string LOGIN_SQL =
-           @"SELECT * FROM AppUser 
+           @"SELECT * FROM Account 
             WHERE Id = '{0}' 
               AND Password = HASHBYTES('SHA1', '{1}')";
 
         private const string LASTLOGIN_SQL =
-           @"UPDATE AppUser SET LastLogin=GETDATE() 
+           @"UPDATE Account SET LastLogin=GETDATE() 
                         WHERE Id='{0}'";
 
         private const string ROLE_COL = "Role";
