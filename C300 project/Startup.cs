@@ -18,10 +18,11 @@ namespace fyp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddDbContext<Models.AppDbContext>(
+            /*services.AddDbContext<Models.AppDbContext>(
                 options =>
                     options.UseSqlServer(
                         Configuration.GetConnectionString("DefaultConnection")));
+            */
             services
                .AddAuthentication("UserSecurity")
                .AddCookie("UserSecurity",
