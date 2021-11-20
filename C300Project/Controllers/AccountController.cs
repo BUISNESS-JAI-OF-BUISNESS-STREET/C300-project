@@ -40,9 +40,9 @@ namespace fyp.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult Login(LoginUser user)
+        public IActionResult Login(Account user)
         {
-            if (!AuthenticateUser(user.UserId, user.Password, out ClaimsPrincipal principal))
+            if (!AuthenticateUser(user.AccountId, user.Password, out ClaimsPrincipal principal))
             {
                 ViewData["Message"] = "Incorrect User Id or Password";
                 ViewData["MsgType"] = "warning";
@@ -59,7 +59,7 @@ namespace fyp.Controllers
                });
 
                 // Update the Last Login Timestamp of the User
-                DBUtl.ExecSQL(LASTLOGIN_SQL, user.UserId);
+                DBUtl.ExecSQL(LASTLOGIN_SQL, user.AccountId);
 
                 if (TempData["returnUrl"] != null)
                 {
@@ -87,18 +87,18 @@ namespace fyp.Controllers
             return View();
         }
 
-        private bool AuthenticateUser(string uid, string pw, out ClaimsPrincipal principal)
+        private bool AuthenticateUser(string aid, string pw, out ClaimsPrincipal principal)
         {
             principal = null;
 
-            DataTable ds = DBUtl.GetTable(LOGIN_SQL, uid, pw);
+            DataTable ds = DBUtl.GetTable(LOGIN_SQL, aid, pw);
             if (ds.Rows.Count == 1)
             {
                 principal =
                    new ClaimsPrincipal(
                       new ClaimsIdentity(
                          new Claim[] {
-                        new Claim(ClaimTypes.NameIdentifier, ds.Rows[0]["Id"].ToString()),
+                        new Claim(ClaimTypes.NameIdentifier, ds.Rows[0]["AccountId"].ToString()),
                         new Claim(ClaimTypes.Name, ds.Rows[0][NAME_COL].ToString()),
                         new Claim(ClaimTypes.Role, ds.Rows[0][ROLE_COL].ToString())
                          }, "Basic"

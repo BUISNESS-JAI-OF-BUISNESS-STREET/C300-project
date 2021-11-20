@@ -14,7 +14,7 @@ namespace fyp.Models
 
         public string AccountId { get; set; }
         public string Name { get; set; }
-        public byte[] Password { get; set; }
+        public string Password { get; set; }
         public string Role { get; set; }
 
         public virtual ICollection<Result> Result { get; set; }
