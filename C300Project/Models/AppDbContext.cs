@@ -19,6 +19,7 @@ namespace fyp.Models
 
         public virtual DbSet<Account> Account { get; set; }
         public virtual DbSet<Question> Question { get; set; }
+        public virtual DbSet<Quiz> Quiz { get; set; }
         public virtual DbSet<Result> Result { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -27,8 +28,8 @@ namespace fyp.Models
 
             modelBuilder.Entity<Account>(entity =>
             {
-                entity.Property(e => e.Id)
-                    .HasMaxLength(10)
+                entity.Property(e => e.AccountId)
+                    .HasMaxLength(50)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Name)
@@ -48,43 +49,54 @@ namespace fyp.Models
 
             modelBuilder.Entity<Question>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
-                entity.Property(e => e.Ans1)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("ans1");
-
-                entity.Property(e => e.Ans2)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("ans2");
-
-                entity.Property(e => e.Ans3)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("ans3");
-
-                entity.Property(e => e.Ans4)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("ans4");
+                entity.Property(e => e.QuestionId).ValueGeneratedNever();
 
                 entity.Property(e => e.CorrectAns)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("correctAns");
+                    .IsUnicode(false);
 
-                entity.Property(e => e.Question1)
+                entity.Property(e => e.FirstOption)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FourthOption)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Questions)
                     .IsRequired()
                     .HasMaxLength(150)
-                    .IsUnicode(false)
-                    .HasColumnName("question");
+                    .IsUnicode(false);
+
+                entity.Property(e => e.SecondOption)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ThirdOption)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Topic)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Quiz>(entity =>
+            {
+                entity.Property(e => e.QuizId).ValueGeneratedNever();
+
+                entity.Property(e => e.Dt).HasColumnType("datetime");
+
+                entity.Property(e => e.Title)
+                    .IsRequired()
+                    .HasMaxLength(150)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Topic)
                     .IsRequired()
@@ -94,26 +106,35 @@ namespace fyp.Models
 
             modelBuilder.Entity<Result>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.ResultId).ValueGeneratedNever();
 
-                entity.Property(e => e.ExamDate)
-                    .HasColumnType("date")
-                    .HasColumnName("examDate");
-
-                entity.Property(e => e.StudentId)
+                entity.Property(e => e.AccountId)
                     .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.StudentName)
+                entity.Property(e => e.Dt).HasColumnType("datetime");
+
+                entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Title)
+                    .IsRequired()
+                    .HasMaxLength(150)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Topic)
                     .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.HasOne(d => d.Account)
+                    .WithMany(p => p.Result)
+                    .HasForeignKey(d => d.AccountId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Result_ToAccount");
             });
 
             OnModelCreatingPartial(modelBuilder);
