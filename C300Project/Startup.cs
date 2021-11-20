@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using fyp.Models;
+
 
 namespace fyp
 {
@@ -22,7 +24,7 @@ namespace fyp
                 options =>
                     options.UseSqlServer(
                         Configuration.GetConnectionString("DefaultConnection")));
-            
+
             services
                .AddAuthentication("UserSecurity")
                .AddCookie("UserSecurity",
