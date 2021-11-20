@@ -26,10 +26,39 @@ namespace fyp.Controllers
         {
             DbSet<Quiz> dbs = _dbContext.Quiz;
             List<Quiz> model = dbs.ToList();
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            if (!User.IsInRole("Admin"))
-                model = model.Where(so => so.CreatedBy == userId).ToList();
             return View(model);
         }
+
+        [Authorize]
+        public IActionResult Create() //for users to attempt the quiz
+        {
+            //require attention
+
+            return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult Create(ShirtOrder shirtOrder)
+        {
+            //require attention
+
+            return RedirectToAction("Index");
+        }
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        public IActionResult Update(int id)
+        {
+           //require attention
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult Update(ShirtOrder shirtOrder)
+        {
+            //require attention
+            return RedirectToAction("Index");
+        }
+
     }
 }
