@@ -3,6 +3,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+<<<<<<< Updated upstream:C300Project/Startup.cs
+=======
+//using fyp.Models;
+>>>>>>> Stashed changes:C300 project/Startup.cs
 
 namespace fyp
 {
@@ -18,11 +22,15 @@ namespace fyp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddDbContext<Models.AppDbContext>(
+            /*services.AddDbContext<Models.AppDbContext>(
                 options =>
                     options.UseSqlServer(
                         Configuration.GetConnectionString("DefaultConnection")));
+<<<<<<< Updated upstream:C300Project/Startup.cs
             
+=======
+            */
+>>>>>>> Stashed changes:C300 project/Startup.cs
             services
                .AddAuthentication("UserSecurity")
                .AddCookie("UserSecurity",
