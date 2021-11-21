@@ -1,1 +1,44 @@
-﻿
+﻿@model List<Result>
+
+@{
+    ViewBag.Title = "Results";
+}
+
+<h2>Reports</h2>
+
+<span style="color:red">@TempData["Msg"]</span>
+<br />
+
+<table class="table">
+    <tr>
+        <th>Student ID</th>
+        <th>Student Name</th>
+        <th>Paper</th>
+        <th>Score</th>
+        <th>Attempted</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.AccountId
+            </td>
+            <td>
+                @item.Name
+            </td>
+            <td>
+                @item.Title
+            </td>
+            <td>
+                @item.Score
+            </td>
+            <td>
+                @item.Attempt
+            </td>
+            <!--<td>
+                <a asp-action="ViewReport" asp-route-id="">View Report</a>
+            </td>-->
+        </tr>
+    }
+</table>

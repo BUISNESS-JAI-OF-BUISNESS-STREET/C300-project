@@ -30,37 +30,20 @@ namespace fyp.Controllers.Controllers
             return View(model);
         }
 
-        /*
-        [Authorize]
-        public IActionResult Create() //for users to attempt the quiz
+        
+        [AllowAnonymous]
+        public IActionResult ViewReport(int id)
         {
-            //TODO: require attention
+            DbSet<Result> dbs = _dbContext.Result;
+            List<Result> model = dbs.ToList();
 
-            return View();
+            var viewer = model
+                        .Where(m => m.QuizId == id)
+                        .ToList<Result>();
+            return View(model);
         }
 
-        [Authorize]
-        [HttpPost]
-        public IActionResult Create(ShirtOrder shirtOrder)
-        {
-            //TODO: require attention
 
-            return RedirectToAction("Index");
-        }
-        [Authorize(Roles = "Admin")]
-        [HttpGet]
-        public IActionResult Update(int id)
-        {
-            //TODO: require attention
-        }
-
-        [Authorize]
-        [HttpPost]
-        public IActionResult Update(ShirtOrder shirtOrder)
-        {
-            //TODO: require attention
-            return RedirectToAction("Index");
-        }
-        */
+        
     }
 }

@@ -1,6 +1,4 @@
-
-=======
-﻿@model List<Quiz>
+@model List<Quiz>
 
 @{
     ViewBag.Title = "Reports";
@@ -38,9 +36,9 @@
     <td>
         @item.Dt
     </td>
-    <!--<td>
-        <a asp-action="ViewReport" asp-route-id="">View Report</a>
-    </td>-->
+    <td>
+        <a asp-action="ViewReport" asp-route-id="@item.QuizId">View Report</a>
+    </td>
 </tr>
     }
    </table>
