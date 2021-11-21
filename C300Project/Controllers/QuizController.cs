@@ -29,23 +29,25 @@ namespace fyp.Controllers
             return View(model);
         }
 
-        /*
-        [Authorize]
-        public IActionResult Create() //for users to attempt the quiz
+        
+        [AllowAnonymous]
+        public IActionResult Attempt() //for users to attempt the quiz
         {
             //TODO: require attention
-
-            return View();
+            DbSet<Question> dbs = _dbContext.Question;
+            List<Question> model = dbs.ToList();
+            return View(model);
         }
 
-        [Authorize]
+        [AllowAnonymous]
         [HttpPost]
-        public IActionResult Create(ShirtOrder shirtOrder)
+        public IActionResult Attempt(Quiz quiz)
         {
             //TODO: require attention
 
             return RedirectToAction("Index");
         }
+        /*
         [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Update(int id)

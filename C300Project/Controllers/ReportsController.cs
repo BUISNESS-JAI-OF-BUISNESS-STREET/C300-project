@@ -35,11 +35,8 @@ namespace fyp.Controllers.Controllers
         public IActionResult ViewReport(int id)
         {
             DbSet<Result> dbs = _dbContext.Result;
-            List<Result> model = dbs.ToList();
+            List<Result> model = dbs.Where(m => m.QuizId == id).ToList();
 
-            var viewer = model
-                        .Where(m => m.QuizId == id)
-                        .ToList<Result>();
             return View(model);
         }
 
