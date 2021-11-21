@@ -36,9 +36,25 @@
             <td>
                 @item.Dt
             </td>
-            <!--<td>
-                <a asp-action="ViewReport" asp-route-id="">View Report</a>
-            </td>-->
+            @if (User.IsInRole("Admin"))//use && then check if the date of the paper has passed yet
+             {
+               <!--<td>
+                <a asp-action="ViewReport" asp-route-id="">View Results</a>
+               </td>-->
+             }
+            @if (User.IsInRole("Admin"))//use && then check if the date of the paper is more then current date
+             {
+               <!--<td>
+                <a asp-action="QuestionIndex" asp-route-id="">View Questions</a>
+               </td>-->
+             }
+            @if (User.IsInRole("Admin"))//use && then check if the date of the paper is ON current date
+             {
+               <!--<td>
+                <a asp-action="Attempt" asp-route-id="">Start Quiz</a>
+               </td>-->
+             }
+            
         </tr>
     }
 </table>
