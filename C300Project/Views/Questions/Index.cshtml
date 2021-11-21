@@ -1,0 +1,61 @@
+﻿@model List<Question>
+
+@{
+    ViewBag.Title = "Questions";
+}
+
+<h2>Question</h2>
+
+<span style="color:red">@TempData["Msg"]</span>
+<br />
+<p>
+    <a asp-controller="Quiz" asp-action="Create">Create New</a>
+</p>
+
+<table class="table">
+    <tr>
+        <th>Id</th>
+        <th>Question</th>
+        <th>Topic</th>
+        <th>Option 1</th>
+        <th>Option 2</th>
+        <th>Option 3</th>
+        <th>Option 4</th>
+        <th>Correct Answer</th>
+        <th>Action</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.QuestionId
+            </td>
+            <td>
+                @item.Questions
+            </td>
+            <td>
+                @item.Topic
+            </td>
+            <td>
+                @item.FirstOption
+            </td>
+
+            <td>
+                @item.SecondOption
+            </td>
+
+            <td>
+                @item.ThirdOption
+            </td>
+
+            <td>
+                @item.FourthOption
+            </td>
+
+            <td>
+                <a asp-action="Update" asp-route-id="@item.QuestionId">Update</a>
+            </td>
+       </tr>
+     }
+</table>
