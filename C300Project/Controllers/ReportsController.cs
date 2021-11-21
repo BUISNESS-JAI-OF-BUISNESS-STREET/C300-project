@@ -1,114 +1,66 @@
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Data;
-using System.Security.Claims;
-using fyp.Models;
-using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using fyp.Models;
+using System.Dynamic;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace C300_project.Controllers
+namespace fyp.Controllers.Controllers
 {
 
     public class ReportsController : Controller
     {
-        private const string AUTHSCHEME = "UserSecurity";
-        private const string LOGIN_SQL =
-           @"SELECT * FROM AppUser 
-            WHERE Id = '{0}' 
-              AND Password = HASHBYTES('SHA1', '{1}')";
+        private AppDbContext _dbContext;
 
-        private const string LASTLOGIN_SQL =
-           @"UPDATE AppUser SET LastLogin=GETDATE() 
-                        WHERE Id='{0}'";
-
-        private const string ROLE_COL = "Role";
-        private const string NAME_COL = "Name";
-
-        private const string REDIRECT_CNTR = "Home";
-        private const string REDIRECT_ACTN = "Index";
-
-        private const string LOGIN_VIEW = "Login";
-
-        [AllowAnonymous]
-        public IActionResult Login(string returnUrl = null)
+        public ReportsController(AppDbContext dbContext)
         {
-            TempData["ReturnUrl"] = returnUrl;
-            return View(LOGIN_VIEW);
+            _dbContext = dbContext;
         }
 
         [AllowAnonymous]
-        [HttpPost]
-
-        //TODO change LoginUser to proper model
-        public IActionResult Login(LoginUser user)
+        public IActionResult Index()
         {
-            if (!AuthenticateUser(user.UserId, user.Password, out ClaimsPrincipal principal))
-            {
-                ViewData["Message"] = "Incorrect User Id or Password";
-                ViewData["MsgType"] = "warning";
-                return View(LOGIN_VIEW);
-            }
-            else
-            {
-                HttpContext.SignInAsync(
-                   AUTHSCHEME,
-                   principal,
-               new AuthenticationProperties
-               {
-                   IsPersistent = false
-               });
-
-                // Update the Last Login Timestamp of the User
-                DBUtl.ExecSQL(LASTLOGIN_SQL, user.UserId);
-
-                if (TempData["returnUrl"] != null)
-                {
-                    string returnUrl = TempData["returnUrl"].ToString();
-                    if (Url.IsLocalUrl(returnUrl))
-                        return Redirect(returnUrl);
-                }
-
-                return RedirectToAction(REDIRECT_ACTN, REDIRECT_CNTR);
-            }
+            DbSet<Quiz> dbs = _dbContext.Quiz;
+            List<Quiz> model = dbs.ToList();
+            return View(model);
         }
 
+        /*
         [Authorize]
-        public IActionResult Logoff(string returnUrl = null)
+        public IActionResult Create() //for users to attempt the quiz
         {
-            HttpContext.SignOutAsync(AUTHSCHEME);
-            if (Url.IsLocalUrl(returnUrl))
-                return Redirect(returnUrl);
-            return RedirectToAction(REDIRECT_ACTN, REDIRECT_CNTR);
-        }
+            //TODO: require attention
 
-        [AllowAnonymous]
-        public IActionResult Forbidden()
-        {
             return View();
         }
 
-        private bool AuthenticateUser(string uid, string pw, out ClaimsPrincipal principal)
+        [Authorize]
+        [HttpPost]
+        public IActionResult Create(ShirtOrder shirtOrder)
         {
-            principal = null;
+            //TODO: require attention
 
-            DataTable ds = DBUtl.GetTable(LOGIN_SQL, uid, pw);
-            if (ds.Rows.Count == 1)
-            {
-                principal =
-                   new ClaimsPrincipal(
-                      new ClaimsIdentity(
-                         new Claim[] {
-                        new Claim(ClaimTypes.NameIdentifier, ds.Rows[0]["Id"].ToString()),
-                        new Claim(ClaimTypes.Name, ds.Rows[0][NAME_COL].ToString()),
-                        new Claim(ClaimTypes.Role, ds.Rows[0][ROLE_COL].ToString())
-                         }, "Basic"
-                      )
-                   );
-                return true;
-            }
-            return false;
+            return RedirectToAction("Index");
         }
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        public IActionResult Update(int id)
+        {
+            //TODO: require attention
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult Update(ShirtOrder shirtOrder)
+        {
+            //TODO: require attention
+            return RedirectToAction("Index");
+        }
+        */
     }
 }
