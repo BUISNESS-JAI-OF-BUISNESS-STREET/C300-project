@@ -21,7 +21,7 @@ namespace fyp.Controllers
             _dbContext = dbContext;
         }
 
-        [Authorize]
+        [AllowAnonymous]
         public IActionResult Index()
         {
             DbSet<Quiz> dbs = _dbContext.Quiz;
@@ -29,38 +29,40 @@ namespace fyp.Controllers
             return View(model);
         }
 
-        [Authorize]
-        public IActionResult Create() //for users to attempt the quiz
+        
+        [AllowAnonymous]
+        public IActionResult Attempt() //for users to attempt the quiz
         {
-            //require attention
-
-            return View();
+            //TODO: require attention
+            DbSet<Question> dbs = _dbContext.Question;
+            List<Question> model = dbs.ToList();
+            return View(model);
         }
 
-        [Authorize]
+        [AllowAnonymous]
         [HttpPost]
-        public IActionResult Create(ShirtOrder shirtOrder)
+        public IActionResult Attempt(Quiz quiz)
         {
-            //require attention
+            //TODO: require attention
 
             return RedirectToAction("Index");
         }
-
-
+        /*
         [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Update(int id)
         {
-           //require attention
+            //TODO: require attention
         }
 
         [Authorize]
         [HttpPost]
         public IActionResult Update(ShirtOrder shirtOrder)
         {
-            //require attention
+            //TODO: require attention
             return RedirectToAction("Index");
         }
+        */
 
     }
 }
