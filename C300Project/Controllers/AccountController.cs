@@ -21,7 +21,7 @@ namespace fyp.Controllers
 
         private const string LASTLOGIN_SQL =
            @"UPDATE Account SET LastLogin=GETDATE() 
-                        WHERE Id='{0}'";
+                        WHERE AccountId='{0}'";
 
         private const string ROLE_COL = "Role";
         private const string NAME_COL = "Name";
