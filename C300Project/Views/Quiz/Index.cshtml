@@ -50,10 +50,11 @@
              }
             @if (User.IsInRole("Admin"))//use && then check if the date of the paper is ON current date
              {
-               <!--<td>
-                <a asp-action="Attempt" asp-route-id="">Start Quiz</a>
-               </td>-->
+               <!---->
              }
+            <td>
+                <a asp-action="Attempt" asp-route-id="">Start Quiz</a>
+            </td>
             
         </tr>
     }

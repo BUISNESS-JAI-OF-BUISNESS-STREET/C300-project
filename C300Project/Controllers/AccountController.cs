@@ -16,7 +16,7 @@ namespace fyp.Controllers
         private const string AUTHSCHEME = "UserSecurity";
         private const string LOGIN_SQL =
            @"SELECT * FROM Account 
-            WHERE Id = '{0}' 
+            WHERE AccountId = '{0}' 
               AND Password = HASHBYTES('SHA1', '{1}')";
 
         private const string LASTLOGIN_SQL =

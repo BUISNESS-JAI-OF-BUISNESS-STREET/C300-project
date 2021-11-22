@@ -41,12 +41,36 @@ namespace fyp.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult Attempt(Quiz quiz)
+        public IActionResult Attempt(Result result)
         {
             //TODO: require attention
+            if (ModelState.IsValid)
+            {
+                DbSet<Result> dbs = _dbContext.Result;
+                dbs.Add(result);
+
+                if (_dbContext.SaveChanges() == 1)
+                    TempData["Msg"] = "Quiz Attempted";
+                else
+                    TempData["Msg"] = "Attempt failed!";
+            }
+            else
+            {
+                TempData["Msg"] = "Other error has occured";
+            }
 
             return RedirectToAction("Index");
         }
+
+        [AllowAnonymous]
+        public IActionResult CalculateResult() //for users to attempt the quiz
+        {
+            //TODO: require attention
+            DbSet<Question> dbs = _dbContext.Question;
+            List<Question> model = dbs.ToList();
+            return View(model);
+        }
+
         /*
         [Authorize(Roles = "Admin")]
         [HttpGet]
