@@ -30,8 +30,7 @@ namespace fyp.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Report()
         {
-            // uncomment code below to pass the list of mug orders
-            // , shirt orders and users to the SalesReport view
+            
 
             DbSet<Question> dbsQues= _dbContext.Question;
             DbSet<Result> dbsRes = _dbContext.Result;
