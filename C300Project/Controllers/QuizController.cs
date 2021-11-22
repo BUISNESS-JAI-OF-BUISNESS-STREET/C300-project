@@ -45,6 +45,8 @@ namespace fyp.Controllers
 
             return RedirectToAction("Index");
         }
+
+
         [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Update(int id)
