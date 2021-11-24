@@ -4,6 +4,22 @@
     ViewBag.Title = "Report";
 }
 
+@section ScriptSection {
+    
+    <script>
+        function ConfirmDelete() {
+            if (confirm("Are you sure you want to delete?") == false) {
+                event.preventDefault();
+                event.stopPropagation();
+                return false;
+
+            }
+        }
+
+    </script>
+}
+
+
 <h2>Quiz</h2>
 
 <span style="color:red">@TempData["Msg"]</span>
@@ -37,25 +53,27 @@
                 @item.Dt
             </td>
             @if (User.IsInRole("Admin"))//use && then check if the date of the paper has passed yet
-             {
-               <!--<td>
-                <a asp-action="ViewReport" asp-route-id="">View Results</a>
-               </td>-->
-             }
+            {
+                <!--<td>
+                 <a asp-action="ViewReport" asp-route-id="">View Results</a>
+                </td>-->
+            }
             @if (User.IsInRole("Admin"))//use && then check if the date of the paper is more then current date
-             {
-               <!--<td>
-                <a asp-action="QuestionIndex" asp-route-id="">View Questions</a>
-               </td>-->
-             }
+            {
+                <!--<td>
+                 <a asp-action="QuestionIndex" asp-route-id="">View Questions</a>
+                </td>-->
+            }
             @if (User.IsInRole("Admin"))//use && then check if the date of the paper is ON current date
-             {
-               <!---->
-             }
+            {
+                <!---->
+            }
             <td>
-                <a asp-action="Attempt" asp-route-id="">Start Quiz</a>
+                <a asp-action="Attempt" asp-route-id="@item.QuizId">Start Quiz</a>
+                <a asp-action="Update" asp-route-id="@item.QuizId">Update</a>
+                <a asp-action="Delete" asp-route-id="@item.QuizId" onclick="return ConfirmDelete()">Delete</a>
             </td>
-            
+
         </tr>
     }
 </table>
