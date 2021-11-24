@@ -1,5 +1,84 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Quiz
+
 @{
+    ViewBag.Title = "Create new quiz!";
 }
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="row">
+    <div class="col-sm-7">
+        <span style="color:red">@ViewData["Msg"]</span><br />
+        <form asp-controller="Quiz" asp-action="Create" method="post" class="form-horizontal" role="form">
+            <div class="form-horizontal">
+
+
+                <div class="form-group">
+                    <label asp-for="QuizId" class="col-sm-3 control-label">Quiz Id:</label>
+                    <div class="col-sm-6">
+                        <input asp-for="QuizId" class="form-control" />
+                    </div>
+                    <div class="has-error">
+                        <span asp-validation-for="QuizId" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label asp-for="Title" class="col-sm-3 control-label">Quiz Title: </label>
+                    <div class="col-sm-6">
+                        <input asp-for="Title" class="form-control" />
+                    </div>
+                    <div class="has-error">
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label asp-for="Topic" class="col-sm-3 control-label">Topic: </label>
+                    <div class="col-sm-6">
+                        <input asp-for="Topic" class="form-control" />
+                    </div>
+                    <div class="has-error">
+                        <span asp-validation-for="Topic" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Sec" class="col-sm-3 control-label">Secondary Level: </label>
+                    <div class="col-sm-6">
+                        <input asp-for="Sec" class="form-control" />
+                    </div>
+                    <div class="has-error">
+                        <span asp-validation-for="Sec" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row row">
+                    <label class="control-label col-3" asp-for="Dt">Quiz Date: </label>  //not sure hwo to add time
+                    <div class="col-3">
+                        <div class='input-group date' id='BsDateTimePicker'>
+                            <input class="form-control" asp-for="Dt"
+                                   placeholder="YYYY-MM-DD" />
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <span asp-validation-for="Dt" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+
+                <div class="form-group">
+                    <div class="col-sm-offset-3 col-sm-10">
+                        <input type="submit" value="Create" class="btn-primary" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
