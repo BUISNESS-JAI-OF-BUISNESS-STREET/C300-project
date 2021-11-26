@@ -1,7 +1,7 @@
 ﻿@model List<Quiz>
 
 @{
-    ViewBag.Title = "Report";
+    ViewBag.Title = "Quiz";
 }
 
 @section ScriptSection {
@@ -69,7 +69,6 @@
                 <!---->
             }
             <td>
-                <a asp-action="Attempt" asp-route-id="@item.QuizId">Start Quiz</a>
                 <a asp-action="Update" asp-route-id="@item.QuizId">Update</a>
                 <a asp-action="Delete" asp-route-id="@item.QuizId" onclick="return ConfirmDelete()">Delete</a>
             </td>
