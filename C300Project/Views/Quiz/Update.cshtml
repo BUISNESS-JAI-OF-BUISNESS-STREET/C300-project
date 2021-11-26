@@ -8,8 +8,8 @@
 
    
     <script>
-        function ConfirmUpdate() {
-            if (confirm("Are you sure you want to Update?") == false) {
+        $("form").submit(function () {
+            if (confirm("Proceed? Press OK to confirm.") == false) {
                 event.preventDefault();
                 event.stopPropagation();
                 return false;
