@@ -98,25 +98,25 @@ namespace fyp.Controllers
             return RedirectToAction("Index");
         }
 
-        /*
+        
         [Authorize]
         public IActionResult Update(int id)
         {
             DbSet<Quiz> dbs = _dbContext.Quiz;
             Quiz quiz = dbs.Where(mo => mo.QuizId == id).FirstOrDefault();
-            
+
 
             if (quiz != null)
             {
-                DbSet<Pokedex> dbsPokes = _dbContext.Pokedex;
-                var lstPokes = dbsPokes.ToList();
-                ViewData["pokes"] = new SelectList(lstPokes, "Id", "Name");
+                DbSet<Quiz> dbsQuiz = _dbContext.Quiz;
+                var lstQuiz = dbsQuiz.ToList();
+                ViewData["quiz"] = new SelectList(lstQuiz, "QuizId", "Title");
 
                 return View(quiz);
             }
             else
             {
-                TempData["Msg"] = "Shirt order not found!";
+                TempData["Msg"] = "Quiz not found!";
                 return RedirectToAction("Index");
             }
         }
@@ -132,12 +132,11 @@ namespace fyp.Controllers
 
                 if (tOrder != null)
                 {
-                    tOrder.= quiz.Name;
-                    tOrder.Color = quiz.Color;
-                    tOrder.PokedexId = quiz.PokedexId;
-                    tOrder.Qty = quiz.Qty;
-                    tOrder.Price = quiz.Price;
-                    tOrder.FrontPosition = quiz.FrontPosition;
+                    tOrder.Title = quiz.Title;
+                    tOrder.Topic = quiz.Topic;
+                    tOrder.Sec = quiz.Sec;
+                    tOrder.Dt = quiz.Dt;
+                    
 
                     if (_dbContext.SaveChanges() == 1)
                         TempData["Msg"] = "Quiz updated!";
@@ -155,7 +154,7 @@ namespace fyp.Controllers
                 TempData["Msg"] = "Invalid information entered";
             }
             return RedirectToAction("Index");
-        }*/
+        }
 
 
         [Authorize]
