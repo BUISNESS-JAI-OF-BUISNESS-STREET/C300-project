@@ -155,7 +155,7 @@ namespace fyp.Controllers
                 TempData["Msg"] = "Invalid information entered";
             }
             return RedirectToAction("Index");
-        }
+        }*/
 
 
         [Authorize]
@@ -163,24 +163,24 @@ namespace fyp.Controllers
         {
             DbSet<Quiz> dbs = _dbContext.Quiz;
 
-            Quiz tOrder = dbs.Where(mo => mo.Id == id)
+            Quiz tOrder = dbs.Where(mo => mo.QuizId == id)
                                      .FirstOrDefault();
 
             if (tOrder != null)
             {
                 dbs.Remove(tOrder);
                 if (_dbContext.SaveChanges() == 1)
-                    TempData["Msg"] = "Shirt order deleted!";
+                    TempData["Msg"] = "Quiz deleted!";
                 else
                     TempData["Msg"] = "Failed to update database!";
             }
             else
             {
-                TempData["Msg"] = "Shirt order not found!";
+                TempData["Msg"] = "Quiz not found!";
             }
             return RedirectToAction("Index");
         }
-        */
+        
 
     }
 }
