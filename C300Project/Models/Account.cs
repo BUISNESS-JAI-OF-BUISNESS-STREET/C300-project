@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
@@ -13,7 +14,12 @@ namespace fyp.Models
         }
 
         public string AccountId { get; set; }
+
+        [Required(ErrorMessage = "Username cannot be empty!")]
         public string Name { get; set; }
+
+        [Required(ErrorMessage = "Empty password not allowed!")]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
         public string Role { get; set; }
 
