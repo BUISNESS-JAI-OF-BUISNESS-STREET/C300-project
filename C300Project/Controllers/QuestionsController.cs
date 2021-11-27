@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -65,7 +65,9 @@ namespace fyp.Controllers
             {
                 DbSet<Question> dbsQuestion = _dbContext.Question;
                 var lstQuestion = dbsQuestion.ToList();
+
                 ViewData["question"] = new SelectList(lstQuestion, "QuestionId", "Questions");
+
 
                 return View(question);
             }
@@ -113,7 +115,7 @@ namespace fyp.Controllers
             }
             return RedirectToAction("Index");
         }
-
+         
 
         [Authorize]
         public IActionResult Delete(int id)
