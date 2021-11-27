@@ -85,7 +85,6 @@ namespace fyp.Controllers
             {
                 DbSet<Quiz> dbs = _dbContext.Quiz;
                 dbs.Add(quiz);
-                _dbContext.Quiz.Add(quiz);
                 if (_dbContext.SaveChanges() == 1)
                     TempData["Msg"] = "New quiz added!";
                 else

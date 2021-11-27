@@ -89,7 +89,6 @@ namespace fyp.Models
 
             modelBuilder.Entity<Quiz>(entity =>
             {
-                entity.Property(e => e.QuizId).ValueGeneratedNever();
 
                 entity.Property(e => e.Dt).HasColumnType("datetime");
 
