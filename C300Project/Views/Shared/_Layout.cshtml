@@ -44,7 +44,14 @@
                                 <li class="nav-item">
                                     <a class="nav-link" asp-action="Index" asp-controller="Quiz">Quiz</a>
                                 </li>
-                                
+
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-action="Index" asp-controller="Question">Questions</a>
+                                    </li>
+                                }
+
 
                                 @if (User.IsInRole("Admin"))
                                 {
