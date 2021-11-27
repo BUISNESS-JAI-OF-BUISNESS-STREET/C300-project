@@ -1,14 +1,10 @@
-﻿using System;
+﻿using fyp.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using fyp.Models;
-using System.Dynamic;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace fyp.Controllers
 {
@@ -97,7 +93,7 @@ namespace fyp.Controllers
             return RedirectToAction("Index");
         }
 
-        
+
         [Authorize]
         public IActionResult Update(int id)
         {
@@ -135,7 +131,7 @@ namespace fyp.Controllers
                     tOrder.Topic = quiz.Topic;
                     tOrder.Sec = quiz.Sec;
                     tOrder.Dt = quiz.Dt;
-                    
+
 
                     if (_dbContext.SaveChanges() == 1)
                         TempData["Msg"] = "Quiz updated!";
@@ -178,7 +174,7 @@ namespace fyp.Controllers
             }
             return RedirectToAction("Index");
         }
-        
+
 
     }
 }
