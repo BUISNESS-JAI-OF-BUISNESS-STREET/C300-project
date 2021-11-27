@@ -1,0 +1,134 @@
+﻿@model Question
+
+@{
+    ViewBag.Title = "Update Question!";
+}
+
+@section ScriptSection {
+
+
+<script>
+    $("form").submit(function () {
+        if (confirm("Proceed? Press OK to confirm.") == false) {
+            event.preventDefault();
+            event.stopPropagation();
+            return false;
+
+        }
+    }
+
+</script>
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="row">
+    <div class="col-sm-7">
+        <span style="color:red">@ViewData["Msg"]</span><br />
+        <div class="container">
+
+            <form asp-controller="Question" asp-action="Update" method="post" class="form-horizontal" role="form">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label asp-for="QuestionId" class="col-sm-3 control-label">Question Id:</label>
+                        <div class="col-sm-6">
+                            <input asp-for="QuestionId" class="form-control" readonly="readonly" />
+                        </div>
+                        <div class="has-error">
+                            <span asp-validation-for="QuestionId" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Topic" class="col-sm-3 control-label">Topic : </label>
+                        <div class="col-sm-6">
+                            <input asp-for="Topic" class="form-control" />
+                        </div>
+                        <div class="has-error">
+                            <span asp-validation-for="Topic" class="text-danger"></span>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label asp-for="Questions" class="col-sm-3 control-label">Question : </label>
+                        <div class="col-sm-6">
+                            <input asp-for="Questions" class="form-control" />
+                        </div>
+                        <div class="has-error">
+                            <span asp-validation-for="Questions" class="text-danger"></span>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label asp-for="FirstOption" class="col-sm-3 control-label">Option 1: </label>
+                        <div class="col-sm-6">
+                            <input asp-for="FirstOption" class="form-control" />
+                        </div>
+                        <div class="has-error">
+                            <span asp-validation-for="FirstOption" class="text-danger"></span>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label asp-for="SecondOption" class="col-sm-3 control-label">Option 2: </label>
+                        <div class="col-sm-6">
+                            <input asp-for="SecondOption" class="form-control" />
+                        </div>
+                        <div class="has-error">
+                            <span asp-validation-for="SecondOption" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="ThirdOption" class="col-sm-3 control-label">Option 3: </label>
+                        <div class="col-sm-6">
+                            <input asp-for="ThirdOption" class="form-control" />
+                        </div>
+                        <div class="has-error">
+                            <span asp-validation-for="ThirdOption" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="FourthOption" class="col-sm-3 control-label">Option 4: </label>
+                        <div class="col-sm-6">
+                            <input asp-for="FourthOption" class="form-control" />
+                        </div>
+                        <div class="has-error">
+                            <span asp-validation-for="FourthOption" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="FourthOption" class="col-sm-3 control-label">Option 4: </label>
+                        <div class="col-sm-6">
+                            <input asp-for="FourthOption" class="form-control" />
+                        </div>
+                        <div class="has-error">
+                            <span asp-validation-for="FourthOption" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="CorrectAns" class="col-sm-3 control-label">Correct Answer: </label>
+                        <div class="col-sm-6">
+                            <input asp-for="CorrectAns" class="form-control" />
+                        </div>
+                        <div class="has-error">
+                            <span asp-validation-for="CorrectAns" class="text-danger"></span>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-10">
+                            <input type="submit" value="Update" class="btn-primary" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
