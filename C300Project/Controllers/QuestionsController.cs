@@ -28,6 +28,54 @@ namespace fyp.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Admin")]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public IActionResult Create(Question question)
+        {
+            if (ModelState.IsValid)
+            {
+                DbSet<Question> dbs = _dbContext.Question;
+                dbs.Add(question);
+                if (_dbContext.SaveChanges() == 1)
+                    TempData["Msg"] = "New question added!";
+                else
+                    TempData["Msg"] = "Failed to update database!";
+            }
+            else
+            {
+                TempData["Msg"] = "Invalid information entered";
+            }
+            return RedirectToAction("Index");
+        }
+
+        [Authorize]
+        public IActionResult Update(int id)
+        {
+            DbSet<Question> dbs = _dbContext.Question;
+            Question question = dbs.Where(mo => mo.QuestionId == id).FirstOrDefault();
+
+
+            if (question != null)
+            {
+                DbSet<Question> dbsQuestion = _dbContext.Question;
+                var lstQuestion = dbsQuestion.ToList();
+                ViewData["question"] = new SelectList(lstQuestion, "QuestionId", "Questions");
+
+                return View(question);
+            }
+            else
+            {
+                TempData["Msg"] = "Question not found!";
+                return RedirectToAction("Index");
+            }
+        }
+
         [Authorize]
         [HttpPost]
         public IActionResult Update(Question question)
