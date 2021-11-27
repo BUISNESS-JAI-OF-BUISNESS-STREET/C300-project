@@ -1,36 +1,57 @@
 ﻿@model Question
 
 @{
-    ViewBag.Title = "Create new question!";
+    ViewBag.Title = "Update Question!";
 }
 
 @section ScriptSection {
 
-    
-    <script>
-        function ConfirmCreate() {
-            if (confirm("Confirm create Question?") == false) {
-                event.preventDefault();
-                event.stopPropagation();
-                return false;
 
-            }
+<script>
+    function ConfirmUpdate() {
+        if (confirm("Are you sure you want to delete?") == false) {
+            event.preventDefault();
+            event.stopPropagation();
+            return false;
+
         }
+    }
 
-    </script>
+</script>
 }
 
+<h2>@ViewData["Title"]</h2>
 
-    <h2>@ViewData["Title"]</h2>
+<div class="row">
+    <div class="col-sm-7">
+        <span style="color:red">@ViewData["Msg"]</span><br />
+        <div class="container">
 
-    <div class="row">
-        <div class="col-sm-7">
-            <span style="color:red">@ViewData["Msg"]</span><br />
-            <form asp-controller="Questions" asp-action="Create" method="post" class="form-horizontal" role="form">
+            <form asp-controller="Question" asp-action="Update" method="post" class="form-horizontal" role="form">
                 <div class="form-horizontal">
+                    <div class="form-group">
+                        <label asp-for="QuestionId" class="col-sm-3 control-label">Question Id:</label>
+                        <div class="col-sm-6">
+                            <input asp-for="QuestionId" class="form-control" readonly="readonly" />
+                        </div>
+                        <div class="has-error">
+                            <span asp-validation-for="QuestionId" class="text-danger"></span>
+                        </div>
+                    </div>
 
                     <div class="form-group">
-                        <label asp-for="Questions" class="col-sm-3 control-label">Question: </label>
+                        <label asp-for="Topic" class="col-sm-3 control-label">Topic : </label>
+                        <div class="col-sm-6">
+                            <input asp-for="Topic" class="form-control" />
+                        </div>
+                        <div class="has-error">
+                            <span asp-validation-for="Topic" class="text-danger"></span>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label asp-for="Questions" class="col-sm-3 control-label">Question : </label>
                         <div class="col-sm-6">
                             <input asp-for="Questions" class="form-control" />
                         </div>
@@ -41,17 +62,7 @@
 
 
                     <div class="form-group">
-                        <label asp-for="Topic" class="col-sm-3 control-label">Topic: </label>
-                        <div class="col-sm-6">
-                            <input asp-for="Topic" class="form-control" />
-                        </div>
-                        <div class="has-error">
-                            <span asp-validation-for="Topic" class="text-danger"></span>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="FirstOption" class="col-sm-3 control-label">First Option: </label>
+                        <label asp-for="FirstOption" class="col-sm-3 control-label">Option 1: </label>
                         <div class="col-sm-6">
                             <input asp-for="FirstOption" class="form-control" />
                         </div>
@@ -60,8 +71,9 @@
                         </div>
                     </div>
 
+
                     <div class="form-group">
-                        <label asp-for="SecondOption" class="col-sm-3 control-label">Second Option: </label>
+                        <label asp-for="SecondOption" class="col-sm-3 control-label">Option 2: </label>
                         <div class="col-sm-6">
                             <input asp-for="SecondOption" class="form-control" />
                         </div>
@@ -71,7 +83,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label asp-for="ThirdOption" class="col-sm-3 control-label">Third Option: </label>
+                        <label asp-for="ThirdOption" class="col-sm-3 control-label">Option 3: </label>
                         <div class="col-sm-6">
                             <input asp-for="ThirdOption" class="form-control" />
                         </div>
@@ -81,7 +93,17 @@
                     </div>
 
                     <div class="form-group">
-                        <label asp-for="FourthOption" class="col-sm-3 control-label">Fourth Option: </label>
+                        <label asp-for="FourthOption" class="col-sm-3 control-label">Option 4: </label>
+                        <div class="col-sm-6">
+                            <input asp-for="FourthOption" class="form-control" />
+                        </div>
+                        <div class="has-error">
+                            <span asp-validation-for="FourthOption" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="FourthOption" class="col-sm-3 control-label">Option 4: </label>
                         <div class="col-sm-6">
                             <input asp-for="FourthOption" class="form-control" />
                         </div>
@@ -100,9 +122,10 @@
                         </div>
                     </div>
 
+
                     <div class="form-group">
                         <div class="col-sm-offset-3 col-sm-10">
-                            <input type="submit" value="Create" class="btn-primary" />
+                            <input type="submit" value="Update" class="btn-primary" />
                         </div>
                     </div>
                 </div>

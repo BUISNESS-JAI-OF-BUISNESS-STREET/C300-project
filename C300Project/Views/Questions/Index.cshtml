@@ -4,12 +4,27 @@
     ViewBag.Title = "Questions";
 }
 
-<h2>Question</h2>
+@section ScriptSection {
+
+    <script>
+        function ConfirmDelete() {
+            if (confirm("Are you sure you want to delete?") == false) {
+                event.preventDefault();
+                event.stopPropagation();
+                return false;
+
+            }
+        }
+
+    </script>
+}
+
+<h2>Question Bank</h2>
 
 <span style="color:red">@TempData["Msg"]</span>
 <br />
 <p>
-    <a asp-controller="Questions" asp-action="Create">Create New</a>
+    <a asp-controller="Questions" asp-action="Create">Create New Question</a>
 </p>
 
 <table class="table">
@@ -58,8 +73,10 @@
             </td>
 
             <td>
-                <a asp-action="Update" asp-route-id="@item.QuestionId">Update</a>
+                <a asp-action="Update" asp-route-id="@item.QuestionId" onclick="return ConfirmUpdate()">Update</a>
+                <a asp-action="Delete" asp-route-id="@item.QuestionId" onclick="return ConfirmDelete()">Delete</a>
+
             </td>
-       </tr>
-     }
+        </tr>
+    }
 </table>

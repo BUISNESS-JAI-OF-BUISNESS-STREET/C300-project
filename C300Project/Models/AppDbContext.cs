@@ -49,7 +49,6 @@ namespace fyp.Models
 
             modelBuilder.Entity<Question>(entity =>
             {
-                entity.Property(e => e.QuestionId).ValueGeneratedNever();
 
                 entity.Property(e => e.CorrectAns)
                     .IsRequired()
