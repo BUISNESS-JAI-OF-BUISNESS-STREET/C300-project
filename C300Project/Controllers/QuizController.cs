@@ -29,8 +29,8 @@ namespace fyp.Controllers
             return View(model);
         }
 
-        
-        [AllowAnonymous]
+
+        [Authorize(Roles = "User")]
         public IActionResult Attempt() //for users to attempt the quiz
         {
             //TODO: require attention
@@ -39,7 +39,7 @@ namespace fyp.Controllers
             return View(model);
         }
 
-        [AllowAnonymous]
+        [Authorize(Roles = "User")]
         [HttpPost]
         public IActionResult Attempt(Result result)
         {
@@ -71,22 +71,115 @@ namespace fyp.Controllers
             return View(model);
         }
 
-        /*
         [Authorize(Roles = "Admin")]
-        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public IActionResult Create(Quiz quiz)
+        {
+            if (ModelState.IsValid)
+            {
+                DbSet<Quiz> dbs = _dbContext.Quiz;
+                dbs.Add(quiz);
+                _dbContext.Quiz.Add(quiz);
+                if (_dbContext.SaveChanges() == 1)
+                    TempData["Msg"] = "New quiz added!";
+                else
+                    TempData["Msg"] = "Failed to update database!";
+            }
+            else
+            {
+                TempData["Msg"] = "Invalid information entered";
+            }
+            return RedirectToAction("Index");
+        }
+
+        
+        [Authorize]
         public IActionResult Update(int id)
         {
-            //TODO: require attention
+            DbSet<Quiz> dbs = _dbContext.Quiz;
+            Quiz quiz = dbs.Where(mo => mo.QuizId == id).FirstOrDefault();
+
+
+            if (quiz != null)
+            {
+                DbSet<Quiz> dbsQuiz = _dbContext.Quiz;
+                var lstQuiz = dbsQuiz.ToList();
+                ViewData["quiz"] = new SelectList(lstQuiz, "QuizId", "Title");
+
+                return View(quiz);
+            }
+            else
+            {
+                TempData["Msg"] = "Quiz not found!";
+                return RedirectToAction("Index");
+            }
         }
 
         [Authorize]
         [HttpPost]
-        public IActionResult Update(ShirtOrder shirtOrder)
+        public IActionResult Update(Quiz quiz)
         {
-            //TODO: require attention
+            if (ModelState.IsValid)
+            {
+                DbSet<Quiz> dbs = _dbContext.Quiz;
+                Quiz tOrder = dbs.Where(mo => mo.QuizId == quiz.QuizId).FirstOrDefault();
+
+                if (tOrder != null)
+                {
+                    tOrder.Title = quiz.Title;
+                    tOrder.Topic = quiz.Topic;
+                    tOrder.Sec = quiz.Sec;
+                    tOrder.Dt = quiz.Dt;
+                    
+
+                    if (_dbContext.SaveChanges() == 1)
+                        TempData["Msg"] = "Quiz updated!";
+                    else
+                        TempData["Msg"] = "Failed to update database!";
+                }
+                else
+                {
+                    TempData["Msg"] = "Quiz not found!";
+                    return RedirectToAction("Index");
+                }
+            }
+            else
+            {
+                TempData["Msg"] = "Invalid information entered";
+            }
             return RedirectToAction("Index");
         }
-        */
+
+
+        [Authorize]
+        public IActionResult Delete(int id)
+        {
+            DbSet<Quiz> dbs = _dbContext.Quiz;
+
+            Quiz tOrder = dbs.Where(mo => mo.QuizId == id)
+                                     .FirstOrDefault();
+
+            if (tOrder != null)
+            {
+                dbs.Remove(tOrder);
+                if (_dbContext.SaveChanges() == 1)
+                    TempData["Msg"] = "Quiz deleted!";
+                else
+                    TempData["Msg"] = "Failed to update database!";
+            }
+            else
+            {
+                TempData["Msg"] = "Quiz not found!";
+            }
+            return RedirectToAction("Index");
+        }
+        
 
     }
 }

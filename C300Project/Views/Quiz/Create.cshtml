@@ -29,18 +29,6 @@
             <form asp-controller="Quiz" asp-action="Create" method="post" class="form-horizontal" role="form">
                 <div class="form-horizontal">
 
-
-                    <div class="form-group">
-                        <label asp-for="QuizId" class="col-sm-3 control-label">Quiz Id:</label>
-                        <div class="col-sm-6">
-                            <input asp-for="QuizId" class="form-control" />
-                        </div>
-                        <div class="has-error">
-                            <span asp-validation-for="QuizId" class="text-danger"></span>
-                        </div>
-                    </div>
-
-
                     <div class="form-group">
                         <label asp-for="Title" class="col-sm-3 control-label">Quiz Title: </label>
                         <div class="col-sm-6">
@@ -73,7 +61,7 @@
                     </div>
 
                     <div class="form-group row row">
-                        <label class="control-label col-3" asp-for="Dt">Quiz Date: </label>  //not sure hwo to add time
+                        <label class="control-label col-3" asp-for="Dt">Quiz Date and Time: </label> 
                         <div class="col-3">
                             <div class='input-group date' id='BsDateTimePicker'>
                                 <input class="form-control" asp-for="Dt"
