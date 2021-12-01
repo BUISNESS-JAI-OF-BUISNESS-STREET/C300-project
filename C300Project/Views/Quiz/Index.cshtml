@@ -5,7 +5,7 @@
 }
 
 @section ScriptSection {
-    
+
     <script>
         function ConfirmDelete() {
             if (confirm("Are you sure you want to delete?") == false) {
@@ -25,58 +25,67 @@
 <span style="color:red">@TempData["Msg"]</span>
 <br />
 
-<p>
-    <a asp-controller="Quiz" asp-action="Create">Create New Quiz</a>
-</p>
+@if (User.IsInRole("Admin"))
+{
+    <p>
+        <a asp-controller="Quiz" asp-action="Create">Create New Quiz</a>
+    </p>
+}
 
-<table class="table">
-    <tr>
-        <th>Id</th>
-        <th>Title</th>
-        <th>Topic</th>
-        <th>Exam Level</th>
-        <th>Exam Date</th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
+    <table class="table">
         <tr>
-            <td>
-                @item.QuizId
-            </td>
-            <td>
-                @item.Title
-            </td>
-            <td>
-                @item.Topic
-            </td>
-            <td>
-                @item.Sec
-            </td>
-            <td>
-                @item.Dt
-            </td>
-            @if (User.IsInRole("Admin"))//use && then check if the date of the paper has passed yet
-            {
-                <!--<td>
-                 <a asp-action="ViewReport" asp-route-id="">View Results</a>
-                </td>-->
-            }
-            @if (User.IsInRole("Admin"))//use && then check if the date of the paper is more then current date
-            {
-                <!--<td>
-                 <a asp-action="QuestionIndex" asp-route-id="">View Questions</a>
-                </td>-->
-            }
-            @if (User.IsInRole("Admin"))//use && then check if the date of the paper is ON current date
-            {
-                <!---->
-            }
-            <td>
-                <a asp-action="Update" asp-route-id="@item.QuizId"onclick="return ConfirmUpdate()">Update</a>
-                <a asp-action="Delete" asp-route-id="@item.QuizId" onclick="return ConfirmDelete()">Delete</a>
-            </td>
-
+            <th>Id</th>
+            <th>Title</th>
+            <th>Topic</th>
+            <th>Exam Level</th>
+            <th>Exam Date</th>
         </tr>
-    }
-</table>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.QuizId
+                </td>
+                <td>
+                    @item.Title
+                </td>
+                <td>
+                    @item.Topic
+                </td>
+                <td>
+                    @item.Sec
+                </td>
+                <td>
+                    @item.Dt
+                </td>
+                @if (User.IsInRole("Admin"))//use && then check if the date of the paper has passed yet
+                {
+                    <!--<td>
+                     <a asp-action="ViewReport" asp-route-id="">View Results</a>
+                    </td>-->
+                }
+                @if (User.IsInRole("Admin"))//use && then check if the date of the paper is more then current date
+                {
+                    <!--<td>
+                     <a asp-action="QuestionIndex" asp-route-id="">View Questions</a>
+                    </td>-->
+                }
+                @if (User.IsInRole("User"))//use && then check if the date of the paper is more then current date
+                {
+                    <td>
+                        <a asp-action="Attempt" asp-route-id="@item.QuizId">View Questions</a>
+                    </td>
+                }
+                @if (User.IsInRole("Admin"))//use && then check if the date of the paper is ON current date
+                {
+                    <!---->
+                }
+                <td>
+                    <a asp-action="Update" asp-route-id="@item.QuizId" onclick="return ConfirmUpdate()">Update</a>
+                    <a asp-action="Delete" asp-route-id="@item.QuizId" onclick="return ConfirmDelete()">Delete</a>
+                </td>
+
+            </tr>
+        }
+    </table>
