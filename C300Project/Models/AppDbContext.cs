@@ -104,7 +104,6 @@ namespace fyp.Models
 
             modelBuilder.Entity<Result>(entity =>
             {
-                entity.Property(e => e.ResultId).ValueGeneratedNever();
 
                 entity.Property(e => e.AccountId)
                     .IsRequired()

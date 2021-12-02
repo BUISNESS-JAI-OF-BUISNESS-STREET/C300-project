@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
+using System;
+using System.Security.Claims;
 
 namespace fyp.Controllers
 {
@@ -27,23 +30,57 @@ namespace fyp.Controllers
 
 
         [Authorize(Roles = "User")]
-        public IActionResult Attempt() //for users to attempt the quiz
+        public IActionResult Attempt(int id) //for users to attempt the quiz
         {
             //TODO: require attention
             DbSet<Question> dbs = _dbContext.Question;
             List<Question> model = dbs.ToList();
+            DbSet<Quiz> dbs2 = _dbContext.Quiz;
+            List<Quiz> model2 = dbs2.ToList();
+            ViewData["quizid"] = id;
+            ViewData["title"] = model2[id].Title;
+            ViewData["topic"] = model2[id].Topic;
             return View(model);
         }
 
         [Authorize(Roles = "User")]
         [HttpPost]
-        public IActionResult Attempt(Result result)
+        public IActionResult Attempt(IFormCollection form)
         {
+            int quizid = Int32.Parse(form["QuizId"].ToString());
+            DbSet<Question> dbs = _dbContext.Question;
+            List<Question> model = dbs.ToList();
+            var quizCount = model.Count();
+            var y = 0;
+            
+            for (var x = 0; x < quizCount; x++ )
+            {
+                var z = x + 1;
+                var answer = form["Answer" +z];
+                var corrAns = model[x].CorrectAns;
+                if (answer == corrAns)
+                    y++;
+                else
+                    y+= 0;
+            }
+
+            Result newResult = new Result();
+            newResult.QuizId = quizid;
+            newResult.Score = y;
+            newResult.AccountId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            newResult.Name = "test";
+            newResult.Title = "test";
+            newResult.Topic = "test";
+            newResult.Attempt = true;
+            newResult.Dt = DateTime.Now;
+
+
             //TODO: require attention
             if (ModelState.IsValid)
             {
-                DbSet<Result> dbs = _dbContext.Result;
-                dbs.Add(result);
+
+                DbSet<Result> dbsresult = _dbContext.Result;
+                dbsresult.Add(newResult);
 
                 if (_dbContext.SaveChanges() == 1)
                     TempData["Msg"] = "Quiz Attempted";
@@ -56,15 +93,6 @@ namespace fyp.Controllers
             }
 
             return RedirectToAction("Index");
-        }
-
-        [AllowAnonymous]
-        public IActionResult CalculateResult() //for users to attempt the quiz
-        {
-            //TODO: require attention
-            DbSet<Question> dbs = _dbContext.Question;
-            List<Question> model = dbs.ToList();
-            return View(model);
         }
 
         [Authorize(Roles = "Admin")]
