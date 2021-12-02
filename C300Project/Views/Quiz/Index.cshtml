@@ -74,12 +74,14 @@
                 @if (User.IsInRole("User"))//use && then check if the date of the paper is more then current date
                 {
                     <td>
-                        <a asp-action="Attempt" asp-route-id="@item.QuizId">View Questions</a>
+                        <a asp-action="Attempt" asp-route-id="@item.QuizId">Start</a>
                     </td>
                 }
                 @if (User.IsInRole("Admin"))//use && then check if the date of the paper is ON current date
                 {
-                    <!---->
+            <td>
+                <a asp-action="Attempt" asp-route-id="@item.QuizId">View Questions</a>
+            </td>
                 }
             <td>
                 @if (User.IsInRole("Admin"))
