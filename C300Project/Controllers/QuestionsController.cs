@@ -67,6 +67,7 @@ namespace fyp.Controllers
                 var lstQuestion = dbsQuestion.ToList();
                 ViewData["queston"] = new SelectList(lstQuestion, "QuestionId", "Questions");
 
+
                 return View(question);
             }
             else
