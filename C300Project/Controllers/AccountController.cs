@@ -7,6 +7,8 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
 using fyp.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace fyp.Controllers
 {
@@ -30,6 +32,13 @@ namespace fyp.Controllers
         private const string REDIRECT_ACTN = "Index";
 
         private const string LOGIN_VIEW = "Login";
+        private AppDbContext _dbContext;
+
+        public AccountController(AppDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
 
         [AllowAnonymous]
         public IActionResult Login(string returnUrl = null)
@@ -108,5 +117,73 @@ namespace fyp.Controllers
             }
             return false;
         }
+        [Authorize]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult ChangePassword(PasswordUpdate pu)
+        {
+            var accountId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            if (_dbContext.Database.ExecuteSqlInterpolated(
+                  $@"UPDATE Account 
+                     SET Password = 
+                         HASHBYTES('SHA1', CONVERT(VARCHAR, {pu.NewPassword})) 
+                   WHERE AccountId = {accountId} 
+                     AND Password = 
+                         HASHBYTES('SHA1', CONVERT(VARCHAR, {pu.CurrentPassword}))"
+               ) == 1)
+                ViewData["Msg"] = "Password successfully updated!";
+            else
+                ViewData["Msg"] = "Failed to update password!";
+            return View();
+        }
+
+        [Authorize]
+        public JsonResult VerifyCurrentPassword(string CurrentPassword)
+        {
+            DbSet<Account> dbs = _dbContext.Account;
+            var accountId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            Account user =
+               dbs.FromSqlInterpolated(
+                  $@"SELECT * FROM Account 
+                   WHERE AccountId = {accountId} 
+                     AND Password = 
+                         HASHBYTES('SHA1', 
+                                   CONVERT(VARCHAR, {CurrentPassword}))"
+               ).FirstOrDefault();
+
+            if (user != null)         // User's Password Found
+                return Json(true);     // Current Password Valid
+            else
+                return Json(false);    // Current Password Invalid
+        }
+
+        [Authorize]
+        public JsonResult VerifyNewPassword(string  NewPassword)
+        {
+            DbSet<Account> dbs = _dbContext.Account;
+            var accountId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            Account user =
+               dbs.FromSqlInterpolated(
+                  $@"SELECT * FROM Account 
+                   WHERE AccountId = {accountId} 
+                     AND Password = 
+                         HASHBYTES('SHA1', 
+                                   CONVERT(VARCHAR, {NewPassword}))"
+               ).FirstOrDefault();
+
+            // New Password cannot be the same as Current Password
+            if (user == null)       // User's Password Not Found
+                return Json(true);   // New Password Valid
+            else
+                return Json(false);  // New Password Invalid
+        }
+
+
     }
 }
