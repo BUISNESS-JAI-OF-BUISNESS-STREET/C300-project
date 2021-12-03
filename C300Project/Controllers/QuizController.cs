@@ -8,6 +8,9 @@ using System.Linq;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Security.Claims;
+using System.Dynamic;
+using System.Data.SqlClient;
+
 
 namespace fyp.Controllers
 {
@@ -116,6 +119,7 @@ namespace fyp.Controllers
         {
             if (ModelState.IsValid)
             {
+                
                 DbSet<Quiz> dbs = _dbContext.Quiz;
                 dbs.Add(quiz);
                 if (_dbContext.SaveChanges() == 1)

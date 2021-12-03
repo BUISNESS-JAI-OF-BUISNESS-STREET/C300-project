@@ -98,6 +98,17 @@ namespace fyp.Models
                     .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.Property(e => e.UserCode)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.UserCodeNavigation)
+                    .WithMany(p => p.Quiz)
+                    .HasForeignKey(d => d.UserCode)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Quiz__UserCode__084B3915");
             });
 
             modelBuilder.Entity<Result>(entity =>
