@@ -9,12 +9,14 @@ using System.Collections.Generic;
 using fyp.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Security.Cryptography;
 
 namespace fyp.Controllers
 {
 
     public class AccountController : Controller
     {
+        SHA1 sha = new SHA1CryptoServiceProvider();
         private const string AUTHSCHEME = "UserSecurity";
         private const string LOGIN_SQL =
            @"SELECT * FROM Account 
@@ -49,9 +51,9 @@ namespace fyp.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult Login(Account user)
+        public IActionResult Login(LoginUser user)
         {
-            if (!AuthenticateUser(user.AccountId, user.Password, out ClaimsPrincipal principal))
+            if (!AuthenticateUser(user.UserId, user.Password, out ClaimsPrincipal principal))
             {
                 ViewData["Message"] = "Incorrect User Id or Password";
                 ViewData["MsgType"] = "warning";
@@ -68,7 +70,7 @@ namespace fyp.Controllers
                });
 
                 // Update the Last Login Timestamp of the User
-                DBUtl.ExecSQL(LASTLOGIN_SQL, user.AccountId);
+                DBUtl.ExecSQL(LASTLOGIN_SQL, user.UserId);
 
                 if (TempData["returnUrl"] != null)
                 {
@@ -98,18 +100,29 @@ namespace fyp.Controllers
 
         private bool AuthenticateUser(string aid, string pw, out ClaimsPrincipal principal)
         {
+            DbSet<Account> dbs = _dbContext.Account;
+
+            Account user =
+               dbs.FromSqlInterpolated(
+                  $@"SELECT * FROM Account 
+                   WHERE AccountId = {aid} 
+                     AND Password = 
+                         HASHBYTES('SHA1', 
+                                   CONVERT(VARCHAR, {pw}))"
+               ).FirstOrDefault();
             principal = null;
 
-            DataTable ds = DBUtl.GetTable(LOGIN_SQL, aid, pw);
-            if (ds.Rows.Count == 1)
+            //DataTable ds = DBUtl.GetTable(LOGIN_SQL, aid, pw);
+
+            if (user != null)
             {
                 principal =
                    new ClaimsPrincipal(
                       new ClaimsIdentity(
                          new Claim[] {
-                        new Claim(ClaimTypes.NameIdentifier, ds.Rows[0]["AccountId"].ToString()),
-                        new Claim(ClaimTypes.Name, ds.Rows[0][NAME_COL].ToString()),
-                        new Claim(ClaimTypes.Role, ds.Rows[0][ROLE_COL].ToString())
+                        new Claim(ClaimTypes.NameIdentifier, user.AccountId),
+                        new Claim(ClaimTypes.Name, user.Name),
+                        new Claim(ClaimTypes.Role, user.Role)
                          }, "Basic"
                       )
                    );

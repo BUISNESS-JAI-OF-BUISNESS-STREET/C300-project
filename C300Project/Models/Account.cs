@@ -20,7 +20,7 @@ namespace fyp.Models
 
         [Required(ErrorMessage = "Empty password not allowed!")]
         [DataType(DataType.Password)]
-        public string Password { get; set; }
+        public byte[] Password { get; set; }
         public string Role { get; set; }
 
         public virtual ICollection<Result> Result { get; set; }
