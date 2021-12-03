@@ -94,6 +94,7 @@ namespace fyp.Controllers
 
                 if (tOrder != null)
                 {
+                    tOrder.QuizId = question.QuizId;
                     tOrder.Questions = question.Questions;
                     tOrder.FirstOption = question.FirstOption;
                     tOrder.SecondOption = question.SecondOption;
