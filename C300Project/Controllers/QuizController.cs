@@ -34,13 +34,22 @@ namespace fyp.Controllers
         {
             //TODO: require attention
             DbSet<Question> dbs = _dbContext.Question;
-            List<Question> model = dbs.ToList();
+            List<Question> model = dbs.Where(mo => mo.QuizId == id).ToList();
             DbSet<Quiz> dbs2 = _dbContext.Quiz;
             List<Quiz> model2 = dbs2.ToList();
-            ViewData["quizid"] = id;
-            ViewData["title"] = model2[id].Title;
-            ViewData["topic"] = model2[id].Topic;
-            return View(model);
+            if(model == null && model2 == null)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                //ViewData["quizid"] = id;
+                //ViewData["title"] = model2[id].Title;
+                            //ViewData["topic"] = model2[id].Topic;
+                            return View(model);
+            }
+            
+            
         }
 
         [Authorize(Roles = "User")]
@@ -204,11 +213,11 @@ namespace fyp.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        public IActionResult ViewQuestions(/*int id*/) //for users to attempt the quiz
+        public IActionResult ViewQuestions(int id) //for users to attempt the quiz
         {
             //TODO: require attention
             DbSet<Question> dbs = _dbContext.Question;
-            List<Question> model = dbs.ToList();
+            List<Question> model = dbs.Where(mo => mo.QuizId == id).ToList();
             return View(model);
         }
     }

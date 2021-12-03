@@ -16,7 +16,5 @@ namespace fyp.Models
         public int Score { get; set; }
         public bool Attempt { get; set; }
         public DateTime Dt { get; set; }
-
-        public virtual Account Account { get; set; }
     }
 }

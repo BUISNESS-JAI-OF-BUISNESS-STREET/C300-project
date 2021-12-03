@@ -8,6 +8,7 @@ namespace fyp.Models
     public partial class Question
     {
         public int QuestionId { get; set; }
+        public int QuizId { get; set; }
         public string Questions { get; set; }
         public string FirstOption { get; set; }
         public string SecondOption { get; set; }

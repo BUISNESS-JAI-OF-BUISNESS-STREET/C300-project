@@ -31,6 +31,9 @@ namespace fyp.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
+            DbSet<Quiz> dbs = _dbContext.Quiz;
+            var lstQuiz = dbs.ToList();
+            ViewData["Quiz"] = new SelectList(lstQuiz, "QuizId", "Title");
             return View();
         }
 

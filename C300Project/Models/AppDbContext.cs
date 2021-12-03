@@ -49,7 +49,6 @@ namespace fyp.Models
 
             modelBuilder.Entity<Question>(entity =>
             {
-
                 entity.Property(e => e.CorrectAns)
                     .IsRequired()
                     .HasMaxLength(50)
@@ -88,7 +87,6 @@ namespace fyp.Models
 
             modelBuilder.Entity<Quiz>(entity =>
             {
-
                 entity.Property(e => e.Dt).HasColumnType("datetime");
 
                 entity.Property(e => e.Title)
@@ -104,7 +102,6 @@ namespace fyp.Models
 
             modelBuilder.Entity<Result>(entity =>
             {
-
                 entity.Property(e => e.AccountId)
                     .IsRequired()
                     .HasMaxLength(50)
@@ -126,12 +123,6 @@ namespace fyp.Models
                     .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false);
-
-                entity.HasOne(d => d.Account)
-                    .WithMany(p => p.Result)
-                    .HasForeignKey(d => d.AccountId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Result_ToAccount");
             });
 
             OnModelCreatingPartial(modelBuilder);
