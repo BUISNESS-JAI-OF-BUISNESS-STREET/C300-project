@@ -80,7 +80,7 @@
                 @if (User.IsInRole("Admin"))//use && then check if the date of the paper is ON current date
                 {
             <td>
-                <a asp-action="Attempt" asp-route-id="@item.QuizId">View Questions</a>
+                <a asp-action="ViewQuestions" asp-route-id="@item.QuizId">View Questions</a>
             </td>
                 }
             <td>

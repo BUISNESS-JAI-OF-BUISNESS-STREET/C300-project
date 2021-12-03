@@ -203,6 +203,13 @@ namespace fyp.Controllers
             return RedirectToAction("Index");
         }
 
-
+        [Authorize(Roles = "Admin")]
+        public IActionResult ViewQuestions(/*int id*/) //for users to attempt the quiz
+        {
+            //TODO: require attention
+            DbSet<Question> dbs = _dbContext.Question;
+            List<Question> model = dbs.ToList();
+            return View(model);
+        }
     }
 }
