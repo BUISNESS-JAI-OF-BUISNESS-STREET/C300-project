@@ -39,6 +39,14 @@
             <th>Topic</th>
             <th>Exam Level</th>
             <th>Exam Date</th>
+            @if (User.IsInRole("Admin"))
+            {
+                <th>Created By</th>
+            }
+            @if (User.IsInRole("Admin"))
+            {
+                <th>Action</th>
+            }
         </tr>
 
         @foreach (var item in Model)
@@ -59,7 +67,11 @@
         <td>
             @item.Dt
         </td>
-        
+        @if (User.IsInRole("Admin"))
+        {
+            <td>@item.UserCodeNavigation.Name</td>
+        }
+
         @if (User.IsInRole("Admin"))//use && then check if the date of the paper has passed yet
         {
             <!--<td>
