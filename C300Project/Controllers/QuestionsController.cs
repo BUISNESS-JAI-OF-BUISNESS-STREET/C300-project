@@ -25,7 +25,16 @@ namespace fyp.Controllers
         {
             DbSet<Question> dbs = _dbContext.Question;
             List<Question> model = dbs.ToList();
+            if (User.IsInRole("Admin"))
+                model = dbs.Include(mo => mo.UserCodeNavigation)
+                            .ToList();
+            else
+            {
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                model = dbs.Where(so => so.UserCode == userId).ToList();
+            }
             return View(model);
+            
         }
 
         [Authorize(Roles = "Admin")]
