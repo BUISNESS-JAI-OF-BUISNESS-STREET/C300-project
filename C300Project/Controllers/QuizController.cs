@@ -28,14 +28,14 @@ namespace fyp.Controllers
         {
             DbSet<Quiz> dbs = _dbContext.Quiz;
             List<Quiz> model = dbs.ToList();
-            if (User.IsInRole("Admin"))
+            //if (User.IsInRole("Admin"))
                 model = dbs.Include(mo => mo.UserCodeNavigation)
                             .ToList();
-            else
+           /* else
             {
                 var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 model = dbs.Where(so => so.UserCode == userId).ToList();
-            }
+            }*/
             return View(model);
         }
 
