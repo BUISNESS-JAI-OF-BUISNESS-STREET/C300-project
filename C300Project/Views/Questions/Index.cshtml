@@ -59,6 +59,10 @@
                     <th>Option 3</th>
                     <th>Option 4</th>
                     <th>Correct Answer</th>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <th>Created By</th>
+                    }
                     <th>Action</th>
                 </tr>
                 @foreach (var item in Model)
@@ -94,6 +98,11 @@
                             @item.CorrectAns
                         </td>
 
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <td>@item.UserCodeNavigation.Name</td>
+                         }
+
                         <td>
                             <a asp-action="Update" asp-route-id="@item.QuestionId" onclick="return ConfirmUpdate()">Update</a>
                             <a asp-action="Delete" asp-route-id="@item.QuestionId" onclick="return ConfirmDelete()">Delete</a>
@@ -119,6 +128,10 @@
                     <th>Option 3</th>
                     <th>Option 4</th>
                     <th>Correct Answer</th>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <th>Created By</th>
+                    }
                     <th>Action</th>
                 </tr>
                 @foreach (var item in Model)
@@ -154,6 +167,11 @@
                         @item.CorrectAns
                     </td>
 
+                     @if (User.IsInRole("Admin"))
+                      {
+                            <td>@item.UserCodeNavigation.Name</td>
+                      }
+
                     <td>
                         <a asp-action="Update" asp-route-id="@item.QuestionId" onclick="return ConfirmUpdate()">Update</a>
                         <a asp-action="Delete" asp-route-id="@item.QuestionId" onclick="return ConfirmDelete()">Delete</a>
@@ -179,6 +197,10 @@
                     <th>Option 3</th>
                     <th>Option 4</th>
                     <th>Correct Answer</th>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <th>Created By</th>
+                    }
                     <th>Action</th>
                 </tr>
                 @foreach (var item in Model)
@@ -214,6 +236,11 @@
                         <td>
                             @item.CorrectAns
                         </td>
+
+                        @if (User.IsInRole("Admin"))
+                         {
+                        <td>@item.UserCodeNavigation.Name</td>
+                         }
 
                         <td>
                             <a asp-action="Update" asp-route-id="@item.QuestionId" onclick="return ConfirmUpdate()">Update</a>

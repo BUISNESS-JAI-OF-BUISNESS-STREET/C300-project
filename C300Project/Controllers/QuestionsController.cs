@@ -34,7 +34,7 @@ namespace fyp.Controllers
                 model = dbs.Where(so => so.UserCode == userId).ToList();
             }
             return View(model);
-            
+
         }
 
         [Authorize(Roles = "Admin")]
