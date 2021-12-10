@@ -9,6 +9,7 @@ namespace fyp.Models
     {
         public Account()
         {
+            Question = new HashSet<Question>();
             Quiz = new HashSet<Quiz>();
         }
 
@@ -17,6 +18,7 @@ namespace fyp.Models
         public byte[] Password { get; set; }
         public string Role { get; set; }
 
+        public virtual ICollection<Question> Question { get; set; }
         public virtual ICollection<Quiz> Quiz { get; set; }
     }
 }

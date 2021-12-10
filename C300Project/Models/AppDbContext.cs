@@ -83,6 +83,17 @@ namespace fyp.Models
                     .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.Property(e => e.UserCode)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.UserCodeNavigation)
+                    .WithMany(p => p.Question)
+                    .HasForeignKey(d => d.UserCode)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Question__UserCo__1881A0DE");
             });
 
             modelBuilder.Entity<Quiz>(entity =>
@@ -108,7 +119,7 @@ namespace fyp.Models
                     .WithMany(p => p.Quiz)
                     .HasForeignKey(d => d.UserCode)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Quiz__UserCode__084B3915");
+                    .HasConstraintName("FK__Quiz__UserCode__1B5E0D89");
             });
 
             modelBuilder.Entity<Result>(entity =>
