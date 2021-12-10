@@ -4,6 +4,13 @@
     ViewBag.Title = "Questions";
 }
 
+@{
+    var All = ViewData["All"] as List<dynamic>;
+    var English = ViewData["English"] as List<dynamic>;
+    var Mathematics = ViewData["Mathematics"] as List<dynamic>;
+
+}
+
 @section ScriptSection {
 
     <script>
@@ -21,71 +28,205 @@
 
 <h2>Question Bank</h2>
 
+<div class="row">
+    <ul class="nav nav-tabs">
+        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#All">All Questions</a></li>
+        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#English">English</a></li>
+        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#Mathematics">Mathematics</a></li>
+
+    </ul>
+
+
+</div>
+
+
 <span style="color:red">@TempData["Msg"]</span>
 <br />
 <p>
     <a asp-controller="Questions" asp-action="Create">Create New Question</a>
 </p>
 
-<table class="table">
-    <tr>
-        <th>Id</th>
-        <th>Question</th>
-        <th>Topic</th>
-        <th>Option 1</th>
-        <th>Option 2</th>
-        <th>Option 3</th>
-        <th>Option 4</th>
-        <th>Correct Answer</th>
-        @if (User.IsInRole("Admin"))
-        {
-            <th>Created By</th>
-        }
-        <th>Action</th>
-    </tr>
+<div class="tab-content" style="margin-top:10px">
+    <div id="All" class="tab-pane fade in active">
+        <div>
+            <table class="table table-bordered table-condensed table-hover table-striped">
+                <tr>
+                    <th>Id</th>
+                    <th>Question</th>
+                    <th>Topic</th>
+                    <th>Option 1</th>
+                    <th>Option 2</th>
+                    <th>Option 3</th>
+                    <th>Option 4</th>
+                    <th>Correct Answer</th>
+                    <th>Action</th>
+                </tr>
+                @foreach (var item in Model)
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @item.QuestionId
-            </td>
-            <td>
-                @item.Questions
-            </td>
-            <td>
-                @item.Topic
-            </td>
-            <td>
-                @item.FirstOption
-            </td>
+                {
+                    <tr>
+                        <td>
+                            @item.QuestionId
+                        </td>
+                        <td>
+                            @item.Questions
+                        </td>
+                        <td>
+                            @item.Topic
+                        </td>
+                        <td>
+                            @item.FirstOption
+                        </td>
 
-            <td>
-                @item.SecondOption
-            </td>
+                        <td>
+                            @item.SecondOption
+                        </td>
 
-            <td>
-                @item.ThirdOption
-            </td>
+                        <td>
+                            @item.ThirdOption
+                        </td>
 
-            <td>
-                @item.FourthOption
-            </td>
+                        <td>
+                            @item.FourthOption
+                        </td>
 
-            <td>
-                @item.CorrectAns
-            </td>
+                        <td>
+                            @item.CorrectAns
+                        </td>
 
-            @if (User.IsInRole("Admin"))
-        {
-            <td>@item.UserCodeNavigation.Name</td>
-        }
+                        <td>
+                            <a asp-action="Update" asp-route-id="@item.QuestionId" onclick="return ConfirmUpdate()">Update</a>
+                            <a asp-action="Delete" asp-route-id="@item.QuestionId" onclick="return ConfirmDelete()">Delete</a>
 
-            <td>
-                <a asp-action="Update" asp-route-id="@item.QuestionId" onclick="return ConfirmUpdate()">Update</a>
-                <a asp-action="Delete" asp-route-id="@item.QuestionId" onclick="return ConfirmDelete()">Delete</a>
+                        </td>
+                    </tr>
+                }
 
-            </td>
-        </tr>
-    }
-</table>
+
+            </table>
+        </div>
+
+    </div>
+    <div id="English" class="tab-pane fade in active">
+        <div>
+            <table class="table table-bordered table-condensed table-hover table-striped">
+                <tr>
+                    <th>Id</th>
+                    <th>Question</th>
+                    <th>Topic</th>
+                    <th>Option 1</th>
+                    <th>Option 2</th>
+                    <th>Option 3</th>
+                    <th>Option 4</th>
+                    <th>Correct Answer</th>
+                    <th>Action</th>
+                </tr>
+                @foreach (var item in Model)
+                    if (item.Topic == "English")
+            {
+                <tr>
+                    <td>
+                        @item.QuestionId
+                    </td>
+                    <td>
+                        @item.Questions
+                    </td>
+                    <td>
+                        @item.Topic
+                    </td>
+                    <td>
+                        @item.FirstOption
+                    </td>
+
+                    <td>
+                        @item.SecondOption
+                    </td>
+
+                    <td>
+                        @item.ThirdOption
+                    </td>
+
+                    <td>
+                        @item.FourthOption
+                    </td>
+
+                    <td>
+                        @item.CorrectAns
+                    </td>
+
+                    <td>
+                        <a asp-action="Update" asp-route-id="@item.QuestionId" onclick="return ConfirmUpdate()">Update</a>
+                        <a asp-action="Delete" asp-route-id="@item.QuestionId" onclick="return ConfirmDelete()">Delete</a>
+
+                    </td>
+                </tr>
+            }
+
+
+                </table>
+        </div>
+
+    </div>
+    <div id="Mathematics" class="tab-pane fade">
+        <div>
+            <table class="table table-bordered table-condensed table-hover table-striped">
+                <tr>
+                    <th>Id</th>
+                    <th>Question</th>
+                    <th>Topic</th>
+                    <th>Option 1</th>
+                    <th>Option 2</th>
+                    <th>Option 3</th>
+                    <th>Option 4</th>
+                    <th>Correct Answer</th>
+                    <th>Action</th>
+                </tr>
+                @foreach (var item in Model)
+                    if (item.Topic == "Mathematics")
+
+                    {
+                    <tr>
+                        <td>
+                            @item.QuestionId
+                        </td>
+                        <td>
+                            @item.Questions
+                        </td>
+                        <td>
+                            @item.Topic
+                        </td>
+                        <td>
+                            @item.FirstOption
+                        </td>
+
+                        <td>
+                            @item.SecondOption
+                        </td>
+
+                        <td>
+                            @item.ThirdOption
+                        </td>
+
+                        <td>
+                            @item.FourthOption
+                        </td>
+
+                        <td>
+                            @item.CorrectAns
+                        </td>
+
+                        <td>
+                            <a asp-action="Update" asp-route-id="@item.QuestionId" onclick="return ConfirmUpdate()">Update</a>
+                            <a asp-action="Delete" asp-route-id="@item.QuestionId" onclick="return ConfirmDelete()">Delete</a>
+
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+

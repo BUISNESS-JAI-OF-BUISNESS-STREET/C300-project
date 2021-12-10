@@ -16,6 +16,7 @@ namespace fyp.Models
         public string FourthOption { get; set; }
         public string Topic { get; set; }
         public string CorrectAns { get; set; }
+        public string UserCode { get; set; }
 
         public virtual Account UserCodeNavigation { get; set; }
     }
