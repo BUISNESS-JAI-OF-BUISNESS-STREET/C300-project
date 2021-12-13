@@ -243,7 +243,7 @@ namespace fyp.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        public IActionResult CreateQuestionsInQuiz()
+        public IActionResult CreateQuestionsInQuiz(int id)
         {
             DbSet<Quiz> dbs = _dbContext.Quiz;
             var lstQuiz = dbs.ToList();

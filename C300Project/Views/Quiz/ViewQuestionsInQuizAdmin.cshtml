@@ -2,7 +2,6 @@
 
 @{
     ViewBag.Title = "View Questions";
-    int x = 1;
 
 }
 
@@ -26,7 +25,7 @@
 <span style="color:red">@TempData["Msg"]</span>
 <br />
 <p>
-    <a asp-controller="Quiz" asp-action="CreateQuestionsInQuiz">Add New Question Into Quiz</a>
+    <a asp-controller="Quiz" asp-action="CreateQuestionsInQuiz" asp-route-id="@item.QuizId">Add New Question Into Quiz</a>
 </p>
 
 <div class="tab-content" style="margin-top:10px">
