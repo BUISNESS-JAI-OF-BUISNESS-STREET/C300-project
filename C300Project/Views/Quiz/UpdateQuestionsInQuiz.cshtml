@@ -1,22 +1,23 @@
 ﻿@model Question
 
+
 @{
     var a = ViewData["Quiz"];
-    ViewBag.Title = "Update Question!";
+    ViewBag.Title = "Update a Question!";
 }
 
 @section ScriptSection {
 
 
     <script>
-    function ConfirmUpdate() {
-        if (confirm("Are you sure you want to delete?") == false) {
-            event.preventDefault();
-            event.stopPropagation();
-            return false;
+        function ConfirmUpdate() {
+            if (confirm("Are you sure you want to delete?") == false) {
+                event.preventDefault();
+                event.stopPropagation();
+                return false;
 
+            }
         }
-    }
 
     </script>
 }
@@ -30,17 +31,19 @@
 
             <form asp-controller="Quiz" asp-action="UpdateQuestionsInQuiz" method="post" class="form-horizontal" role="form">
                 <div class="form-horizontal">
-                    <div class="form-group row">
-                        <label asp-for="QuizId" class="col-3 control-label">
-                            Quiz:
-                        </label>
+
+
+
+                    <div class="form-group">
+                        <label asp-for="QuizId" class="col-sm-3 control-label">Quiz Id:</label>
                         <div class="col-sm-6">
-                            <select id="ddlQuiz" class="form-control col-6"
-                                    asp-for="QuizId" asp-items="@((SelectList)ViewData["Quiz"])">
-                                <option value="0">-- SELECT --</option>
-                            </select>
+                            <input asp-for="QuizId" class="form-control" readonly="readonly" />
+                        </div>
+                        <div class="has-error">
+                            <span asp-validation-for="QuizId" class="text-danger"></span>
                         </div>
                     </div>
+
                     <div class="form-group">
                         <label asp-for="QuestionId" class="col-sm-3 control-label">Question Id:</label>
                         <div class="col-sm-6">
@@ -114,15 +117,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label asp-for="FourthOption" class="col-sm-3 control-label">Option 4: </label>
-                        <div class="col-sm-6">
-                            <input asp-for="FourthOption" class="form-control" />
-                        </div>
-                        <div class="has-error">
-                            <span asp-validation-for="FourthOption" class="text-danger"></span>
-                        </div>
-                    </div>
+
 
                     <div class="form-group">
                         <label asp-for="CorrectAns" class="col-sm-3 control-label">Correct Answer: </label>

@@ -284,7 +284,7 @@ namespace fyp.Controllers
             {
                 DbSet<Question> dbsQuestion = _dbContext.Question;
                 var lstQuestion = dbsQuestion.ToList();
-                ViewData["queston"] = new SelectList(lstQuestion, "QuestionId", "Questions");
+                ViewData["question"] = new SelectList(lstQuestion, "QuestionId", "Questions");
                 DbSet<Quiz> dbs2 = _dbContext.Quiz;
                 var lstQuiz = dbs2.ToList();
                 ViewData["Quiz"] = new SelectList(lstQuiz, "QuizId", "Title");
