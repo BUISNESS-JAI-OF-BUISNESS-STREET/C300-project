@@ -233,5 +233,122 @@ namespace fyp.Controllers
             List<Question> model = dbs.Where(mo => mo.QuizId == id).ToList();
             return View(model);
         }
+        [Authorize(Roles = "Admin")]
+        public IActionResult CreateQuestion()
+        {
+            DbSet<Quiz> dbs = _dbContext.Quiz;
+            var lstQuiz = dbs.ToList();
+            ViewData["Quiz"] = new SelectList(lstQuiz, "QuizId", "Title");
+            return View();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public IActionResult CreateQuestion(Question question)
+        {
+            if (ModelState.IsValid)
+            {
+                DbSet<Question> dbs = _dbContext.Question;
+                dbs.Add(question);
+                if (_dbContext.SaveChanges() == 1)
+                    TempData["Msg"] = "New question added!";
+                else
+                    TempData["Msg"] = "Failed to update database!";
+            }
+            else
+            {
+                TempData["Msg"] = "Invalid information entered";
+            }
+            return RedirectToAction("ViewQuestions");
+        }
+
+        [Authorize]
+        public IActionResult UpdateQuestion(int id)
+        {
+            DbSet<Question> dbs = _dbContext.Question;
+            Question question = dbs.Where(mo => mo.QuestionId == id).FirstOrDefault();
+
+
+            if (question != null)
+            {
+                DbSet<Question> dbsQuestion = _dbContext.Question;
+                var lstQuestion = dbsQuestion.ToList();
+                ViewData["queston"] = new SelectList(lstQuestion, "QuestionId", "Questions");
+                DbSet<Quiz> dbs2 = _dbContext.Quiz;
+                var lstQuiz = dbs2.ToList();
+                ViewData["Quiz"] = new SelectList(lstQuiz, "QuizId", "Title");
+
+
+                return View(question);
+            }
+            else
+            {
+                TempData["Msg"] = "Question not found!";
+                return RedirectToAction("ViewQuestions");
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult UpdateQuestions(Question question)
+        {
+            if (ModelState.IsValid)
+            {
+                DbSet<Question> dbs = _dbContext.Question;
+                Question tOrder = dbs.Where(mo => mo.QuestionId == question.QuestionId).FirstOrDefault();
+
+                if (tOrder != null)
+                {
+                    tOrder.QuizId = question.QuizId;
+                    tOrder.Questions = question.Questions;
+                    tOrder.FirstOption = question.FirstOption;
+                    tOrder.SecondOption = question.SecondOption;
+                    tOrder.ThirdOption = question.ThirdOption;
+                    tOrder.FourthOption = question.FourthOption;
+                    tOrder.Topic = question.Topic;
+                    tOrder.CorrectAns = question.CorrectAns;
+
+
+                    if (_dbContext.SaveChanges() == 1)
+                        TempData["Msg"] = "Question updated!";
+                    else
+                        TempData["Msg"] = "Failed to update database!";
+                }
+                else
+                {
+                    TempData["Msg"] = "Question not found!";
+                    return RedirectToAction("Index");
+                }
+            }
+            else
+            {
+                TempData["Msg"] = "Invalid information entered";
+            }
+            return RedirectToAction("ViewQuestions");
+        }
+
+
+        [Authorize]
+        public IActionResult DeleteQuestions(int id)
+        {
+            DbSet<Question> dbs = _dbContext.Question;
+
+            Question tOrder = dbs.Where(mo => mo.QuestionId == id)
+                                     .FirstOrDefault();
+
+            if (tOrder != null)
+            {
+                dbs.Remove(tOrder);
+                if (_dbContext.SaveChanges() == 1)
+                    TempData["Msg"] = "Question deleted!";
+                else
+                    TempData["Msg"] = "Failed to update database!";
+            }
+            else
+            {
+                TempData["Msg"] = "Question not found!";
+            }
+            return RedirectToAction("ViewQuestions");
+        }
     }
 }
