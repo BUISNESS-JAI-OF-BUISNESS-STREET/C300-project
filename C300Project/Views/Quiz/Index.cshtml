@@ -115,7 +115,7 @@
                         @if (User.IsInRole("Admin"))//use && then check if the date of the paper is ON current date
                         {
                             <td>
-                                <a asp-action="ViewQuestions" asp-route-id="@item.QuizId">View Questions</a>
+                                <a asp-action="ViewQuestionsInQuizAdmin" asp-route-id="@item.QuizId">View Questions</a>
                                 <a asp-action="Update" asp-route-id="@item.QuizId" onclick="return ConfirmUpdate()">Update</a>
                                 <a asp-action="Delete" asp-route-id="@item.QuizId" onclick="return ConfirmDelete()">Delete</a>
                             </td>

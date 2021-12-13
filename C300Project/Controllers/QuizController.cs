@@ -233,5 +233,14 @@ namespace fyp.Controllers
             List<Question> model = dbs.Where(mo => mo.QuizId == id).ToList();
             return View(model);
         }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult ViewQuestionsInQuizAdmin(int id) //for users to attempt the quiz
+        {
+            //TODO: require attention
+            DbSet<Question> dbs = _dbContext.Question;
+            List<Question> model = dbs.Where(mo => mo.QuizId == id).Include(mo => mo.UserCodeNavigation).ToList();
+            return View(model);
+        }
     }
 }

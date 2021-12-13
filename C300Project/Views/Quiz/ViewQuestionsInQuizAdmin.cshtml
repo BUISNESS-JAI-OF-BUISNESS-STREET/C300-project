@@ -22,6 +22,7 @@
     </script>
 }
 
+
 <span style="color:red">@TempData["Msg"]</span>
 <br />
 <p>
@@ -29,7 +30,6 @@
 </p>
 
 <div class="tab-content" style="margin-top:10px">
-    <div id="All" class="tab-pane fade in active">
         <div>
             <table class="table table-bordered table-condensed table-hover table-striped">
                 <tr>
@@ -50,7 +50,6 @@
                 @foreach (var item in Model)
                 {
 
-                    {
                         <tr>
                             <td>
                                 @item.QuestionId
@@ -87,17 +86,14 @@
                             }
 
                             <td>
-                                <a asp-action="Update" asp-route-id="@item.QuestionId" onclick="return ConfirmUpdate()">Update</a>
-                                <a asp-action="Delete" asp-route-id="@item.QuestionId" onclick="return ConfirmDelete()">Delete</a>
+                                <a asp-controller="Question" asp-action="Update" asp-route-id="@item.QuestionId" onclick="return ConfirmUpdate()">Update</a>
+                                <a asp-controller="Question" asp-action="Delete" asp-route-id="@item.QuestionId" onclick="return ConfirmDelete()">Delete</a>
 
                             </td>
                         </tr>
-                    }
                 }
 
 
             </table>
         </div>
     </div>
-</div>
-
