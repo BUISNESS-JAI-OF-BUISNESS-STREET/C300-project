@@ -249,6 +249,7 @@ namespace fyp.Controllers
             var lstQuiz = dbs.ToList();
             ViewData["Quiz"] = new SelectList(lstQuiz, "QuizId", "Title");
             return View();
+            
         }
 
         [Authorize(Roles = "Admin")]
@@ -270,7 +271,7 @@ namespace fyp.Controllers
             {
                 TempData["Msg"] = "Invalid information entered";
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("ViewQuestionsInQuizAdmin");
         }
 
         [Authorize]
