@@ -26,7 +26,7 @@
 <span style="color:red">@TempData["Msg"]</span>
 <br />
 <p>
-    <a asp-controller="Questions" asp-action="Create">Add New Question</a>
+    <a asp-controller="Quiz" asp-action="CreateQuestionsInQuiz">Add New Question Into Quiz</a>
 </p>
 
 <div class="tab-content" style="margin-top:10px">
@@ -86,8 +86,8 @@
                             }
 
                             <td>
-                                <a asp-controller="Question" asp-action="Update" asp-route-id="@item.QuestionId" onclick="return ConfirmUpdate()">Update</a>
-                                <a asp-controller="Question" asp-action="Delete" asp-route-id="@item.QuestionId" onclick="return ConfirmDelete()">Delete</a>
+                                <a asp-controller="Quiz" asp-action="UpdateQuestionsInQuiz" asp-route-id="@item.QuestionId" onclick="return ConfirmUpdate()">Update</a>
+                                <a asp-controller="Quiz" asp-action="DeleteQuestionsInQuiz" asp-route-id="@item.QuestionId" onclick="return ConfirmDelete()">Delete</a>
 
                             </td>
                         </tr>
