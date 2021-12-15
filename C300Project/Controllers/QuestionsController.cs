@@ -46,25 +46,27 @@ namespace fyp.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Admin")]
-        [HttpPost]
-        public IActionResult Create(Question question)
+       //To create question 
+    [HttpPost]
+    [Authorize(Roles = "Admin")]
+    
+    public IActionResult Create(Question question)
+    {
+        if (ModelState.IsValid)
         {
-            if (ModelState.IsValid)
-            {
-                DbSet<Question> dbs = _dbContext.Question;
-                dbs.Add(question);
-                if (_dbContext.SaveChanges() == 1)
-                    TempData["Msg"] = "New question added!";
-                else
-                    TempData["Msg"] = "Failed to update database!";
-            }
+            DbSet<Question> dbs = _dbContext.Question;
+            dbs.Add(question);
+            if (_dbContext.SaveChanges() == 1)
+                TempData["Msg"] = "New quiz question is added!";
             else
-            {
-                TempData["Msg"] = "Invalid information entered";
-            }
-            return RedirectToAction("Index");
+                TempData["Msg"] = "The quiz question has been failed update database!";
         }
+        else
+        {
+            TempData["Msg"] = "No quiz question is being entered in the database";
+        }
+        return RedirectToAction("Index");
+    }
 
         [Authorize]
         public IActionResult Update(int id)
