@@ -445,7 +445,7 @@ namespace fyp.Controllers
         [HttpPost]
         public IActionResult UpdateQuestions(Question question,IFormCollection form )
         {
-            var quizid = Int32.Parse(form["QuizIdInput"].ToString());
+            var quizid = form["QuizIdInput"];
             if (ModelState.IsValid)
             {
                 DbSet<Question> dbs = _dbContext.Question;
@@ -527,6 +527,10 @@ namespace fyp.Controllers
         public IActionResult DeleteQuestions(int id, IFormCollection form)
         {
             DbSet<Question> dbs = _dbContext.Question;
+            DbSet<QuizQuestionBindDb> dbs2 = _dbContext.QuizQuestionBindDb;
+
+            dbs2.RemoveRange(dbs2.Where(mo => mo.QuestionId == id).ToList());
+            _dbContext.SaveChanges();
 
             Question tOrder = dbs.Where(mo => mo.QuestionId == id)
                                      .FirstOrDefault();
