@@ -2,13 +2,14 @@
 
 @{
     ViewBag.Title = "Results";
+    var a = Int32.Parse(ViewData["QuizId"].ToString());
 }
 
 <h2>Reports</h2>
 
 <span style="color:red">@TempData["Msg"]</span>
 <br />
-
+<a asp-action="exportExcel" asp-route-id="@a">Export to excel</a>
 <table class="table">
     <tr>
         <th>Student ID</th>
@@ -36,9 +37,6 @@
             <td>
                 @item.Attempt
             </td>
-            <!--<td>
-                <a asp-action="ViewReport" asp-route-id="">View Report</a>
-            </td>-->
         </tr>
     }
 </table>

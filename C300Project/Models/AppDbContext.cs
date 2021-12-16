@@ -20,6 +20,7 @@ namespace fyp.Models
         public virtual DbSet<Account> Account { get; set; }
         public virtual DbSet<Question> Question { get; set; }
         public virtual DbSet<Quiz> Quiz { get; set; }
+        public virtual DbSet<QuizQuestionBindDb> QuizQuestionBindDb { get; set; }
         public virtual DbSet<Result> Result { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -93,7 +94,7 @@ namespace fyp.Models
                     .WithMany(p => p.Question)
                     .HasForeignKey(d => d.UserCode)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Question__UserCo__1881A0DE");
+                    .HasConstraintName("FK__Question__UserCo__25869641");
             });
 
             modelBuilder.Entity<Quiz>(entity =>
@@ -119,7 +120,26 @@ namespace fyp.Models
                     .WithMany(p => p.Quiz)
                     .HasForeignKey(d => d.UserCode)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Quiz__UserCode__1B5E0D89");
+                    .HasConstraintName("FK__Quiz__UserCode__286302EC");
+            });
+
+            modelBuilder.Entity<QuizQuestionBindDb>(entity =>
+            {
+                entity.ToTable("QuizQuestionBindDB");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.HasOne(d => d.Question)
+                    .WithMany(p => p.QuizQuestionBindDb)
+                    .HasForeignKey(d => d.QuestionId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__QuizQuest__Quest__2D27B809");
+
+                entity.HasOne(d => d.Quiz)
+                    .WithMany(p => p.QuizQuestionBindDb)
+                    .HasForeignKey(d => d.QuizId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__QuizQuest__QuizI__2E1BDC42");
             });
 
             modelBuilder.Entity<Result>(entity =>

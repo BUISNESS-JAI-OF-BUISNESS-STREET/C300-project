@@ -2,6 +2,9 @@
 
 @{
     ViewBag.Title = "Update quiz!";
+    var b = ViewData["Test"] as List<Question>;
+    var c = ViewData["common"] as List<int>;
+    int x = 1;
 }
 
 @section ScriptSection {
@@ -33,7 +36,7 @@
                         <div class="form-group">
                             <label asp-for="QuizId" class="col-sm-3 control-label">Quiz Id:</label>
                             <div class="col-sm-6">
-                                <input asp-for="QuizId" class="form-control" readonly="readonly"  />
+                                <input asp-for="QuizId" class="form-control" readonly="readonly" />
                             </div>
                             <div class="has-error">
                                 <span asp-validation-for="QuizId" class="text-danger"></span>
@@ -88,7 +91,70 @@
                             </div>
                         </div>
 
+                        <div>
+                            <table class="table table-bordered table-condensed table-hover table-striped">
+                                <tr>
+                                    <th>QuestionId</th>
+                                    <th>Questions</th>
+                                    <th>Topic</th>
+                                    <th>First Option</th>
+                                    <th>Second Option</th>
+                                    <th>Third Option</th>
+                                    <th>Fourth Option</th>
+                                    <th>Correct Answer</th>
+                                    <th>Add To Quiz?</th>
+                                </tr>
 
+
+                                @foreach (var item in @b)
+
+                                {
+                            <tr>
+                                <td>
+                                    @item.QuestionId
+                                </td>
+                                <td>
+                                    @item.Questions
+                                </td>
+                                <td>
+                                    @item.Topic
+                                </td>
+                                <td>
+                                    @item.FirstOption
+                                </td>
+                                <td>
+                                    @item.SecondOption
+                                </td>
+                                <td>
+                                    @item.ThirdOption
+                                <td>
+                                    @item.FourthOption
+                                </td>
+                                <td>
+                                    @item.CorrectAns
+                                </td>
+                                @if (c.Contains(item.QuestionId))
+                                {
+                                    <td>
+                                        <input type="radio" id="rdOption1" value="True" name="@("Add" +x)" checked="checked" /> Yes
+                                        <input type="radio" id="rdOption2" value="False" name="@("Add" +x)" /> No
+                                    </td>
+
+                                }
+                                else
+                                {
+                                    <td>
+                                        <input type="radio" id="rdOption1" value="True" name="@("Add" +x)" /> Yes
+                                        <input type="radio" id="rdOption2" value="False" name="@("Add" +x)" /> No
+                                    </td>
+                                }
+                            </tr>
+                                    x++;
+                                }
+
+                            </table>
+
+                        </div>
 
                         <div class="form-group">
                             <div class="col-sm-offset-3 col-sm-10">

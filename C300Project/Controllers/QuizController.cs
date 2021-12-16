@@ -44,20 +44,27 @@ namespace fyp.Controllers
         public IActionResult Attempt(int id) //for users to attempt the quiz
         {
             //TODO: require attention
-            DbSet<Question> dbs = _dbContext.Question;
-            List<Question> model = dbs.Where(mo => mo.QuizId == id).ToList();
+            DbSet<QuizQuestionBindDb> dbs = _dbContext.QuizQuestionBindDb;
+            List<QuizQuestionBindDb> model = dbs.Where(mo => mo.QuizId == id).ToList();
+            List<int> overlapList = model.Select(mo => mo.QuestionId).ToList();
+
+            DbSet<Question> dbs3 = _dbContext.Question;
+            List<Question> model3 = dbs3.ToList();
+            List<int> overlappedquestno = model3.Select(mo => mo.QuestionId).ToList().Intersect(overlapList).ToList();
+            List<Question> questionlist = dbs3.Where(r => overlappedquestno.Contains(r.QuestionId)).ToList();
+
             DbSet<Quiz> dbs2 = _dbContext.Quiz;
             List<Quiz> model2 = dbs2.ToList();
+            ViewData["quizid"] = id;
             if(model == null && model2 == null)
             {
                 return RedirectToAction("Index");
             }
             else
             {
-                //ViewData["quizid"] = id;
                 //ViewData["title"] = model2[id].Title;
                             //ViewData["topic"] = model2[id].Topic;
-                            return View(model);
+                            return View(questionlist);
             }
             
             
@@ -68,8 +75,14 @@ namespace fyp.Controllers
         public IActionResult Attempt(IFormCollection form)
         {
             int quizid = Int32.Parse(form["QuizId"].ToString());
-            DbSet<Question> dbs = _dbContext.Question;
-            List<Question> model = dbs.ToList();
+            DbSet<QuizQuestionBindDb> dbs = _dbContext.QuizQuestionBindDb;
+            List<QuizQuestionBindDb> model = dbs.Where(mo => mo.QuizId == quizid).ToList();
+            List<int> overlapList = model.Select(mo => mo.QuestionId).ToList();
+
+            DbSet<Question> dbs3 = _dbContext.Question;
+            List<Question> model3 = dbs3.ToList();
+            List<int> overlappedquestno = model3.Select(mo => mo.QuestionId).ToList().Intersect(overlapList).ToList();
+            List<Question> questionlist = dbs3.Where(r => overlappedquestno.Contains(r.QuestionId)).ToList();
             var quizCount = model.Count();
             var y = 0;
             
@@ -77,7 +90,7 @@ namespace fyp.Controllers
             {
                 var z = x + 1;
                 var answer = form["Answer" +z];
-                var corrAns = model[x].CorrectAns;
+                var corrAns = questionlist[x].CorrectAns;
                 if (answer == corrAns)
                     y++;
                 else
@@ -118,20 +131,52 @@ namespace fyp.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
+            DbSet<Question> dbs = _dbContext.Question;
+            var lstQuestion = dbs.ToList();
+            ViewData["Test"] = lstQuestion;
             return View();
         }
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public IActionResult Create(Quiz quiz)
+        public IActionResult Create(Quiz quiz, IFormCollection form)
         {
-            if (ModelState.IsValid)
-            {
-                var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            DbSet<Question> dbs2 = _dbContext.Question;
+            List<Question> lstQuestion = dbs2.ToList<Question>();
+            var dbcount = lstQuestion.Count();
+            DbSet<QuizQuestionBindDb> dbs3 = _dbContext.QuizQuestionBindDb;
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 quiz.UserCode = userId;
                 DbSet<Quiz> dbs = _dbContext.Quiz;
+
+            if (ModelState.IsValid)
+            {
+                
                 dbs.Add(quiz);
-                if (_dbContext.SaveChanges() == 1)
+                _dbContext.SaveChanges();
+
+
+                for (var x = 0; x < dbcount; x++)
+                {
+
+                    QuizQuestionBindDb quizQuestionBind = new QuizQuestionBindDb();
+                    var y = x + 1;
+                    var radiocheck = form["Add" + y];
+
+                    if (radiocheck.Equals("True"))
+                    {
+                        if (ModelState.IsValid)
+                        {
+                            quizQuestionBind.QuestionId = y;
+                            quizQuestionBind.QuizId = quiz.QuizId;
+                            dbs3.Add(quizQuestionBind);
+
+                        }
+                    }
+
+                }
+
+                if (_dbContext.SaveChanges() >= 1)
                     TempData["Msg"] = "New quiz added!";
                 else
                     TempData["Msg"] = "Failed to update database!";
@@ -147,15 +192,24 @@ namespace fyp.Controllers
         [Authorize]
         public IActionResult Update(int id)
         {
-            DbSet<Quiz> dbs = _dbContext.Quiz;
-            Quiz quiz = dbs.Where(mo => mo.QuizId == id).FirstOrDefault();
+            DbSet<QuizQuestionBindDb> dbs2 = _dbContext.QuizQuestionBindDb;
+            List<QuizQuestionBindDb> lstdb2 = dbs2.Where(mo => mo.QuizId == id).ToList();
+            List<int> lstoverlap = lstdb2.Select(mo => mo.QuestionId).ToList();
+            DbSet<Quiz> dbs3 = _dbContext.Quiz;
+            List<int> lstdb3 = dbs3.Select(mo => mo.QuizId).ToList();
+            DbSet<Question> dbs = _dbContext.Question;
+            List<int> lstdb = dbs.Select(mo => mo.QuestionId).ToList();
+
+            List<int> commonlist = lstoverlap.Intersect(lstdb).ToList();
+
+            Quiz quiz = dbs3.Where(mo => mo.QuizId == id).FirstOrDefault();
 
 
             if (quiz != null)
             {
-                DbSet<Quiz> dbsQuiz = _dbContext.Quiz;
-                var lstQuiz = dbsQuiz.ToList();
-                ViewData["quiz"] = new SelectList(lstQuiz, "QuizId", "Title");
+                var lstQuestion = dbs.ToList();
+                ViewData["Test"] = lstQuestion;
+                ViewData["common"] = commonlist;
 
                 return View(quiz);
             }
@@ -168,12 +222,54 @@ namespace fyp.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult Update(Quiz quiz)
+        public IActionResult Update(Quiz quiz, IFormCollection form)
         {
             if (ModelState.IsValid)
             {
                 DbSet<Quiz> dbs = _dbContext.Quiz;
                 Quiz tOrder = dbs.Where(mo => mo.QuizId == quiz.QuizId).FirstOrDefault();
+
+                DbSet<Question> dbs2 = _dbContext.Question;
+                List<Question> lstQuestion = dbs2.ToList();
+                var dbcount = lstQuestion.Count();
+
+                DbSet<QuizQuestionBindDb> dbs3 = _dbContext.QuizQuestionBindDb;
+                List<QuizQuestionBindDb> lstdb2 = dbs3.Where(mo => mo.QuizId == quiz.QuizId).ToList();
+
+                List<int> lstoverlap = lstdb2.Select(mo => mo.QuestionId).ToList();
+
+                List<int> lstdb = dbs2.Select(mo => mo.QuestionId).ToList();
+
+                List<int> commonlist = lstoverlap.Intersect(lstdb).ToList();
+
+                for (var x = 0; x < dbcount; x++)
+                {
+
+                    QuizQuestionBindDb quizQuestionBind = new QuizQuestionBindDb();
+                    var y = x + 1;
+                    var radiocheck = form["Add" + y];
+
+                    if (commonlist.Contains(y) && radiocheck.Equals("False"))
+                    {
+                        dbs3.Remove(dbs3.Where(mo => mo.QuestionId == y).Where(mo => mo.QuizId == quiz.QuizId).FirstOrDefault());
+                        _dbContext.SaveChanges();
+                    }
+                    else if (commonlist.Contains(y) && radiocheck.Equals("True"))
+                    {
+                        continue;
+                    }
+                    else if (radiocheck.Equals("True"))
+                    {
+                        if (ModelState.IsValid)
+                        {
+                            quizQuestionBind.QuestionId = y;
+                            quizQuestionBind.QuizId = quiz.QuizId;
+                            dbs3.Add(quizQuestionBind);
+
+                        }
+                    }
+
+                }
 
                 if (tOrder != null)
                 {
@@ -183,7 +279,7 @@ namespace fyp.Controllers
                     tOrder.Dt = quiz.Dt;
 
 
-                    if (_dbContext.SaveChanges() == 1)
+                    if (_dbContext.SaveChanges() >= 1)
                         TempData["Msg"] = "Quiz updated!";
                     else
                         TempData["Msg"] = "Failed to update database!";
@@ -205,6 +301,10 @@ namespace fyp.Controllers
         [Authorize]
         public IActionResult Delete(int id)
         {
+            DbSet<QuizQuestionBindDb> dbs2 = _dbContext.QuizQuestionBindDb;
+            dbs2.RemoveRange(dbs2.Where(mo => mo.QuizId == id).ToList());
+            _dbContext.SaveChanges();
+
             DbSet<Quiz> dbs = _dbContext.Quiz;
 
             Quiz tOrder = dbs.Where(mo => mo.QuizId == id)
@@ -226,44 +326,82 @@ namespace fyp.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        public IActionResult ViewQuestions(int id) //for users to attempt the quiz
+        public IActionResult ViewQuestions(int id) //for to view questions in the specific quiz
         {
-            //TODO: require attention
-            DbSet<Question> dbs = _dbContext.Question;
-            List<Question> model = dbs.Where(mo => mo.QuizId == id).ToList();
-            return View(model);
+            DbSet<QuizQuestionBindDb> dbs = _dbContext.QuizQuestionBindDb;
+            List<QuizQuestionBindDb> model = dbs.Where(mo => mo.QuizId == id).ToList();
+            List<int> overlapList = model.Select(mo => mo.QuestionId).ToList();
+
+            ViewData["QuizId"] = id;
+
+            DbSet<Question> dbs3 = _dbContext.Question;
+            List<Question> model3 = dbs3.ToList();
+            List<int> overlappedquestno = model3.Select(mo => mo.QuestionId).ToList().Intersect(overlapList).ToList();
+            List<Question> questionlist = dbs3.Where(r => overlappedquestno.Contains(r.QuestionId)).Include(mo => mo.UserCodeNavigation).ToList();
+            return View(questionlist);
         }
 
         [Authorize(Roles = "Admin")]
-        public IActionResult ViewQuestionsInQuizAdmin(int id) //for to view questions in the specific quiz
+        public IActionResult CreateQuestions(int id)
         {
-            DbSet<Question> dbs = _dbContext.Question;
-            List<Question> model = dbs.Where(mo => mo.QuizId == id).Include(mo => mo.UserCodeNavigation).ToList();
-            return View(model);
-        }
-
-        [Authorize(Roles = "Admin")]
-        public IActionResult CreateQuestionsInQuiz(int id)
-        {
+            ViewData["QuizId"] = id;
             DbSet<Quiz> dbs = _dbContext.Quiz;
             var lstQuiz = dbs.ToList();
-            ViewData["Quiz"] = new SelectList(lstQuiz, "QuizId", "Title");
+            ViewData["Quiz"] = lstQuiz.ToList();
+            ViewData["Test"] = lstQuiz.Select(mo => mo.QuizId).ToList();
             return View();
             
         }
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public IActionResult CreateQuestionsInQuiz(Question question)
+        public IActionResult CreateQuestions(IFormCollection form)
         {
+            var quizid = form["QuizIdInput"];
+            DbSet<Question> dbs = _dbContext.Question;
+            Question question = new Question();
+
+            question.Questions = form["Questions"];
+            question.Topic = form["Topic"];
+            question.FirstOption = form["FirstOption"];
+            question.SecondOption = form["SecondOption"];
+            question.ThirdOption = form["ThirdOption"];
+            question.FourthOption = form["FourthOption"];
+            question.CorrectAns = form["CorrectAns"];
+            question.UserCode = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            DbSet<Quiz> dbs2 = _dbContext.Quiz;
+            List<Quiz> lstQuiz = dbs2.ToList<Quiz>();
+            var dbcount = lstQuiz.Count();
+            DbSet<QuizQuestionBindDb> dbs3 = _dbContext.QuizQuestionBindDb;
+
             if (ModelState.IsValid)
             {
-                var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                question.UserCode = userId;
-                DbSet<Question> dbs = _dbContext.Question;
+
                 dbs.Add(question);
-                if (_dbContext.SaveChanges() == 1)
+                _dbContext.SaveChanges();
+                for (var x = 0; x < dbcount; x++)
+                {
+
+                    QuizQuestionBindDb quizQuestionBind = new QuizQuestionBindDb();
+                    var y = x + 1;
+                    var radiocheck = form["Add" + y];
+
+                    if (radiocheck.Equals("True"))
+                    {
+                        if (ModelState.IsValid)
+                        {
+                            quizQuestionBind.QuestionId = question.QuestionId;
+                            quizQuestionBind.QuizId = y;
+                            dbs3.Add(quizQuestionBind);
+
+                        }
+                    }
+
+                }
+                if (_dbContext.SaveChanges() > 0)
                     TempData["Msg"] = "New question added!";
+
                 else
                     TempData["Msg"] = "Failed to update database!";
             }
@@ -271,26 +409,29 @@ namespace fyp.Controllers
             {
                 TempData["Msg"] = "Invalid information entered";
             }
-            return RedirectToAction("ViewQuestionsInQuizAdmin");
+            return RedirectToAction("ViewQuestions", new { id = quizid });
         }
 
         [Authorize]
-        public IActionResult UpdateQuestionsInQuiz(int id)
+        public IActionResult UpdateQuestions(int id)
         {
+            DbSet<QuizQuestionBindDb> dbs2 = _dbContext.QuizQuestionBindDb;
+            List<QuizQuestionBindDb> lstdb2 = dbs2.Where(mo => mo.QuestionId == id).ToList();
+            List<int> lstoverlap = lstdb2.Select(mo => mo.QuizId).ToList();
+            DbSet<Quiz> dbs3 = _dbContext.Quiz;
+            List<int> lstdb3 = dbs3.Select(mo => mo.QuizId).ToList();
             DbSet<Question> dbs = _dbContext.Question;
+            List<Question> lstdb = dbs.ToList();
             Question question = dbs.Where(mo => mo.QuestionId == id).FirstOrDefault();
 
+            List<int> commonlist = lstoverlap.Intersect(lstdb3).ToList();
 
             if (question != null)
             {
-                DbSet<Question> dbsQuestion = _dbContext.Question;
-                var lstQuestion = dbsQuestion.ToList();
-                ViewData["question"] = new SelectList(lstQuestion, "QuestionId", "Questions");
-                DbSet<Quiz> dbs2 = _dbContext.Quiz;
-                var lstQuiz = dbs2.ToList();
-                ViewData["Quiz"] = new SelectList(lstQuiz, "QuizId", "Title");
-
-
+                DbSet<Quiz> dbsQuiz = _dbContext.Quiz;
+                var lstQuiz = dbsQuiz.ToList();
+                ViewData["Test"] = lstQuiz;
+                ViewData["common"] = commonlist;
                 return View(question);
             }
             else
@@ -302,16 +443,56 @@ namespace fyp.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult UpdateQuestionsInQuiz(Question question)
+        public IActionResult UpdateQuestions(Question question,IFormCollection form )
         {
+            var quizid = Int32.Parse(form["QuizIdInput"].ToString());
             if (ModelState.IsValid)
             {
                 DbSet<Question> dbs = _dbContext.Question;
                 Question tOrder = dbs.Where(mo => mo.QuestionId == question.QuestionId).FirstOrDefault();
 
+                DbSet<Quiz> dbs3 = _dbContext.Quiz;
+                List<Quiz> lstQuiz = dbs3.ToList<Quiz>();
+                var dbcount = lstQuiz.Count();
+
+                DbSet<QuizQuestionBindDb> dbs2 = _dbContext.QuizQuestionBindDb;
+                List<QuizQuestionBindDb> lstdb2 = dbs2.Where(mo => mo.QuestionId == question.QuestionId).ToList();
+
+                List<int> lstoverlap = lstdb2.Select(mo => mo.QuizId).ToList();
+                List<int> lstdb3 = dbs2.Select(mo => mo.QuizId).ToList();
+                List<int> commonlist = lstoverlap.Intersect(lstdb3).ToList();
+
+                for (var x = 0; x < dbcount; x++)
+                {
+
+                    QuizQuestionBindDb quizQuestionBind = new QuizQuestionBindDb();
+                    var y = x + 1;
+                    var radiocheck = form["Add" + y];
+
+                    if (commonlist.Contains(y) && radiocheck.Equals("False"))
+                    {
+                        dbs2.Remove(dbs2.Where(mo => mo.QuestionId == question.QuestionId).Where(mo => mo.QuizId == y).FirstOrDefault());
+                        _dbContext.SaveChanges();
+                    }
+                    else if (commonlist.Contains(y) && radiocheck.Equals("True"))
+                    {
+                        continue;
+                    }
+                    else if (radiocheck.Equals("True"))
+                    {
+                        if (ModelState.IsValid)
+                        {
+                            quizQuestionBind.QuestionId = question.QuestionId;
+                            quizQuestionBind.QuizId = y;
+                            dbs2.Add(quizQuestionBind);
+
+                        }
+                    }
+
+                }
+
                 if (tOrder != null)
                 {
-                    tOrder.QuizId = question.QuizId;
                     tOrder.Questions = question.Questions;
                     tOrder.FirstOption = question.FirstOption;
                     tOrder.SecondOption = question.SecondOption;
@@ -321,7 +502,9 @@ namespace fyp.Controllers
                     tOrder.CorrectAns = question.CorrectAns;
 
 
-                    if (_dbContext.SaveChanges() == 1)
+                    _dbContext.SaveChanges();
+
+                    if (_dbContext.SaveChanges() >= 1)
                         TempData["Msg"] = "Question updated!";
                     else
                         TempData["Msg"] = "Failed to update database!";
@@ -329,19 +512,19 @@ namespace fyp.Controllers
                 else
                 {
                     TempData["Msg"] = "Question not found!";
-                    return RedirectToAction("ViewQuestionsInQuizAdmin");
+                    return RedirectToAction("Index");
                 }
             }
             else
             {
                 TempData["Msg"] = "Invalid information entered";
             }
-            return RedirectToAction("ViewQuestionsInQuizAdmin");
+            return RedirectToAction("Index");
         }
 
 
         [Authorize]
-        public IActionResult DeleteQuestionsInQuiz(int id)
+        public IActionResult DeleteQuestions(int id, IFormCollection form)
         {
             DbSet<Question> dbs = _dbContext.Question;
 

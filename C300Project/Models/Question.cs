@@ -7,8 +7,12 @@ namespace fyp.Models
 {
     public partial class Question
     {
+        public Question()
+        {
+            QuizQuestionBindDb = new HashSet<QuizQuestionBindDb>();
+        }
+
         public int QuestionId { get; set; }
-        public int QuizId { get; set; }
         public string Questions { get; set; }
         public string FirstOption { get; set; }
         public string SecondOption { get; set; }
@@ -19,5 +23,6 @@ namespace fyp.Models
         public string UserCode { get; set; }
 
         public virtual Account UserCodeNavigation { get; set; }
+        public virtual ICollection<QuizQuestionBindDb> QuizQuestionBindDb { get; set; }
     }
 }

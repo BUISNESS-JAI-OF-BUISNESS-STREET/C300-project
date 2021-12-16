@@ -1,8 +1,9 @@
 ﻿@model Question
 
 @{
-    var a = ViewData["Quiz"];
+    var b = ViewData["Test"] as List<Quiz>;
     ViewBag.Title = "Create new question!";
+    int x = 1;
 }
 
 @section ScriptSection {
@@ -29,18 +30,6 @@
             <span style="color:red">@ViewData["Msg"]</span><br />
             <form asp-controller="Questions" asp-action="Create" method="post" class="form-horizontal" role="form">
                 <div class="form-horizontal">
-                    <div class="form-group row">
-                        <label asp-for="QuizId" class="col-3 control-label">
-                            Quiz:
-                        </label>
-                        <div class="col-sm-6">
-                            <select id="ddlQuiz" class="form-control col-6"
-                                    asp-for="QuizId" asp-items="@((SelectList)ViewData["Quiz"])">
-                                <option value="0">-- SELECT --</option>
-                            </select>
-                        </div>
-                    </div>
-
                     <div class="form-group">
                         <label asp-for="Questions" class="col-sm-3 control-label">Question: </label>
                         <div class="col-sm-6">
@@ -110,6 +99,51 @@
                         <div class="has-error">
                             <span asp-validation-for="CorrectAns" class="text-danger"></span>
                         </div>
+                    </div>
+
+                    
+
+                    <div>
+                        <table class="table table-bordered table-condensed table-hover table-striped">
+                            <tr>
+                                <th>Id</th>
+                                <th>Title</th>
+                                <th>Topic</th>
+                                <th>Exam Level</th>
+                                <th>Exam Date</th>
+                                <th>Add To Quiz?</th>
+                            </tr>
+
+
+                            @foreach (var item in @b)
+
+                            {
+                                <tr>
+                                    <td>
+                                        @item.QuizId
+                                    </td>
+                                    <td>
+                                        @item.Title
+                                    </td>
+                                    <td>
+                                        @item.Topic
+                                    </td>
+                                    <td>
+                                        @item.Sec
+                                    </td>
+                                    <td>
+                                        @item.Dt
+                                    </td>
+                                    <td>
+                                        <input type="radio" id="rdOption1" value="True" name="@("Add" +x)" /> Yes
+                                        <input type="radio" id="rdOption2" value="False" name="@("Add" +x)" /> No
+                                    </td>
+                                </tr>
+                                x++;
+                            }
+
+                        </table>
+                        
                     </div>
 
                     <div class="form-group">

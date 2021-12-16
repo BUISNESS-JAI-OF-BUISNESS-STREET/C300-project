@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "View Questions";
-
+    var a = ViewData["QuizId"];
 }
 
 
@@ -25,8 +25,10 @@
 <span style="color:red">@TempData["Msg"]</span>
 <br />
 <p>
-    <a asp-controller="Quiz" asp-action="CreateQuestionsInQuiz" asp-route-id="@item.QuizId">Add New Question Into Quiz</a>
+    <a asp-controller="Quiz" asp-action="CreateQuestions" asp-route-id="@a">Add New Question Into Quiz</a>
 </p>
+
+<input type="hidden" value="@a" name="QuizIdInput" id="QuizIdInput" />
 
 <div class="tab-content" style="margin-top:10px">
         <div>
@@ -85,8 +87,8 @@
                             }
 
                             <td>
-                                <a asp-controller="Quiz" asp-action="UpdateQuestionsInQuiz" asp-route-id="@item.QuestionId" onclick="return ConfirmUpdate()">Update</a>
-                                <a asp-controller="Quiz" asp-action="DeleteQuestionsInQuiz" asp-route-id="@item.QuestionId" onclick="return ConfirmDelete()">Delete</a>
+                                <a asp-action="UpdateQuestions" asp-route-id="@item.QuestionId" onclick="return ConfirmUpdate()">Update</a>
+                                <a asp-action="DeleteQuestions" asp-route-id="@item.QuestionId" onclick="return ConfirmDelete()">Delete</a>
 
                             </td>
                         </tr>
