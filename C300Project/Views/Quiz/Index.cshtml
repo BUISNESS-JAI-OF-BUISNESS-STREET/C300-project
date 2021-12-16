@@ -1,4 +1,4 @@
-﻿model List<Quiz>
+﻿@model List<Quiz>
 
 @{
     ViewBag.Title = "Quiz";
@@ -75,13 +75,7 @@
                 {
                     <tr>
                         <td>
-                            @itemTitle
-                        </td>
-                         </td>
-                            @itemQuestions
-                        </td>
-                        <td>
-                            @item.QuizID
+                            @item.Title
                         </td>
                         <td>
                             @item.Topic
@@ -236,7 +230,7 @@
 
                 </tr>
                 @foreach (var item in Model)
-                    if (item.Topic == "Mathematics") 
+                    if (item.Topic == "Mathematics")
 
                     {
                         <tr>
@@ -261,15 +255,15 @@
                             }
 
                             @if (User.IsInRole("Admin"))
-                            
-                           //use && then check if the date of the paper has passed yet
+
+                            //use && then check if the date of the paper has passed yet
                             {
                                 <!--<td>
                                  <a asp-action="ViewReport" asp-route-id="">View Results</a>
                                 </td>-->
                             }
                             @if (User.IsInRole("Admin"))
-                            
+
                             //use && then check if the date of the paper is more then current date
                             {
                                 <!--<td>
@@ -277,7 +271,7 @@
                                 </td>-->
                             }
                             @if (User.IsInRole("User"))
-                            
+
                             //use && then check if the date of the paper is more then current date
                             {
                                 <td>
@@ -285,7 +279,7 @@
                                 </td>
                             }
                             @if (User.IsInRole("Admin"))
-                            
+
                             //use && then check if the date of the paper is ON current date
 
                             {
@@ -297,7 +291,7 @@
                             }
 
                         </tr>
-                    
+                    }
             </table>
             
         </div>
