@@ -176,7 +176,7 @@ namespace fyp.Controllers
 
                 }
 
-                if (_dbContext.SaveChanges() >= 1)
+                if (_dbContext.SaveChanges() == 1)
                     TempData["Msg"] = "New quiz added!";
                 else
                     TempData["Msg"] = "Failed to update database!";
@@ -279,7 +279,7 @@ namespace fyp.Controllers
                     tOrder.Dt = quiz.Dt;
 
 
-                    if (_dbContext.SaveChanges() >= 1)
+                    if (_dbContext.SaveChanges() == 1)
                         TempData["Msg"] = "Quiz updated!";
                     else
                         TempData["Msg"] = "Failed to update database!";
@@ -399,7 +399,7 @@ namespace fyp.Controllers
                     }
 
                 }
-                if (_dbContext.SaveChanges() > 0)
+                if (_dbContext.SaveChanges() == 1)
                     TempData["Msg"] = "New question added!";
 
                 else
@@ -504,7 +504,7 @@ namespace fyp.Controllers
 
                     _dbContext.SaveChanges();
 
-                    if (_dbContext.SaveChanges() >= 1)
+                    if (_dbContext.SaveChanges() == 1)
                         TempData["Msg"] = "Question updated!";
                     else
                         TempData["Msg"] = "Failed to update database!";
