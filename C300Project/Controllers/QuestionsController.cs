@@ -94,7 +94,7 @@ namespace fyp.Controllers
                     }
                         
                     }
-                if (_dbContext.SaveChanges() > 0)
+                if (_dbContext.SaveChanges() >= 1)
                     TempData["Msg"] = "New question added!";    
                     
                 else
