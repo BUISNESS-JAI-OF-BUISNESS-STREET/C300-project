@@ -10,6 +10,7 @@ using System;
 using System.Security.Claims;
 using System.Dynamic;
 using System.Data.SqlClient;
+using Rotativa.AspNetCore;
 
 
 namespace fyp.Controllers
@@ -548,6 +549,27 @@ namespace fyp.Controllers
                 TempData["Msg"] = "Question not found!";
             }
             return RedirectToAction("Index");
+        }
+
+        [Authorize]
+        public IActionResult PreviewQuiz(int id)
+        {
+            DbSet<Quiz> dbs = _dbContext.Quiz;
+            Quiz model = dbs.Where(mo => mo.QuizId == id)
+                .Include(mo => mo.UserCodeNavigation)
+                .FirstOrDefault();
+
+            if (model != null)
+                return new ViewAsPdf(model)
+                {
+                    PageSize = Rotativa.AspNetCore.Options.Size.A4,
+                    PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait
+                };
+            else
+            {
+                TempData["Msg"] = "Quiz not found!";
+                return RedirectToAction("Index");
+            }
         }
 
 
