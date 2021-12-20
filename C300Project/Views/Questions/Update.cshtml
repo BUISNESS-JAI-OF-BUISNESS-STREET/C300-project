@@ -125,6 +125,16 @@
                         </div>
                     </div>
 
+                    <div class="form-group">
+                    <label asp-for="Segment" class="col-sm-3 control-label">Segment: </label>
+                    <div class="col-sm-6">
+                        <input asp-for="Segment" class="form-control" />
+                    </div>
+                    <div class="has-error">
+                        <span asp-validation-for="Segment" class="text-danger"></span>
+                    </div>
+                </div>
+
                     <div>
                         <table class="table table-bordered table-condensed table-hover table-striped">
                             <tr>

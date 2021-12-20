@@ -75,6 +75,11 @@ namespace fyp.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Segment)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.ThirdOption)
                     .IsRequired()
                     .HasMaxLength(50)
@@ -94,7 +99,7 @@ namespace fyp.Models
                     .WithMany(p => p.Question)
                     .HasForeignKey(d => d.UserCode)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Question__UserCo__25869641");
+                    .HasConstraintName("FK__Question__UserCo__30592A6F");
             });
 
             modelBuilder.Entity<Quiz>(entity =>
@@ -120,7 +125,7 @@ namespace fyp.Models
                     .WithMany(p => p.Quiz)
                     .HasForeignKey(d => d.UserCode)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Quiz__UserCode__286302EC");
+                    .HasConstraintName("FK__Quiz__UserCode__3335971A");
             });
 
             modelBuilder.Entity<QuizQuestionBindDb>(entity =>
@@ -133,13 +138,13 @@ namespace fyp.Models
                     .WithMany(p => p.QuizQuestionBindDb)
                     .HasForeignKey(d => d.QuestionId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__QuizQuest__Quest__2D27B809");
+                    .HasConstraintName("FK__QuizQuest__Quest__37FA4C37");
 
                 entity.HasOne(d => d.Quiz)
                     .WithMany(p => p.QuizQuestionBindDb)
                     .HasForeignKey(d => d.QuizId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__QuizQuest__QuizI__2E1BDC42");
+                    .HasConstraintName("FK__QuizQuest__QuizI__38EE7070");
             });
 
             modelBuilder.Entity<Result>(entity =>

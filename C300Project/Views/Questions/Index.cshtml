@@ -59,6 +59,8 @@
                     <th>Option 3</th>
                     <th>Option 4</th>
                     <th>Correct Answer</th>
+                    <th>Segment</th>
+
                     @if (User.IsInRole("Admin"))
                     {
                         <th>Created By</th>
@@ -68,47 +70,50 @@
                 @foreach (var item in Model)
 
                 {
-                    <tr>
-                        <td>
-                            @item.QuestionId
-                        </td>
-                        <td>
-                            @item.Questions
-                        </td>
-                        <td>
-                            @item.Topic
-                        </td>
-                        <td>
-                            @item.FirstOption
-                        </td>
+            <tr>
+                <td>
+                    @item.QuestionId
+                </td>
+                <td>
+                    @item.Questions
+                </td>
+                <td>
+                    @item.Topic
+                </td>
+                <td>
+                    @item.FirstOption
+                </td>
 
-                        <td>
-                            @item.SecondOption
-                        </td>
+                <td>
+                    @item.SecondOption
+                </td>
 
-                        <td>
-                            @item.ThirdOption
-                        </td>
+                <td>
+                    @item.ThirdOption
+                </td>
 
-                        <td>
-                            @item.FourthOption
-                        </td>
+                <td>
+                    @item.FourthOption
+                </td>
 
-                        <td>
-                            @item.CorrectAns
-                        </td>
+                <td>
+                    @item.CorrectAns
+                </td>
+                <td>
+                    @item.Segment 
+                </td>
 
-                        @if (User.IsInRole("Admin"))
-                        {
-                            <td>@item.UserCodeNavigation.Name</td>
-                         }
+                @if (User.IsInRole("Admin"))
+                {
+                    <td>@item.UserCodeNavigation.Name</td>
+                }
 
-                        <td>
-                            <a asp-action="Update" asp-route-id="@item.QuestionId" onclick="return ConfirmUpdate()">Update</a>
-                            <a asp-action="Delete" asp-route-id="@item.QuestionId" onclick="return ConfirmDelete()">Delete</a>
+                <td>
+                    <a asp-action="Update" asp-route-id="@item.QuestionId" onclick="return ConfirmUpdate()">Update</a>
+                    <a asp-action="Delete" asp-route-id="@item.QuestionId" onclick="return ConfirmDelete()">Delete</a>
 
-                        </td>
-                    </tr>
+                </td>
+            </tr>
                 }
 
 
@@ -128,6 +133,8 @@
                     <th>Option 3</th>
                     <th>Option 4</th>
                     <th>Correct Answer</th>
+                    <th>Segment</th>
+
                     @if (User.IsInRole("Admin"))
                     {
                         <th>Created By</th>
@@ -137,47 +144,51 @@
                 @foreach (var item in Model)
                     if (item.Topic == "English")
             {
-                <tr>
-                    <td>
-                        @item.QuestionId
-                    </td>
-                    <td>
-                        @item.Questions
-                    </td>
-                    <td>
-                        @item.Topic
-                    </td>
-                    <td>
-                        @item.FirstOption
-                    </td>
+            <tr>
+                <td>
+                    @item.QuestionId
+                </td>
+                <td>
+                    @item.Questions
+                </td>
+                <td>
+                    @item.Topic
+                </td>
+                <td>
+                    @item.FirstOption
+                </td>
 
-                    <td>
-                        @item.SecondOption
-                    </td>
+                <td>
+                    @item.SecondOption
+                </td>
 
-                    <td>
-                        @item.ThirdOption
-                    </td>
+                <td>
+                    @item.ThirdOption
+                </td>
 
-                    <td>
-                        @item.FourthOption
-                    </td>
+                <td>
+                    @item.FourthOption
+                </td>
 
-                    <td>
-                        @item.CorrectAns
-                    </td>
+                <td>
+                    @item.CorrectAns
+                </td>
 
-                     @if (User.IsInRole("Admin"))
-                      {
-                            <td>@item.UserCodeNavigation.Name</td>
-                      }
+                <td>
+                    @item.Segment 
+                </td>
 
-                    <td>
-                        <a asp-action="Update" asp-route-id="@item.QuestionId" onclick="return ConfirmUpdate()">Update</a>
-                        <a asp-action="Delete" asp-route-id="@item.QuestionId" onclick="return ConfirmDelete()">Delete</a>
+                @if (User.IsInRole("Admin"))
+                {
+                    <td>@item.UserCodeNavigation.Name</td>
+                }
 
-                    </td>
-                </tr>
+                <td>
+                    <a asp-action="Update" asp-route-id="@item.QuestionId" onclick="return ConfirmUpdate()">Update</a>
+                    <a asp-action="Delete" asp-route-id="@item.QuestionId" onclick="return ConfirmDelete()">Delete</a>
+
+                </td>
+            </tr>
             }
 
 
@@ -197,6 +208,8 @@
                     <th>Option 3</th>
                     <th>Option 4</th>
                     <th>Correct Answer</th>
+                    <th>Segment</th>
+
                     @if (User.IsInRole("Admin"))
                     {
                         <th>Created By</th>
@@ -207,47 +220,50 @@
                     if (item.Topic == "Mathematics")
 
                     {
-                    <tr>
-                        <td>
-                            @item.QuestionId
-                        </td>
-                        <td>
-                            @item.Questions
-                        </td>
-                        <td>
-                            @item.Topic
-                        </td>
-                        <td>
-                            @item.FirstOption
-                        </td>
+            <tr>
+                <td>
+                    @item.QuestionId
+                </td>
+                <td>
+                    @item.Questions
+                </td>
+                <td>
+                    @item.Topic
+                </td>
+                <td>
+                    @item.FirstOption
+                </td>
 
-                        <td>
-                            @item.SecondOption
-                        </td>
+                <td>
+                    @item.SecondOption
+                </td>
 
-                        <td>
-                            @item.ThirdOption
-                        </td>
+                <td>
+                    @item.ThirdOption
+                </td>
 
-                        <td>
-                            @item.FourthOption
-                        </td>
+                <td>
+                    @item.FourthOption
+                </td>
 
-                        <td>
-                            @item.CorrectAns
-                        </td>
+                <td>
+                    @item.CorrectAns
+                </td>
 
-                        @if (User.IsInRole("Admin"))
-                         {
-                        <td>@item.UserCodeNavigation.Name</td>
-                         }
+                <td>
+                    @item.Segment 
+                </td>
+                @if (User.IsInRole("Admin"))
+                {
+                    <td>@item.UserCodeNavigation.Name</td>
+                }
 
-                        <td>
-                            <a asp-action="Update" asp-route-id="@item.QuestionId" onclick="return ConfirmUpdate()">Update</a>
-                            <a asp-action="Delete" asp-route-id="@item.QuestionId" onclick="return ConfirmDelete()">Delete</a>
+                <td>
+                    <a asp-action="Update" asp-route-id="@item.QuestionId" onclick="return ConfirmUpdate()">Update</a>
+                    <a asp-action="Delete" asp-route-id="@item.QuestionId" onclick="return ConfirmDelete()">Delete</a>
 
-                        </td>
-                    </tr>
+                </td>
+            </tr>
                 }
             </table>
         </div>
