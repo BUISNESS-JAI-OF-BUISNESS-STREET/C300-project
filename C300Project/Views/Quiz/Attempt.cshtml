@@ -6,10 +6,26 @@
 
 }
 
+@section ScriptSection { //countdown timer for attempt
+
+    <script>
+        function CountdownTimer() {
+            if (confirm("Are you sure you want to delete?") == false) {
+                event.preventDefault();
+                event.stopPropagation();
+                return false;
+
+            }
+        }
+
+    </script>
+}
+
+
 
 <div class="row">
     <div class="col-6">
-       
+
         <form asp-controller="Quiz" asp-action="Attempt" method="post" class="form-horizontal" role="form">
             <div class="form-horizontal">
                 <input type="hidden" id="QuizId" name="QuizId" value="@ViewData["quizid"]" />@ViewData["quizid"]
@@ -34,12 +50,12 @@
                     <br />
                 }
             </div>
-                <div class="form-group row">
-                    <div class="offset-sm-4 col-8">
-                        <input type="submit" value="Submit" class="btn btn-primary" />
-                    </div>
+            <div class="form-group row">
+                <div class="offset-sm-4 col-8">
+                    <input type="submit" value="Submit" class="btn btn-primary" />
                 </div>
-            
-        </form>  
+            </div>
+
+        </form>
     </div>
 </div>

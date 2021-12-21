@@ -40,6 +40,15 @@ namespace fyp.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "User")]
+        public IActionResult Instruction(int id)
+        {
+            DbSet<Quiz> dbs = _dbContext.Quiz;
+            List<Quiz> model = dbs.Where(mo => mo.QuizId == id).ToList();
+
+            return View(model);
+        }
+
 
         [Authorize(Roles = "User")]
         public IActionResult Attempt(int id) //for users to attempt the quiz
@@ -327,7 +336,7 @@ namespace fyp.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        public IActionResult ViewQuestions(int id) //for to view questions in the specific quiz
+        public IActionResult ViewQuestions(int id) //for viewing questions in the specific quiz
         {
             DbSet<QuizQuestionBindDb> dbs = _dbContext.QuizQuestionBindDb;
             List<QuizQuestionBindDb> model = dbs.Where(mo => mo.QuizId == id).ToList();

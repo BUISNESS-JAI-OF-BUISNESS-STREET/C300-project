@@ -1,0 +1,147 @@
+﻿@model List<Quiz>
+
+@foreach (var item in Model)
+    if (item.Topic == "English")
+    {
+        <div class="container">
+            <div class="row">
+
+
+                <div class="col-md-6">
+                    <h2>@item.Title</h2><br />
+                    <h2>@item.Topic</h2>
+
+                </div>
+                <div>
+                    <div class="col-md-6">
+                        Test Duration : //insert database for test duration minutes
+                        <br /> Total Question : //insert count for questions tied to the quiz
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+        <br />
+        <br />
+        <br />
+        <div class="row">
+            <div class="col-md-12">
+
+                <div>
+                    <h5>Before you begin, please read the following instructions carefully.</h5>
+                    <h5>It is recommended that you review all your answers before submitting them.</h5>
+                    <br />
+                </div>
+            </div>
+        </div>
+
+
+        <h2>Paper 1</h2>
+        <ul>
+            <li>You are advised to write 250 - 350 words (Secondary 2) and 350 - 450 words (Secondary 3) on one of the following topics.</li>
+            <li>At the head of your composition write the number of the topic that you have chosen.</li>
+            <li>State the number of words written at the end of your composition.</li>
+            <li>50 MARKS</li>
+        </ul>
+
+        <h2>Paper 2</h2>
+        <h5>Part I Grammar</h5>
+        <ul>
+
+            <li>For Questions 1 - 10, choose the most suitable answer and select the radio button provided.</li>
+        </ul>
+
+        <h5>Part I Grammar</h5>
+        <ul>
+
+            <li>For Questions 1 - 10, choose the most suitable answer and select the radio button provided.</li>
+        </ul>
+
+        <h5>Part II Vocabulary</h5>
+        <ul>
+
+            <li>For Questions 11 - 20, choose the most suitable answer and select the radio button provided.</li>
+        </ul>
+
+        <h5>Part III Comprehension Cloze</h5>
+        <ul>
+
+            <li>For each questions, choose the word the closest in meaning to the underlined words. Select the correct answer on the radio buttton provided.</li>
+        </ul>
+
+        <h5>Part IV Comprehension</h5>
+        <ul>
+
+            <li>Read the passage carefully. Answer the questions that follow. Select the correct answer based on the radio buttons provided.</li>
+        </ul>
+
+
+
+    }
+
+
+    else if (item.Topic == "Mathematics")
+    {
+        <div class="container">
+            <div class="row">
+
+
+                <div class="col-md-6">
+                    <h2>@item.Title</h2><br />
+                    <h2>@item.Topic</h2>
+                </div>
+                <div>
+                    <div class="col-md-6">
+                        Test Duration : //insert database for test duration minutes
+                        <br /> Total Question : //insert count for questions tied to the quiz
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <br />
+        <br />
+        <br />
+        <div class="row">
+            <div class="col-md-12">
+
+                <div>
+                    <h5>Before you begin, please read the following instructions carefully.</h5>
+                    <h5>It is recommended that you review all your answers before submitting them.</h5>
+                    <br />
+                </div>
+            </div>
+        </div>
+
+
+        <h2>Paper 1</h2>
+        <ul>
+            <li>For  each  question,  select the number corresponding to the correct option in the radio button provided.</li>
+        </ul>
+
+        <h2>Paper 2</h2>
+        <h5>Section 1-Short answer questions</h5>
+        <ul>
+
+            <li>Answer all questions. Write the answer in the space provided.Show all working clearly.</li>
+        </ul>
+
+        <h5>Section 2–Open-Ended Questions</h5>
+        <ul>
+
+            <li>Answer all questions. Write the answer in the space provided.Show all working clearly.</li>
+        </ul>
+
+
+    }
+
+
+
+
