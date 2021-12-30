@@ -55,22 +55,22 @@
             <tr class="lineitem">
                 <td class="label">Quiz</td>
                 <td class="label">:</td>
-                <td class="item">@Model.Title </td> //looking for the name of the quiz
+                <td class="item">@Model.Title </td> // name (quiz)
             </tr>
             <tr class="lineitem">
                 <td class="label">Level</td>
                 <td class="label">:</td>
-                <td class="item">@Model.Sec  </td> //looking for the level of the quiz
+                <td class="item">@Model.Sec  </td> // level (quiz)
             </tr>
             <tr class="lineitem">
                 <td class="label">Topic</td>
                 <td class="label">:</td>
-                <td class="item">@Model.Topic  </td> //looking for the topic of the quiz
+                <td class="item">@Model.Topic  </td> // topic (quiz)
             </tr>
             <tr class="lineitem">
                 <td class="label">Duration</td>
                 <td class="label">:</td>
-                <td class="item">2 HOURS 10 MINUTES</td> // hard coded for the time being, needs to add a column for quiz to add the duration of the quiz
+                <td class="item">Model.Duration </td> // Duration (quiz)
             </tr>
             <tr class="lineitem">
                 <td class="label">Name</td>
@@ -84,7 +84,7 @@
             </tr>
 
             <tr class="lineitem">
-                //looking to add the questions of the quiz here
+                //Select the questions of the quiz
                 <td class="label">List of question</td>
                 <td class="label">:</td>
                 <td class="item">@Model.QuizQuestionBindDb</td>
