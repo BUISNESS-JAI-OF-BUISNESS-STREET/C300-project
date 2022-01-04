@@ -1,0 +1,115 @@
+@model Quiz
+	@{
+	    Layout = null;
+	}
+	
+
+	<html>
+	<head>
+	    <meta charset="utf-8" />
+	    <title>Quiz Preview</title>
+	    <style>
+	        .label {
+	            font-weight: bold;
+	            font-size: large;
+	            font-family: Arial;
+	        }
+	
+	        .item {
+	            font-weight: bold;
+	            font-size: large;
+	            font-family: Arial;
+	        }
+	
+	        .lineitem {
+	            height:4cm;
+	        }
+	    </style>
+	</head>
+	<body>
+	    <header>
+	        <table style="border-width:thick;width:100%">
+	            <tr>
+	                <td style="width: 4cm"><img src="~/images/hanbridgelogo.jpg" style="width:4cm"></td>
+	                <td style="width:2cm"></td>
+	                <td>
+	                    <h1>
+	                       Select Quiz for students
+	                    </h1>
+	                    <address>
+	                        <p>
+	                            <span style="font-size:x-large;font-family:'Arial'"> Hanbridge Institute</span><br />
+	                            231 Mountbatten Road<br /> Singapore 397999<br />Tel: 6513 0552
+	
+
+	                        </p>
+	                    </address>
+	                </td>
+	                <td style="text-align:right;vertical-align:bottom">
+	                    <span style="font-size:x-large;font-weight:bold;font-family:'Arial'">Created by: @Model.UserCodeNavigation.Name</span>
+	                </td>
+	            </tr>
+	        </table>
+	    </header>
+	    <hr />
+	    <article style="border:solid">
+	        <table style="width:100%">
+	            <tr class="lineitem">
+	                <td class="label">Quiz</td>
+	                <td class="label">:</td>
+	                <td class="item">@Model.Title </td> // name (quiz)
+	            </tr>
+	            <tr class="lineitem">
+	                <td class="label">Level</td>
+	                <td class="label">:</td>
+	                <td class="item">@Model.Sec  </td> // level (quiz)
+	            </tr>
+	            <tr class="lineitem">
+	                <td class="label">Topic</td>
+	                <td class="label">:</td>
+	                <td class="item">@Model.Topic  </td> // topic (quiz)
+	            </tr>
+	            <tr class="lineitem">
+	                <td class="label">Duration</td>
+	                <td class="label">:</td>
+	                <td class="item">Model.Duration </td> // Duration (quiz)
+	            </tr>
+	            <tr class="lineitem">
+	                <td class="label">Name</td>
+	                <td class="label">:</td>
+	                <td class="item"></td>
+	            </tr>
+	            <tr class="lineitem">
+	                <td class="label">Registration Number</td>
+	                <td class="label">:</td>
+	                <td class="item"></td>
+	            </tr>
+	
+
+	            <tr class="lineitem">
+	                //Select the questions of the quiz
+	                <td class="label">List of question</td>
+	                <td class="label">:</td>
+	                <td class="item">@Model.QuizQuestionBindDb</td>
+	            </tr>
+	
+
+	
+
+	
+
+	        </table>
+	    </article>
+	    <aside>
+	        <h1>
+	         Addtional Question..
+	        </h1>
+	        <div>
+	            <p>
+	              Quiz Question will be selected to student
+	              <p>
+	                
+	        </div>
+	    </aside>
+	</body>
+	</html>
