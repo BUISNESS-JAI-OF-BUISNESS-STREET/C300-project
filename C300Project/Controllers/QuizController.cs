@@ -564,9 +564,15 @@ namespace fyp.Controllers
         public IActionResult PreviewQuiz(int id)
         {
             DbSet<Quiz> dbs = _dbContext.Quiz;
+            DbSet<QuizQuestionBindDb> dbs2 = _dbContext.QuizQuestionBindDb;
+            DbSet<Question> dbs3 = _dbContext.Question;
             Quiz model = dbs.Where(mo => mo.QuizId == id)
                 .Include(mo => mo.UserCodeNavigation)
                 .FirstOrDefault();
+
+            List<int> qtnlist = dbs2.ToList().Where(m => m.QuizId == id).Select(m => m.QuestionId).ToList();
+            List<Question> qtnlist1 = dbs3.Where(m => qtnlist.Contains(m.QuestionId)).ToList();
+            ViewData["QtnPull"] = qtnlist1;
 
             if (model != null)
                 return new ViewAsPdf(model)
