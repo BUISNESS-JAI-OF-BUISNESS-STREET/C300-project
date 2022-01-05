@@ -568,18 +568,6 @@ namespace fyp.Controllers
                 .Include(mo => mo.UserCodeNavigation)
                 .FirstOrDefault();
 
-            DbSet<QuizQuestionBindDb> dbs1 = _dbContext.QuizQuestionBindDb;
-            List<QuizQuestionBindDb> model1 = dbs1.Where(mo => mo.QuizId == id).ToList();
-            List<int> overlapList = model1.Select(mo => mo.QuestionId).ToList();
-
-            ViewData["QuizId"] = id;
-
-            DbSet<Question> dbs3 = _dbContext.Question;
-            List<Question> model3 = dbs3.ToList();
-            List<int> overlappedquestno = model3.Select(mo => mo.QuestionId).ToList().Intersect(overlapList).ToList();
-            List<Question> questionlist = dbs3.Where(r => overlappedquestno.Contains(r.QuestionId)).Include(mo => mo.UserCodeNavigation).ToList();
-            return View(questionlist);
-
             if (model != null)
                 return new ViewAsPdf(model)
                 {
@@ -591,6 +579,8 @@ namespace fyp.Controllers
                 TempData["Msg"] = "Quiz not found!";
                 return RedirectToAction("Index");
             }
+            
+            
         }
 
 
