@@ -17,6 +17,7 @@ namespace fyp.Models
         public string Topic { get; set; }
         public int Sec { get; set; }
         public DateTime Dt { get; set; }
+        public int Duration { get; set; }
         public string UserCode { get; set; }
 
         public virtual Account UserCodeNavigation { get; set; }

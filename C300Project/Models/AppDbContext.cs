@@ -99,7 +99,7 @@ namespace fyp.Models
                     .WithMany(p => p.Question)
                     .HasForeignKey(d => d.UserCode)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Question__UserCo__30592A6F");
+                    .HasConstraintName("FK__Question__UserCo__38996AB5");
             });
 
             modelBuilder.Entity<Quiz>(entity =>
@@ -125,7 +125,7 @@ namespace fyp.Models
                     .WithMany(p => p.Quiz)
                     .HasForeignKey(d => d.UserCode)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Quiz__UserCode__3335971A");
+                    .HasConstraintName("FK__Quiz__UserCode__3B75D760");
             });
 
             modelBuilder.Entity<QuizQuestionBindDb>(entity =>
@@ -138,13 +138,13 @@ namespace fyp.Models
                     .WithMany(p => p.QuizQuestionBindDb)
                     .HasForeignKey(d => d.QuestionId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__QuizQuest__Quest__37FA4C37");
+                    .HasConstraintName("FK__QuizQuest__Quest__403A8C7D");
 
                 entity.HasOne(d => d.Quiz)
                     .WithMany(p => p.QuizQuestionBindDb)
                     .HasForeignKey(d => d.QuizId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__QuizQuest__QuizI__38EE7070");
+                    .HasConstraintName("FK__QuizQuest__QuizI__412EB0B6");
             });
 
             modelBuilder.Entity<Result>(entity =>
