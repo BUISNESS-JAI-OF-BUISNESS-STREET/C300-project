@@ -90,6 +90,16 @@
                                 <span asp-validation-for="Dt" class="text-danger"></span>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label asp-for="Duration" class="col-sm-3 control-label">Duration (Minutes): </label>
+                            <div class="col-sm-6">
+                                <input asp-for="Duration" class="form-control" />
+                            </div>
+                            <div class="has-error">
+                                <span asp-validation-for="Duration" class="text-danger"></span>
+                            </div>
+                        </div>
+
 
                         <div>
                             <table class="table table-bordered table-condensed table-hover table-striped">
@@ -109,46 +119,46 @@
                                 @foreach (var item in @b)
 
                                 {
-                            <tr>
-                                <td>
-                                    @item.QuestionId
-                                </td>
-                                <td>
-                                    @item.Questions
-                                </td>
-                                <td>
-                                    @item.Topic
-                                </td>
-                                <td>
-                                    @item.FirstOption
-                                </td>
-                                <td>
-                                    @item.SecondOption
-                                </td>
-                                <td>
-                                    @item.ThirdOption
-                                <td>
-                                    @item.FourthOption
-                                </td>
-                                <td>
-                                    @item.CorrectAns
-                                </td>
-                                @if (c.Contains(item.QuestionId))
-                                {
-                                    <td>
-                                        <input type="radio" id="rdOption1" value="True" name="@("Add" +x)" checked="checked" /> Yes
-                                        <input type="radio" id="rdOption2" value="False" name="@("Add" +x)" /> No
-                                    </td>
+                                    <tr>
+                                        <td>
+                                            @item.QuestionId
+                                        </td>
+                                        <td>
+                                            @item.Questions
+                                        </td>
+                                        <td>
+                                            @item.Topic
+                                        </td>
+                                        <td>
+                                            @item.FirstOption
+                                        </td>
+                                        <td>
+                                            @item.SecondOption
+                                        </td>
+                                        <td>
+                                            @item.ThirdOption
+                                        <td>
+                                            @item.FourthOption
+                                        </td>
+                                        <td>
+                                            @item.CorrectAns
+                                        </td>
+                                        @if (c.Contains(item.QuestionId))
+                                        {
+                                            <td>
+                                                <input type="radio" id="rdOption1" value="True" name="@("Add" +x)" checked="checked" /> Yes
+                                                <input type="radio" id="rdOption2" value="False" name="@("Add" +x)" /> No
+                                            </td>
 
-                                }
-                                else
-                                {
-                                    <td>
-                                        <input type="radio" id="rdOption1" value="True" name="@("Add" +x)" /> Yes
-                                        <input type="radio" id="rdOption2" value="False" name="@("Add" +x)" /> No
-                                    </td>
-                                }
-                            </tr>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                                <input type="radio" id="rdOption1" value="True" name="@("Add" +x)" /> Yes
+                                                <input type="radio" id="rdOption2" value="False" name="@("Add" +x)" /> No
+                                            </td>
+                                        }
+                                    </tr>
                                     x++;
                                 }
 
