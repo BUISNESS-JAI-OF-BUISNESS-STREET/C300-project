@@ -1,4 +1,4 @@
-﻿@model Quiz
+﻿@model List<Question>
 @{
     Layout = null;
 }
@@ -54,17 +54,17 @@
             <tr class="lineitem">
                 <td class="label">Quiz</td>
                 <td class="label">:</td>
-                <td class="item">@Model.Title </td> //looking for the name of the quiz
+                <td class="item">@Model.Title </td>
             </tr>
             <tr class="lineitem">
                 <td class="label">Level</td>
                 <td class="label">:</td>
-                <td class="item">@Model.Sec  </td> //looking for the level of the quiz
+                <td class="item">@Model.Sec  </td>
             </tr>
             <tr class="lineitem">
                 <td class="label">Topic</td>
                 <td class="label">:</td>
-                <td class="item">@Model.Topic  </td> //looking for the topic of the quiz
+                <td class="item">@Model.Topic  </td>
             </tr>
             <tr class="lineitem">
                 <td class="label">Duration</td>
