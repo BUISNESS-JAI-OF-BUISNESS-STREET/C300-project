@@ -1,6 +1,7 @@
 ﻿@model Quiz
 @{
     Layout = null;
+    var a = ViewData["QtnPull"] as List<Question>;
 }
 
 <html>
@@ -8,6 +9,7 @@
     <meta charset="utf-8" />
     <title>Quiz Preview</title>
     <style>
+
         .label {
             font-size: large;
             font-weight: bold;
@@ -25,85 +27,91 @@
     </style>
 </head>
 <body>
-    <header>
-        <table style="border-width:thick;width:100%">
-            <tr>
-                <td style="width: 3cm"><img src="~/images/hanbridgelogo.jpg" style="width:3cm"></td>
-                <td style="width:1cm"></td>
-                <td>
-                    <h1>
-                        Quiz Preview
-                    </h1>
-                    <address>
-                        <p>
-                            <span style="font-size:x-large;font-family:'Arial'"> Hanbridge Institute</span><br />
-                            231 Mountbatten Road<br /> Singapore 397999<br />Tel: 6513 0552
+    <div style="page-break-after: always;">
+        <header>
+            <table style="border-width:thick;width:100%">
+                <tr>
+                    <td style="width: 3cm"><img src="~/images/hanbridgelogo.jpg" style="width:3cm"></td>
+                    <td style="width:1cm"></td>
+                    <td>
+                        <h1>
+                            Quiz Preview
+                        </h1>
+                        <address>
+                            <p>
+                                <span style="font-size:x-large;font-family:'Arial'"> Hanbridge Institute</span><br />
+                                231 Mountbatten Road<br /> Singapore 397999<br />Tel: 6513 0552
 
-                        </p>
-                    </address>
-                </td>
-                <td style="text-align:right;vertical-align:bottom">
-                    <span style="font-size:x-large;font-weight:bold;font-family:'Arial'">Created by: @Model.UserCodeNavigation.Name</span>
-                </td>
-            </tr>
-        </table>
-    </header>
-    <hr />
-    <article style="border:solid">
-        <table style="width:100%">
-            <tr class="lineitem">
-                <td class="label">Quiz</td>
-                <td class="label">:</td>
-                <td class="item">@Model.Title </td>
-            </tr>
-            <tr class="lineitem">
-                <td class="label">Level</td>
-                <td class="label">:</td>
-                <td class="item">@Model.Sec  </td>
-            </tr>
-            <tr class="lineitem">
-                <td class="label">Topic</td>
-                <td class="label">:</td>
-                <td class="item">@Model.Topic  </td>
-            </tr>
-            <tr class="lineitem">
-                <td class="label">Duration</td>
-                <td class="label">:</td>
-                <td class="item">@Model.Duration MINUTES</td>
-            </tr>
-            <tr class="lineitem">
-                <td class="label">Name</td>
-                <td class="label">:</td>
-                <td class="item"></td>
-            </tr>
-            <tr class="lineitem">
-                <td class="label">Registration Number</td>
-                <td class="label">:</td>
-                <td class="item"></td>
-            </tr>
-
-            <tr class="lineitem">
-                //looking to add the questions of the quiz here
-                <td class="label">List of question</td>
-                <td class="label">:</td>
-                <td class="item">@Model.QuizQuestionBindDb</td>
-            </tr>
+                            </p>
+                        </address>
+                    </td>
+                    <td style="text-align:right;vertical-align:bottom">
+                        <span style="font-size:x-large;font-weight:bold;font-family:'Arial'">Created by: @Model.UserCodeNavigation.Name</span>
+                    </td>
+                </tr>
+            </table>
+        </header>
+        <hr />
+        <article style="border:solid">
+            <table style="width:100%">
+                <tr class="lineitem">
+                    <td class="label">Quiz</td>
+                    <td class="label">:</td>
+                    <td class="item">@Model.Title </td>
+                </tr>
+                <tr class="lineitem">
+                    <td class="label">Level</td>
+                    <td class="label">:</td>
+                    <td class="item">@Model.Sec  </td>
+                </tr>
+                <tr class="lineitem">
+                    <td class="label">Topic</td>
+                    <td class="label">:</td>
+                    <td class="item">@Model.Topic  </td>
+                </tr>
+                <tr class="lineitem">
+                    <td class="label">Duration</td>
+                    <td class="label">:</td>
+                    <td class="item">@Model.Duration MINUTES</td>
+                </tr>
+                <tr class="lineitem">
+                    <td class="label">Name</td>
+                    <td class="label">:</td>
+                    <td class="item"></td>
+                </tr>
+                <tr class="lineitem">
+                    <td class="label">Registration Number</td>
+                    <td class="label">:</td>
+                    <td class="item"></td>
+                </tr>
 
 
 
-        </table>
-    </article>
-    <aside>
-        <h1>
-            <span>
-                Additional Notes
-            </span>
-        </h1>
+
+
+            </table>
+        </article>
+        <aside>
+            <h1>
+                <span>
+                    Additional Notes
+                </span>
+            </h1>
+            <div>
+                <p>
+                    Notice to Students: Ensure you fill out your name and your registration number. Failure to do so will result in ZERO score.
+                </p>
+            </div>
+        </aside>
+
+    </div>
+
+
+    <div>
+        @foreach (var item in a)
+            {
+            <p>@item</p>
+            } 
         <div>
-            <p>
-                Notice to Students: Ensure you fill out your name and your registration number. Failure to do so will result in ZERO score.
-            </p>
-        </div>
-    </aside>
 </body>
 </html>
