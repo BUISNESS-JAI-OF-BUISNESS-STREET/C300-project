@@ -18,10 +18,17 @@ namespace fyp.Models
         }
 
         public virtual DbSet<Account> Account { get; set; }
+        public virtual DbSet<Announcement> Announcement { get; set; }
+        public virtual DbSet<Class> Class { get; set; }
         public virtual DbSet<Question> Question { get; set; }
         public virtual DbSet<Quiz> Quiz { get; set; }
         public virtual DbSet<QuizQuestionBindDb> QuizQuestionBindDb { get; set; }
         public virtual DbSet<Result> Result { get; set; }
+        public virtual DbSet<Student> Student { get; set; }
+        public virtual DbSet<StudentClassBindDb> StudentClassBindDb { get; set; }
+        public virtual DbSet<Teacher> Teacher { get; set; }
+        public virtual DbSet<TeacherClassBindDb> TeacherClassBindDb { get; set; }
+        public virtual DbSet<TeacherStudentBindDb> TeacherStudentBindDb { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -43,6 +50,28 @@ namespace fyp.Models
                     .HasMaxLength(50);
 
                 entity.Property(e => e.Role)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Announcement>(entity =>
+            {
+                entity.Property(e => e.Remarks)
+                    .IsRequired()
+                    .HasMaxLength(1000)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Class)
+                    .WithMany(p => p.Announcement)
+                    .HasForeignKey(d => d.ClassId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Announcem__Class__1B29035F");
+            });
+
+            modelBuilder.Entity<Class>(entity =>
+            {
+                entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false);
@@ -99,7 +128,7 @@ namespace fyp.Models
                     .WithMany(p => p.Question)
                     .HasForeignKey(d => d.UserCode)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Question__UserCo__38996AB5");
+                    .HasConstraintName("FK__Question__UserCo__7CA47C3F");
             });
 
             modelBuilder.Entity<Quiz>(entity =>
@@ -125,7 +154,7 @@ namespace fyp.Models
                     .WithMany(p => p.Quiz)
                     .HasForeignKey(d => d.UserCode)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Quiz__UserCode__3B75D760");
+                    .HasConstraintName("FK__Quiz__UserCode__7F80E8EA");
             });
 
             modelBuilder.Entity<QuizQuestionBindDb>(entity =>
@@ -138,13 +167,13 @@ namespace fyp.Models
                     .WithMany(p => p.QuizQuestionBindDb)
                     .HasForeignKey(d => d.QuestionId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__QuizQuest__Quest__403A8C7D");
+                    .HasConstraintName("FK__QuizQuest__Quest__04459E07");
 
                 entity.HasOne(d => d.Quiz)
                     .WithMany(p => p.QuizQuestionBindDb)
                     .HasForeignKey(d => d.QuizId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__QuizQuest__QuizI__412EB0B6");
+                    .HasConstraintName("FK__QuizQuest__QuizI__0539C240");
             });
 
             modelBuilder.Entity<Result>(entity =>
@@ -170,6 +199,141 @@ namespace fyp.Models
                     .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Student>(entity =>
+            {
+                entity.Property(e => e.AddedBy)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Class)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Country)
+                    .IsRequired()
+                    .HasMaxLength(150)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Email)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.MobileNo)
+                    .IsRequired()
+                    .HasMaxLength(150)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.SchLvl)
+                    .IsRequired()
+                    .HasMaxLength(150)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.AddedByNavigation)
+                    .WithMany(p => p.Student)
+                    .HasForeignKey(d => d.AddedBy)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Student__AddedBy__0AF29B96");
+            });
+
+            modelBuilder.Entity<StudentClassBindDb>(entity =>
+            {
+                entity.ToTable("StudentClassBindDB");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.HasOne(d => d.Class)
+                    .WithMany(p => p.StudentClassBindDb)
+                    .HasForeignKey(d => d.ClassId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__StudentCl__Class__147C05D0");
+
+                entity.HasOne(d => d.Student)
+                    .WithMany(p => p.StudentClassBindDb)
+                    .HasForeignKey(d => d.StudentId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__StudentCl__Stude__1387E197");
+            });
+
+            modelBuilder.Entity<Teacher>(entity =>
+            {
+                entity.Property(e => e.AddedBy)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Email)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.MobileNo)
+                    .IsRequired()
+                    .HasMaxLength(150)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Role)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.AddedByNavigation)
+                    .WithMany(p => p.Teacher)
+                    .HasForeignKey(d => d.AddedBy)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Teacher__AddedBy__08162EEB");
+            });
+
+            modelBuilder.Entity<TeacherClassBindDb>(entity =>
+            {
+                entity.ToTable("TeacherClassBindDB");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.HasOne(d => d.Class)
+                    .WithMany(p => p.TeacherClassBindDb)
+                    .HasForeignKey(d => d.ClassId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__TeacherCl__Class__10AB74EC");
+
+                entity.HasOne(d => d.Teacher)
+                    .WithMany(p => p.TeacherClassBindDb)
+                    .HasForeignKey(d => d.TeacherId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__TeacherCl__Teach__0FB750B3");
+            });
+
+            modelBuilder.Entity<TeacherStudentBindDb>(entity =>
+            {
+                entity.ToTable("TeacherStudentBindDB");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.HasOne(d => d.Student)
+                    .WithMany(p => p.TeacherStudentBindDb)
+                    .HasForeignKey(d => d.StudentId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__TeacherSt__Stude__1758727B");
+
+                entity.HasOne(d => d.Teacher)
+                    .WithMany(p => p.TeacherStudentBindDb)
+                    .HasForeignKey(d => d.TeacherId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__TeacherSt__Teach__184C96B4");
             });
 
             OnModelCreatingPartial(modelBuilder);
