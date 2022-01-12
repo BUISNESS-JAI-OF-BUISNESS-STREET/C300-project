@@ -11,6 +11,8 @@ namespace fyp.Models
         {
             Question = new HashSet<Question>();
             Quiz = new HashSet<Quiz>();
+            Student = new HashSet<Student>();
+            Teacher = new HashSet<Teacher>();
         }
 
         public string AccountId { get; set; }
@@ -20,5 +22,7 @@ namespace fyp.Models
 
         public virtual ICollection<Question> Question { get; set; }
         public virtual ICollection<Quiz> Quiz { get; set; }
+        public virtual ICollection<Student> Student { get; set; }
+        public virtual ICollection<Teacher> Teacher { get; set; }
     }
 }

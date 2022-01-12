@@ -10,11 +10,15 @@ namespace fyp.Models
         public Class()
         {
             Announcement = new HashSet<Announcement>();
+            StudentClassBindDb = new HashSet<StudentClassBindDb>();
+            TeacherClassBindDb = new HashSet<TeacherClassBindDb>();
         }
 
         public int ClassId { get; set; }
-        public string ClassCode { get; set; }
+        public string Name { get; set; }
 
         public virtual ICollection<Announcement> Announcement { get; set; }
+        public virtual ICollection<StudentClassBindDb> StudentClassBindDb { get; set; }
+        public virtual ICollection<TeacherClassBindDb> TeacherClassBindDb { get; set; }
     }
 }
