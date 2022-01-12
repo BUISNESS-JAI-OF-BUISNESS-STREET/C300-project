@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "View Questions";
     var a = ViewData["QuizId"];
+    int x = 1;
 }
 
 
@@ -34,6 +35,7 @@
     <div>
         <table class="table table-bordered table-condensed table-hover table-striped">
             <tr>
+                <th>S/N</th>
                 <th>Id</th>
                 <th>Question</th>
                 <th>Topic</th>
@@ -53,52 +55,59 @@
             @foreach (var item in Model)
             {
 
-                <tr>
-                    <td>
-                        @item.QuestionId
-                    </td>
-                    <td>
-                        @item.Questions
-                    </td>
-                    <td>
-                        @item.Topic
-                    </td>
-                    <td>
-                        @item.FirstOption
-                    </td>
+        <tr>
+            <td>
+                @x
+            </td>
+            <td>
+                @item.QuestionId
+            </td>
+            <td>
+                @item.Questions
+            </td>
+            <td>
+                @item.Topic
+            </td>
+            <td>
+                @item.FirstOption
+            </td>
 
-                    <td>
-                        @item.SecondOption
-                    </td>
+            <td>
+                @item.SecondOption
+            </td>
 
-                    <td>
-                        @item.ThirdOption
-                    </td>
+            <td>
+                @item.ThirdOption
+            </td>
 
-                    <td>
-                        @item.FourthOption
-                    </td>
+            <td>
+                @item.FourthOption
+            </td>
 
-                    <td>
-                        @item.CorrectAns
-                    </td>
+            <td>
+                @item.CorrectAns
+            </td>
 
-                    <td>
-                        @item.Segment
-                    </td>
+            <td>
+                @item.Segment
+            </td>
 
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <td>@item.UserCodeNavigation.Name</td>
-                    }
-
-                    <td>
-                        <a asp-action="UpdateQuestions" asp-route-id="@item.QuestionId" onclick="return ConfirmUpdate()">Update</a>
-                        <a asp-action="DeleteQuestions" asp-route-id="@item.QuestionId" onclick="return ConfirmDelete()">Delete</a>
-
-                    </td>
-                </tr>
+            @if (User.IsInRole("Admin"))
+            {
+                <td>@item.UserCodeNavigation.Name</td>
             }
+
+            <td>
+                <a asp-action="UpdateQuestions" asp-route-id="@item.QuestionId" onclick="return ConfirmUpdate()">Update</a>
+                <a asp-action="DeleteQuestions" asp-route-id="@item.QuestionId" onclick="return ConfirmDelete()">Delete</a>
+
+            </td>
+
+        </tr>
+                x++;
+
+            }
+
 
 
         </table>

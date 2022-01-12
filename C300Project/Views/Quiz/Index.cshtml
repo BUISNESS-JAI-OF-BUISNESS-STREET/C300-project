@@ -120,7 +120,7 @@
                 {
                     <td>
                         <a asp-action="Instruction" asp-route-id="@item.QuizId">Instruction</a>
-                        <a asp-action="Attempt" asp-route-id="@item.QuizId">Start</a>
+                        <a asp-action="Attempt" asp-route-id="@item.QuizId" onclick="return watchCountdown()">Start</a>
                     </td>
                 }
                 @if (User.IsInRole("Admin"))

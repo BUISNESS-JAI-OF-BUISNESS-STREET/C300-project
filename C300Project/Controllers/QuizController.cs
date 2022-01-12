@@ -66,7 +66,11 @@ namespace fyp.Controllers
             DbSet<Quiz> dbs2 = _dbContext.Quiz;
             List<Quiz> model2 = dbs2.ToList();
             ViewData["quizid"] = id;
-            if(model == null && model2 == null)
+            var countdowntimer = model2.Where(o => o.QuizId == id).ToList();
+            ViewData["Timer"] = model2[id].Duration;
+
+
+            if (model == null && model2 == null)
             {
                 return RedirectToAction("Index");
             }
@@ -76,8 +80,12 @@ namespace fyp.Controllers
                             //ViewData["topic"] = model2[id].Topic;
                             return View(questionlist);
             }
+
             
-            
+
+
+
+
         }
 
         [Authorize(Roles = "User")]
@@ -378,6 +386,7 @@ namespace fyp.Controllers
             question.ThirdOption = form["ThirdOption"];
             question.FourthOption = form["FourthOption"];
             question.CorrectAns = form["CorrectAns"];
+            question.CorrectAns = form["Segment"];
             question.UserCode = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             DbSet<Quiz> dbs2 = _dbContext.Quiz;
@@ -561,32 +570,44 @@ namespace fyp.Controllers
         }
 
         [Authorize]
+        [HttpGet]
         public IActionResult PreviewQuiz(int id)
         {
             DbSet<Quiz> dbs = _dbContext.Quiz;
-            DbSet<QuizQuestionBindDb> dbs2 = _dbContext.QuizQuestionBindDb;
-            DbSet<Question> dbs3 = _dbContext.Question;
             Quiz model = dbs.Where(mo => mo.QuizId == id)
                 .Include(mo => mo.UserCodeNavigation)
-                .FirstOrDefault();
+                .Include(mo=> mo.QuizQuestionBindDb)
+                .FirstOrDefault(); 
 
+            DbSet<QuizQuestionBindDb> dbs2 = _dbContext.QuizQuestionBindDb;
             List<int> qtnlist = dbs2.ToList().Where(m => m.QuizId == id).Select(m => m.QuestionId).ToList();
+
+
+            DbSet<Question> dbs3 = _dbContext.Question;
             List<Question> qtnlist1 = dbs3.Where(m => qtnlist.Contains(m.QuestionId)).ToList();
             ViewData["QtnPull"] = qtnlist1;
 
-            if (model != null)
+
+
+
+
+            if (dbs3 != null)
                 return new ViewAsPdf(model)
                 {
                     PageSize = Rotativa.AspNetCore.Options.Size.A4,
                     PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait
-                };
+
+        };
             else
             {
                 TempData["Msg"] = "Quiz not found!";
                 return RedirectToAction("Index");
             }
+
             
             
+
+
         }
 
 

@@ -18,6 +18,8 @@ namespace fyp.Models
         }
 
         public virtual DbSet<Account> Account { get; set; }
+        public virtual DbSet<Announcement> Announcement { get; set; }
+        public virtual DbSet<Class> Class { get; set; }
         public virtual DbSet<Question> Question { get; set; }
         public virtual DbSet<Quiz> Quiz { get; set; }
         public virtual DbSet<QuizQuestionBindDb> QuizQuestionBindDb { get; set; }
@@ -45,6 +47,28 @@ namespace fyp.Models
                 entity.Property(e => e.Role)
                     .IsRequired()
                     .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Announcement>(entity =>
+            {
+                entity.Property(e => e.Remarks)
+                    .IsRequired()
+                    .HasMaxLength(1000)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Class)
+                    .WithMany(p => p.Announcement)
+                    .HasForeignKey(d => d.ClassId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Announcem__Class__520F23F5");
+            });
+
+            modelBuilder.Entity<Class>(entity =>
+            {
+                entity.Property(e => e.ClassCode)
+                    .IsRequired()
+                    .HasMaxLength(10)
                     .IsUnicode(false);
             });
 
@@ -99,12 +123,14 @@ namespace fyp.Models
                     .WithMany(p => p.Question)
                     .HasForeignKey(d => d.UserCode)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Question__UserCo__38996AB5");
+                    .HasConstraintName("FK__Question__UserCo__44B528D7");
             });
 
             modelBuilder.Entity<Quiz>(entity =>
             {
-                entity.Property(e => e.Dt).HasColumnType("datetime");
+                entity.Property(e => e.EndDt).HasColumnType("datetime");
+
+                entity.Property(e => e.StartDt).HasColumnType("datetime");
 
                 entity.Property(e => e.Title)
                     .IsRequired()
@@ -125,7 +151,7 @@ namespace fyp.Models
                     .WithMany(p => p.Quiz)
                     .HasForeignKey(d => d.UserCode)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Quiz__UserCode__3B75D760");
+                    .HasConstraintName("FK__Quiz__UserCode__47919582");
             });
 
             modelBuilder.Entity<QuizQuestionBindDb>(entity =>
@@ -138,13 +164,13 @@ namespace fyp.Models
                     .WithMany(p => p.QuizQuestionBindDb)
                     .HasForeignKey(d => d.QuestionId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__QuizQuest__Quest__403A8C7D");
+                    .HasConstraintName("FK__QuizQuest__Quest__4C564A9F");
 
                 entity.HasOne(d => d.Quiz)
                     .WithMany(p => p.QuizQuestionBindDb)
                     .HasForeignKey(d => d.QuizId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__QuizQuest__QuizI__412EB0B6");
+                    .HasConstraintName("FK__QuizQuest__QuizI__4D4A6ED8");
             });
 
             modelBuilder.Entity<Result>(entity =>

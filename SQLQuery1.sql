@@ -3,6 +3,8 @@ DROP TABLE IF EXISTS Question;
 DROP TABLE IF EXISTS Quiz;
 DROP TABLE IF EXISTS Account;
 DROP TABLE IF EXISTS Result;
+DROP TABLE IF EXISTS Class;
+DROP TABLE IF EXISTS Announcement;
 
 
 CREATE TABLE Account (
@@ -109,5 +111,33 @@ INSERT INTO QuizQuestionBindDB (ID, QuestionId, QuizId) VALUES
 (2, '1','2'),
 (3, '1','3')
 SET IDENTITY_INSERT QuizQuestionBindDB OFF
+
+CREATE TABLE Class (
+ClassId VARCHAR (1, 1) PRIMARY KEY,
+ClassName VARCHAR (1000) not null
+);
+
+SET IDENTITY_INSERT Class ON
+INSERT INTO Class (ClassId, ClassName) VALUES
+('AK47', 'Class buntal'),
+('AK48', 'Class fuckface'),
+('AK49','Class idiot'),
+('AK50', '1')
+SET IDENTITY_INSERT Class OFF
+
+CREATE TABLE Announcement (
+Id int (1, 1) PRIMARY KEY,
+ClassId VARCHAR (1000) NOT NULL FOREIGN KEY REFERENCES Class(ClassId),
+Remarks VARCHAR (1000) NOT NULL
+);
+
+SET IDENTITY_INSERT Announcement ON
+INSERT INTO Announcement (Id, ClassId, Remarks) VALUES
+(1, 'AK47', 'All you fucking biatches'),
+(2, 'AK48', 'Class all of you are fuckfaces'),
+(3, 'AK49','this class is full of idiots'),
+(4, 'AK50', 'yall are motherfuckers, enough said. go and fuck your mom.')
+SET IDENTITY_INSERT Class OFF
+
 
 
