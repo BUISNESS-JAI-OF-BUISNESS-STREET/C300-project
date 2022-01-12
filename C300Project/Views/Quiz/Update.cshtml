@@ -76,10 +76,10 @@
                         </div>
 
                         <div class="form-group row row">
-                            <label class="control-label col-3" asp-for="Dt">Quiz Date: </label>
+                            <label class="control-label col-3" asp-for="StartDt">Quiz Date: </label>
                             <div class="col-3">
                                 <div class='input-group date' id='BsDateTimePicker'>
-                                    <input class="form-control" asp-for="Dt"
+                                    <input class="form-control" asp-for="StartDt"
                                            placeholder="YYYY-MM-DD" />
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span>
@@ -87,17 +87,20 @@
                                 </div>
                             </div>
                             <div class="col-3">
-                                <span asp-validation-for="Dt" class="text-danger"></span>
+                                <span asp-validation-for="StartDt" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label asp-for="Duration" class="col-sm-3 control-label">Duration (Minutes): </label>
-                            <div class="col-sm-6">
-                                <input asp-for="Duration" class="form-control" />
-                            </div>
-                            <div class="has-error">
-                                <span asp-validation-for="Duration" class="text-danger"></span>
-                            </div>
+
+                            @{/*<label asp-for="Duration" class="col-sm-3 control-label">Duration (Minutes): </label>
+                                  <div class="col-sm-6">
+                                      <input asp-for="Duration" class="form-control" />
+                                  </div>
+                                  <div class="has-error">
+                                      <span asp-validation-for="Duration" class="text-danger"></span>
+                                  </div>
+                                */
+                            }
                         </div>
 
 

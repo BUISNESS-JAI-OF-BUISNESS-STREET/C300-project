@@ -67,7 +67,7 @@ namespace fyp.Controllers
             List<Quiz> model2 = dbs2.ToList();
             ViewData["quizid"] = id;
             var countdowntimer = model2.Where(o => o.QuizId == id).ToList();
-            ViewData["Timer"] = model2[id].Duration;
+            //ViewData["Timer"] = model2[id].Duration;
 
 
             if (model == null && model2 == null)
@@ -294,7 +294,7 @@ namespace fyp.Controllers
                     tOrder.Title = quiz.Title;
                     tOrder.Topic = quiz.Topic;
                     tOrder.Sec = quiz.Sec;
-                    tOrder.Dt = quiz.Dt;
+                    tOrder.StartDt = quiz.StartDt;
 
 
                     if (_dbContext.SaveChanges() == 1)

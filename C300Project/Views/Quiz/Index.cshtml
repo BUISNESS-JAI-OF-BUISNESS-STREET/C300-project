@@ -88,11 +88,12 @@
                     @item.Sec
                 </td>
                 <td>
-                    @item.Dt
+                    @item.StartDt
                 </td>
-                <td>
-                    @item.Duration 
-                </td>
+                @{/*<td>
+                        @item.Duration 
+                    </td>*/
+                }
                 @if (User.IsInRole("Admin"))
                 {
                     <td>@item.UserCodeNavigation.Name</td>
@@ -180,11 +181,12 @@
                     @item.Sec
                 </td>
                 <td>
-                    @item.Dt
+                    @item.StartDt
                 </td>
-                <td>
-                    @item.Duration 
-                </td>
+                @{/*<td>
+                                @item.Duration 
+                            </td>*/
+                    }
                 @if (User.IsInRole("Admin"))
                 {
                     <td>@item.UserCodeNavigation.Name</td>
@@ -263,11 +265,12 @@
                     @item.Sec
                 </td>
                 <td>
-                    @item.Dt
+                    @item.StartDt
                 </td>
-                <td>
-                    @item.Duration 
-                </td>
+                @{/*<td>
+                                @item.Duration 
+                            </td>*/
+                    }
                 @if (User.IsInRole("Admin"))
                 {
                     <td>@item.UserCodeNavigation.Name</td>
