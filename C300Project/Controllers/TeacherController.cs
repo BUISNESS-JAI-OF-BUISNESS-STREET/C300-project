@@ -32,6 +32,7 @@ namespace fyp.Controllers
         }
 
         [Authorize(Roles = "Admin")]
+        [HttpGet]
         public IActionResult Create()
         {
             DbSet<Class> dbs = _dbContext.Class;
@@ -40,25 +41,30 @@ namespace fyp.Controllers
             return View();
         }
 
+        #region HttpPost Create Teacher Action
         //HttpPost Action to create a new teacher object and send to Teacher database
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public IActionResult Create(IFormCollection form)
+        public IActionResult Create(Teacher teacher,IFormCollection form)
         {
-            DbSet<Teacher> dbs = _dbContext.Teacher;
-            Teacher teacher = new Teacher();
+            DbSet<Teacher> dbsteach = _dbContext.Teacher;
+            
 
-            DbSet<Class> dbs2 = _dbContext.Class;
-            List<Class> lstClass = dbs2.ToList();
+            DbSet<Class> dbsclass = _dbContext.Class;
+            List<Class> lstClass = dbsclass.ToList();
             var dbcount = lstClass.Count();
 
-            DbSet<TeacherClassBindDb> dbs3 = _dbContext.TeacherClassBindDb; 
-            DbSet<TeacherStudentBindDb> dbs4 = _dbContext.TeacherStudentBindDb;
+            DbSet<Student> dbsstudent = _dbContext.Student;
+
+            DbSet<TeacherClassBindDb> dbsTchCls = _dbContext.TeacherClassBindDb;
+            DbSet<StudentClassBindDb> dbsStdCls = _dbContext.StudentClassBindDb;
+            DbSet<TeacherStudentBindDb> dbsTchStd = _dbContext.TeacherStudentBindDb;
 
             if (ModelState.IsValid)
             {
+                teacher.AddedBy = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-                dbs.Add(teacher);
+                dbsteach.Add(teacher);
                 _dbContext.SaveChanges();
                 for (var x = 0; x < dbcount; x++)
                 {
@@ -73,7 +79,41 @@ namespace fyp.Controllers
                         {
                             teacherClassBindDb.TeacherId = teacher.TeacherId;
                             teacherClassBindDb.ClassId = y;
-                            dbs3.Add(teacherClassBindDb);
+
+
+                            List<StudentClassBindDb> lstStdcls = 
+                                dbsStdCls.
+                                Where(m => m.ClassId == y)
+                                .ToList();
+
+                            List<Student> lstStd = dbsstudent
+                                .Where(m => lstStdcls
+                                .Select(m => m.StudentId)
+                                .Contains(m.StudentId))
+                                .ToList();
+
+                            #region Add entry to TeacherStudentBindDb  
+                            if (lstStd != null)
+                            {
+                                foreach(var item in lstStd)
+                                {
+                                    TeacherStudentBindDb dbsTchStdAdd = new TeacherStudentBindDb();
+                                    dbsTchStdAdd.StudentId = item.StudentId;
+                                    dbsTchStdAdd.TeacherId = teacher.TeacherId;
+
+                                    dbsTchStd.Add(dbsTchStdAdd);
+                                    
+                                }
+                                _dbContext.SaveChanges();
+                            }
+                            else
+                            {
+                                continue;
+                            }
+                                
+# endregion Add entry to TeacherStudentBindDb  
+
+                            dbsTchCls.Add(teacherClassBindDb);
 
                         }
                     }
@@ -91,5 +131,6 @@ namespace fyp.Controllers
             }
             return RedirectToAction("Index");
         }
+        #endregion HttpPost Create Teacher Action
     }
 }
