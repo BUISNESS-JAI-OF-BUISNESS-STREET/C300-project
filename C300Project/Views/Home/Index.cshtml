@@ -1,9 +1,66 @@
-﻿
-@{
+﻿@model List<Class>;
+
+@{ //add a date and time to the announcement page 
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Hanbridge Institute Question Bank</h1>
+<h1>Announcement</h1>
 
+@section ScriptSection {
+<script>
 
+            function LoadRemarks(ClassId, Id) {
+                var url = "/RPNotes/getRemarks?ClassId=" + ClassId + "&Id=" + Id; //change url
+                $("#divRemarks").load(url);
+        }
+
+        @if (TempData["Msg"] != null)
+        {
+            <text>
+        $(document).ready(function () {
+            alert('@TempData["Msg"]');
+
+        })
+            </text>
+
+        }
+</script>
+<style>
+    .pre-scrollable {
+        max-height: 100%;
+        overflow-y: scroll;
+    }
+</style>
+}
+
+<div class="col-2">
+    <div class="btn-group-vertical pre-scrollable align-top" style="width:150px">
+        @if (Model != null)
+        {
+            @foreach (Class m in Model)
+            {
+                @foreach (Announcement l in m.Announcement.ToList())
+            {
+
+                    <button class="btn btn-link text-left" data-toggle="collapse" data-target="@String.Format("#{0}div", m.ClassId)" style="text-align:left">@m.Name</button>
+                    <div id="@String.Format("{0}div", m.ClassId)" class="collapse" onclick="return LoadRemarks('@m.ClassId',@l.Id)">
+                        <div class="btn-group-vertical col-1">
+                          
+                        </div>
+                    </div>
+
+                }
+            }
+        }
+    </div>
+</div>
+
+<div id="divRemarks" class="col-8">
+    
+
+        <partial name="_Remarks" model="Model[0].Announcement.ToList()[0]" />
+
+    
+
+</div>

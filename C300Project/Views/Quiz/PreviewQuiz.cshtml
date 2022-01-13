@@ -1,7 +1,10 @@
-﻿@model Quiz
+﻿@model Quiz;
 @{
     Layout = null;
-    var a = ViewData["QtnPull"] as List<Question>;
+    int x = 1;
+    var xy = (List<Question>)ViewData["QtnPull"];
+
+
 }
 
 <html>
@@ -69,11 +72,12 @@
                     <td class="label">:</td>
                     <td class="item">@Model.Topic  </td>
                 </tr>
-                <tr class="lineitem">
-                    <td class="label">Duration</td>
-                    <td class="label">:</td>
-                    <td class="item">@Model.Duration MINUTES</td>
-                </tr>
+                @{/*<tr class="lineitem">
+                        <td class="label">Duration</td>
+                        <td class="label">:</td>
+                        <td class="item">@Model.Duration MINUTES</td>
+                    </tr>*/
+                }
                 <tr class="lineitem">
                     <td class="label">Name</td>
                     <td class="label">:</td>
@@ -107,11 +111,39 @@
     </div>
 
 
+
     <div>
-        @foreach (var item in a)
-            {
-            <p>@item</p>
-            } 
+
+
         <div>
+            Testing
+            <p> @x</p>
+            <p> </p>
+            @if (@ViewData["QtnPull"] == null)
+            {
+                <p> Null</p>
+            }
+
+            @if (@ViewData["QtnPull"] != null)
+            {
+                @foreach (var item in @xy)
+                {
+
+                    <p>
+                        Question @x: @item.Questions
+                    </p>
+
+                    x++;
+                }
+            }
+
+
+        </div>
+
+
+
+        ----- End of Paper-----
+
+    </div>
 </body>
 </html>

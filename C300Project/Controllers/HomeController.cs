@@ -8,13 +8,11 @@ using fyp.Models;
 using Microsoft.EntityFrameworkCore;
 
 
-//add the required namespaces regarding EF Core and models
 
 namespace fyp.Controllers
 {
     public class HomeController : Controller
     {
-        //add dependency injection to this controller
         private AppDbContext _dbContext;
         public HomeController(AppDbContext dbContext)
         {
@@ -24,7 +22,9 @@ namespace fyp.Controllers
         [Authorize]
         public IActionResult Index()
         {
-            return View();
+            DbSet<Class> dbs = _dbContext.Class;
+            var model = dbs.Include(m => m.Announcement).ToList();
+            return View(model);
         }
 
         [Authorize(Roles = "Admin")]
@@ -41,6 +41,39 @@ namespace fyp.Controllers
             ViewData["account"] = dbsAcc.ToList<Account>();
 
             return View();
+        }
+
+        public IActionResult GetRemarks(int classId, int id)
+        {
+            DbSet<Announcement> dbs = _dbContext.Announcement;
+            var announcement = dbs.Where
+                (l => l.ClassId == classId && l.Id == id).
+                Include(l => l.Class).FirstOrDefault();
+            return PartialView("_Remarks", announcement);
+        }
+
+        [HttpPost]
+        public IActionResult SaveRemarks(Announcement uannouncement)
+        {
+            if (ModelState.IsValid)
+            {
+                DbSet<Announcement> dbs = _dbContext.Announcement;
+                var tAnnouncement = dbs.Where(l => l.ClassId == uannouncement.ClassId && l.Id == uannouncement.Id).FirstOrDefault();
+
+                if (tAnnouncement != null)
+                {
+                    tAnnouncement.Remarks = uannouncement.Remarks;
+                    if (_dbContext.SaveChanges() == 1)
+                        TempData["Msg"] = "Remarks saved!";
+                    else
+                        TempData["Msg"] = "Failed to save Remarks!";
+                }
+                else
+                    TempData["Msg"] = "Remarks not found!";
+            }
+            else
+                TempData["Msg"] = "Invalid data entry!";
+            return RedirectToAction("Index");
         }
     }
 }

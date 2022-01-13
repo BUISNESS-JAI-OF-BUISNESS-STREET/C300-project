@@ -88,11 +88,12 @@
                     @item.Sec
                 </td>
                 <td>
-                    @item.Dt
+                    @item.StartDt
                 </td>
-                <td>
-                    @item.Duration 
-                </td>
+                @{/*<td>
+                        @item.Duration 
+                    </td>*/
+                }
                 @if (User.IsInRole("Admin"))
                 {
                     <td>@item.UserCodeNavigation.Name</td>
@@ -120,7 +121,7 @@
                 {
                     <td>
                         <a asp-action="Instruction" asp-route-id="@item.QuizId">Instruction</a>
-                        <a asp-action="Attempt" asp-route-id="@item.QuizId">Start</a>
+                        <a asp-action="Attempt" asp-route-id="@item.QuizId" onclick="return watchCountdown()">Start</a>
                     </td>
                 }
                 @if (User.IsInRole("Admin"))
@@ -180,11 +181,12 @@
                     @item.Sec
                 </td>
                 <td>
-                    @item.Dt
+                    @item.StartDt
                 </td>
-                <td>
-                    @item.Duration 
-                </td>
+                @{/*<td>
+                                @item.Duration 
+                            </td>*/
+                    }
                 @if (User.IsInRole("Admin"))
                 {
                     <td>@item.UserCodeNavigation.Name</td>
@@ -263,11 +265,12 @@
                     @item.Sec
                 </td>
                 <td>
-                    @item.Dt
+                    @item.StartDt
                 </td>
-                <td>
-                    @item.Duration 
-                </td>
+                @{/*<td>
+                                @item.Duration 
+                            </td>*/
+                    }
                 @if (User.IsInRole("Admin"))
                 {
                     <td>@item.UserCodeNavigation.Name</td>
