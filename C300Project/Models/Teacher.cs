@@ -18,6 +18,7 @@ namespace fyp.Models
         public string MobileNo { get; set; }
         public string Email { get; set; }
         public string Role { get; set; }
+        public byte[] Password { get; set; }
         public string AddedBy { get; set; }
 
         public virtual Account AddedByNavigation { get; set; }

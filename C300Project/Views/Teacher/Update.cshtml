@@ -1,34 +1,36 @@
 ﻿@model Teacher
 
 @{
-    var b = ViewData["Class"] as List<Class>;
-    ViewBag.Title = "Add new teacher";
+    var b = ViewData["Test"] as List<Class>;
+    var c = ViewData["common"] as List<int>;
+    ViewBag.Title = "Update Teacher!";
     int x = 1;
 }
 
 @section ScriptSection {
 
-    
-    <script>
-        function ConfirmCreate() {
-            if (confirm("Confirm create Question?") == false) {
-                event.preventDefault();
-                event.stopPropagation();
-                return false;
 
-            }
+<script>
+    function ConfirmUpdate() {
+        if (confirm("Are you sure you want to delete?") == false) {
+            event.preventDefault();
+            event.stopPropagation();
+            return false;
+
         }
+    }
 
-    </script>
+</script>
 }
 
+<h2>@ViewData["Title"]</h2>
 
-    <h2>@ViewData["Title"]</h2>
+<div class="row">
+    <div class="col-sm-7">
+        <span style="color:red">@ViewData["Msg"]</span><br />
+        <div class="container">
 
-    <div class="row">
-        <div class="col-sm-7">
-            <span style="color:red">@ViewData["Msg"]</span><br />
-            <form asp-controller="Teacher" asp-action="Create" method="post" class="form-horizontal" role="form">
+            <form asp-controller="Teacher" asp-action="Update" method="post" class="form-horizontal" role="form">
                 <div class="form-horizontal">
                     <div class="form-group">
                         <label asp-for="Name" class="col-sm-3 control-label">Name: </label>
@@ -62,20 +64,10 @@
                     </div>
 
                     <div class="form-group">
-                        <label asp-for="Password" class="col-sm-3 control-label">Password: </label>
-                        <div class="col-sm-6">
-                            <input asp-for="Password" class="form-control" />
-                        </div>
-                        <div class="has-error">
-                            <span asp-validation-for="Password" class="text-danger"></span>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
                         <label asp-for="Role" class="col-sm-3 control-label">Role: </label>
                         <div class="col-sm-6">
-                            <input type="radio" id="Role1" value="Full-Time" name="Role" /> Full-Time
-                            <input type="radio" id="Role2" value="Part-Time" name="Role" /> Part-Time
+                            <input type="radio" id="Role1" value="Full-Time" name="Role" asp-for="Role"/> Full-Time
+                            <input type="radio" id="Role2" value="Part-Time" name="Role" asp-for="Role"/> Part-Time
                         </div>
                         <div class="has-error">
                             <span asp-validation-for="Role" class="text-danger"></span>
@@ -94,18 +86,30 @@
                             @foreach (var item in @b)
 
                             {
-                                <tr>
-                                    <td>
-                                        @x
-                                    </td>
-                                    <td>
-                                        @item.Name
-                                    </td>
-                                    <td>
-                                        <input type="radio" id="rdOption1" value="True" name="@("Add" +x)" /> Yes
-                                        <input type="radio" id="rdOption2" value="False" name="@("Add" +x)" /> No
-                                    </td>
-                                </tr>
+                        <tr>
+                            <td>
+                                @x
+                            </td>
+                            <td>
+                                @item.Name
+                            </td>
+                            @if (c.Contains(item.ClassId))
+                            {
+                                <td>
+                                    <input type="radio" id="rdOption1" value="True" name="@("Add" +x)" checked="checked" /> Yes
+                                    <input type="radio" id="rdOption2" value="False" name="@("Add" +x)" /> No
+                                </td>
+
+                            }
+                            else
+                            {
+                                <td>
+                                    <input type="radio" id="rdOption1" value="True" name="@("Add" +x)" /> Yes
+                                    <input type="radio" id="rdOption2" value="False" name="@("Add" +x)" /> No
+                                </td>
+                            }
+
+                        </tr>
                                 x++;
                             }
 
@@ -113,12 +117,14 @@
 
                     </div>
 
+
                     <div class="form-group">
                         <div class="col-sm-offset-3 col-sm-10">
-                            <input type="submit" value="Add" class="btn-primary" />
+                            <input type="submit" value="Update" class="btn-primary" />
                         </div>
                     </div>
                 </div>
             </form>
         </div>
     </div>
+ </div>

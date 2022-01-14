@@ -31,7 +31,6 @@
 
 	<ItemGroup>
 	  <Folder Include="Views\Class\" />
-	  <Folder Include="Views\Student\" />
 	</ItemGroup>
 
 </Project>
