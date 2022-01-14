@@ -61,6 +61,7 @@
                     <th>Topic</th>
                     <th>Exam Level</th>
                     <th>Exam Date</th>
+                    <th>End Date</th>
                     <th>Duration (Minutes)</th>
                     @if (User.IsInRole("Admin"))
                     {
@@ -74,73 +75,78 @@
                 @foreach (var item in Model)
 
                 {
-                    <tr>
-                        <td>
-                            @item.QuizId
-                        </td>
-                        <td>
-                            @item.Title
-                        </td>
-                        <td>
-                            @item.Topic
-                        </td>
+            <tr>
+                <td>
+                    @item.QuizId
+                </td>
+                <td>
+                    @item.Title
+                </td>
+                <td>
+                    @item.Topic
+                </td>
 
-                        <td>
-                            @item.Sec
-                        </td>
-                        <td>
-                            @item.StartDt
-                        </td>
-                        <td>
-                            @item.Duration
-                        </td>
+                <td>
+                    @item.Sec
+                </td>
+                <td>
+                    @item.StartDt
 
-                        @if (User.IsInRole("Admin"))
-                        {
-                            <td>@item.UserCodeNavigation.Name</td>
-                        }
+                </td>
+                <td>
+                    @item.EndDt
 
-                        @if (User.IsInRole("Admin"))
+                </td>
+                <td>
+                    @item.Duration
+                </td>
 
-                        //use && then check if the date of the paper has passed yet
-                        {
-                            <!--<td>
-                             <a asp-action="ViewReport" asp-route-id="">View Results</a>
-                            </td>-->
-                        }
-                        @if (User.IsInRole("Admin"))
+                @if (User.IsInRole("Admin"))
+                {
+                    <td>@item.UserCodeNavigation.Name</td>
+                }
 
-                        //use && then check if the date of the paper is more then current date
-                        {
-                            <!--<td>
-                             <a asp-action="QuestionIndex" asp-route-id="">View Questions</a>
-                            </td>-->
-                        }
-                        @if (User.IsInRole("User"))
+                @if (User.IsInRole("Admin"))
 
-                        //use && then check if the date of the paper is more then current date
-                        {
-                            <td>
-                                <a asp-action="Instruction" asp-route-id="@item.QuizId">Instruction</a>
-                                <a asp-action="Attempt" asp-route-id="@item.QuizId" onclick="return watchCountdown()">Start</a>
-                            </td>
-                        }
-                        @if (User.IsInRole("Admin"))
+                //use && then check if the date of the paper has passed yet
+                {
+                    <!--<td>
+         <a asp-action="ViewReport" asp-route-id="">View Results</a>
+        </td>-->
+                }
+                @if (User.IsInRole("Admin"))
 
-                        //use && then check if the date of the paper is ON current date
-                        {
-                            <td>
-                                <a asp-action="ViewQuestions" asp-route-id="@item.QuizId">View Questions</a>
-                                <a asp-action="Update" asp-route-id="@item.QuizId" onclick="return ConfirmUpdate()">Update</a>
-                                <a asp-action="Delete" asp-route-id="@item.QuizId" onclick="return ConfirmDelete()">Delete</a>
-                                <a asp-action="PreviewQuiz" asp-route-id="@item.QuizId" target="_blank">Preview Quiz</a>
+                //use && then check if the date of the paper is more then current date
+                {
+                    <!--<td>
+         <a asp-action="QuestionIndex" asp-route-id="">View Questions</a>
+        </td>-->
+                }
+                @if (User.IsInRole("User"))
 
-                            </td>
-                        }
+                //use && then check if the date of the paper is more then current date
+                {
+                    <td>
+                        <a asp-action="Instruction" asp-route-id="@item.QuizId">Instruction</a>
+                        <a asp-action="Attempt" asp-route-id="@item.QuizId" onclick="return watchCountdown()">Start</a>
+                    </td>
+                }
+                @if (User.IsInRole("Admin"))
+
+                //use && then check if the date of the paper is ON current date
+                {
+                    <td>
+                        <a asp-action="ViewQuestions" asp-route-id="@item.QuizId">View Questions</a>
+                        <a asp-action="Update" asp-route-id="@item.QuizId" onclick="return ConfirmUpdate()">Update</a>
+                        <a asp-action="Delete" asp-route-id="@item.QuizId" onclick="return ConfirmDelete()">Delete</a>
+                        <a asp-action="PreviewQuiz" asp-route-id="@item.QuizId" target="_blank">Preview Quiz</a>
+
+                    </td>
+                }
 
 
 
-                    </tr>
+            </tr>
                 }
 
             </table>
@@ -155,6 +161,7 @@
                     <th>Topic</th>
                     <th>Exam Level</th>
                     <th>Exam Date</th>
+                    <th>End Date</th>
                     <th>Duration (Minutes)</th>
                     @if (User.IsInRole("Admin"))
                     {
@@ -168,60 +175,64 @@
 
                     if (item.Topic == "English")
                     {
-                        <tr>
-                            <td>
-                                @item.QuizId
-                            </td>
-                            <td>
-                                @item.Title
-                            </td>
-                            <td>
-                                @item.Topic
-                            </td>
-                            <td>
-                                @item.Sec
-                            </td>
-                            <td>
-                                @item.StartDt
-                            </td>
-                            <td>
-                                @item.Duration
-                            </td>
+            <tr>
+                <td>
+                    @item.QuizId
+                </td>
+                <td>
+                    @item.Title
+                </td>
+                <td>
+                    @item.Topic
+                </td>
+                <td>
+                    @item.Sec
+                </td>
+                <td>
+                    @item.StartDt
+                </td>
+                <td>
+                    @item.EndDt
 
-                            @if (User.IsInRole("Admin"))
-                            {
-                                <td>@item.UserCodeNavigation.Name</td>
-                            }
+                </td>
+                <td>
+                    @item.Duration
+                </td>
 
-                            @if (User.IsInRole("Admin"))//use && then check if the date of the paper has passed yet
-                            {
-                                <!--<td>
-                                 <a asp-action="ViewReport" asp-route-id="">View Results</a>
-                                </td>-->
-                            }
-                            @if (User.IsInRole("Admin"))//use && then check if the date of the paper is more then current date
-                            {
-                                <!--<td>
-                                 <a asp-action="QuestionIndex" asp-route-id="">View Questions</a>
-                                </td>-->
-                            }
-                            @if (User.IsInRole("User"))//use && then check if the date of the paper is more then current date
-                            {
-                                <td>
-                                    <a asp-action="Instruction" asp-route-id="@item.QuizId">Instruction</a>
-                                    <a asp-action="Attempt" asp-route-id="@item.QuizId">Start</a>
-                                </td>
-                            }
-                            @if (User.IsInRole("Admin"))//use && then check if the date of the paper is ON current date
-                            {
-                                <td>
-                                    <a asp-action="ViewQuestions" asp-route-id="@item.QuizId">View Questions</a>
-                                    <a asp-action="Update" asp-route-id="@item.QuizId" onclick="return ConfirmUpdate()">Update</a>
-                                    <a asp-action="Delete" asp-route-id="@item.QuizId" onclick="return ConfirmDelete()">Delete</a>
-                                </td>
-                            }
+                @if (User.IsInRole("Admin"))
+                {
+                    <td>@item.UserCodeNavigation.Name</td>
+                }
 
-                        </tr>
+                @if (User.IsInRole("Admin"))//use && then check if the date of the paper has passed yet
+                {
+                    <!--<td>
+         <a asp-action="ViewReport" asp-route-id="">View Results</a>
+        </td>-->
+                }
+                @if (User.IsInRole("Admin"))//use && then check if the date of the paper is more then current date
+                {
+                    <!--<td>
+         <a asp-action="QuestionIndex" asp-route-id="">View Questions</a>
+        </td>-->
+                }
+                @if (User.IsInRole("User"))//use && then check if the date of the paper is more then current date
+                {
+                    <td>
+                        <a asp-action="Instruction" asp-route-id="@item.QuizId">Instruction</a>
+                        <a asp-action="Attempt" asp-route-id="@item.QuizId">Start</a>
+                    </td>
+                }
+                @if (User.IsInRole("Admin"))//use && then check if the date of the paper is ON current date
+                {
+                    <td>
+                        <a asp-action="ViewQuestions" asp-route-id="@item.QuizId">View Questions</a>
+                        <a asp-action="Update" asp-route-id="@item.QuizId" onclick="return ConfirmUpdate()">Update</a>
+                        <a asp-action="Delete" asp-route-id="@item.QuizId" onclick="return ConfirmDelete()">Delete</a>
+                    </td>
+                }
+
+            </tr>
                     }
 
 
@@ -239,6 +250,7 @@
                     <th>Topic</th>
                     <th>Exam Level</th>
                     <th>Exam Date</th>
+                    <th>End Date</th>
                     <th>Duration (Minutes)</th>
                     @if (User.IsInRole("Admin"))
                     {
@@ -252,70 +264,74 @@
                     if (item.Topic == "Mathematics")
 
                     {
-                        <tr>
-                            <td>
-                                @item.QuizId
-                            </td>
-                            <td>
-                                @item.Title
-                            </td>
-                            <td>
-                                @item.Topic
-                            </td>
-                            <td>
-                                @item.Sec
-                            </td>
-                            <td>
-                                @item.StartDt
-                            </td>
-                            <td>
-                                @item.Duration
-                            </td>
+            <tr>
+                <td>
+                    @item.QuizId
+                </td>
+                <td>
+                    @item.Title
+                </td>
+                <td>
+                    @item.Topic
+                </td>
+                <td>
+                    @item.Sec
+                </td>
+                <td>
+                    @item.StartDt
+                </td>
+                <td>
+                    @item.EndDt
 
-                            @if (User.IsInRole("Admin"))
-                            {
-                                <td>@item.UserCodeNavigation.Name</td>
-                            }
+                </td>
+                <td>
+                    @item.Duration
+                </td>
 
-                            @if (User.IsInRole("Admin"))
+                @if (User.IsInRole("Admin"))
+                {
+                    <td>@item.UserCodeNavigation.Name</td>
+                }
 
-                            //use && then check if the date of the paper has passed yet
-                            {
-                                <!--<td>
-                                 <a asp-action="ViewReport" asp-route-id="">View Results</a>
-                                </td>-->
-                            }
-                            @if (User.IsInRole("Admin"))
+                @if (User.IsInRole("Admin"))
 
-                            //use && then check if the date of the paper is more then current date
-                            {
-                                <!--<td>
-                                 <a asp-action="QuestionIndex" asp-route-id="">View Questions</a>
-                                </td>-->
-                            }
-                            @if (User.IsInRole("User"))
+                //use && then check if the date of the paper has passed yet
+                {
+                    <!--<td>
+         <a asp-action="ViewReport" asp-route-id="">View Results</a>
+        </td>-->
+                }
+                @if (User.IsInRole("Admin"))
 
-                            //use && then check if the date of the paper is more then current date
-                            {
-                                <td>
-                                    <a asp-action="Instruction" asp-route-id="@item.QuizId">Instruction</a>
-                                    <a asp-action="Attempt" asp-route-id="@item.QuizId">Start</a>
+                //use && then check if the date of the paper is more then current date
+                {
+                    <!--<td>
+         <a asp-action="QuestionIndex" asp-route-id="">View Questions</a>
+        </td>-->
+                }
+                @if (User.IsInRole("User"))
 
-                                </td>
-                            }
-                            @if (User.IsInRole("Admin"))
+                //use && then check if the date of the paper is more then current date
+                {
+                    <td>
+                        <a asp-action="Instruction" asp-route-id="@item.QuizId">Instruction</a>
+                        <a asp-action="Attempt" asp-route-id="@item.QuizId">Start</a>
 
-                            //use && then check if the date of the paper is ON current date
+                    </td>
+                }
+                @if (User.IsInRole("Admin"))
 
-                            {
-                                <td>
-                                    <a asp-action="ViewQuestions" asp-route-id="@item.QuizId">View Questions</a>
-                                    <a asp-action="Update" asp-route-id="@item.QuizId" onclick="return ConfirmUpdate()">Update</a>
-                                    <a asp-action="Delete" asp-route-id="@item.QuizId" onclick="return ConfirmDelete()">Delete</a>
-                                </td>
-                            }
+                //use && then check if the date of the paper is ON current date
 
-                        </tr>
+                {
+                    <td>
+                        <a asp-action="ViewQuestions" asp-route-id="@item.QuizId">View Questions</a>
+                        <a asp-action="Update" asp-route-id="@item.QuizId" onclick="return ConfirmUpdate()">Update</a>
+                        <a asp-action="Delete" asp-route-id="@item.QuizId" onclick="return ConfirmDelete()">Delete</a>
+                    </td>
+                }
+
+            </tr>
                     }
             </table>
 

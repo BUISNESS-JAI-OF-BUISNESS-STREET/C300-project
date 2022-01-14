@@ -63,6 +63,7 @@ namespace fyp.Controllers
             question.ThirdOption = form["ThirdOption"];
             question.FourthOption = form["FourthOption"];
             question.CorrectAns = form["CorrectAns"];
+            question.Segment = form["Segment"];
             question.UserCode = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             
             DbSet<Quiz> dbs2 = _dbContext.Quiz;

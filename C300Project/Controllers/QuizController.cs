@@ -30,13 +30,13 @@ namespace fyp.Controllers
             DbSet<Quiz> dbs = _dbContext.Quiz;
             List<Quiz> model = dbs.ToList();
             //if (User.IsInRole("Admin"))
-                model = dbs.Include(mo => mo.UserCodeNavigation)
-                            .ToList();
-           /* else
-            {
-                var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                model = dbs.Where(so => so.UserCode == userId).ToList();
-            }*/
+            model = dbs.Include(mo => mo.UserCodeNavigation)
+                        .ToList();
+            /* else
+             {
+                 var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                 model = dbs.Where(so => so.UserCode == userId).ToList();
+             }*/
             return View(model);
         }
 
@@ -77,11 +77,11 @@ namespace fyp.Controllers
             else
             {
                 //ViewData["title"] = model2[id].Title;
-                            //ViewData["topic"] = model2[id].Topic;
-                            return View(questionlist);
+                //ViewData["topic"] = model2[id].Topic;
+                return View(questionlist);
             }
 
-            
+
 
 
 
@@ -103,16 +103,16 @@ namespace fyp.Controllers
             List<Question> questionlist = dbs3.Where(r => overlappedquestno.Contains(r.QuestionId)).ToList();
             var quizCount = model.Count();
             var y = 0;
-            
-            for (var x = 0; x < quizCount; x++ )
+
+            for (var x = 0; x < quizCount; x++)
             {
                 var z = x + 1;
-                var answer = form["Answer" +z];
+                var answer = form["Answer" + z];
                 var corrAns = questionlist[x].CorrectAns;
                 if (answer == corrAns)
                     y++;
                 else
-                    y+= 0;
+                    y += 0;
             }
 
             Result newResult = new Result();
@@ -164,12 +164,12 @@ namespace fyp.Controllers
             var dbcount = lstQuestion.Count();
             DbSet<QuizQuestionBindDb> dbs3 = _dbContext.QuizQuestionBindDb;
             var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                quiz.UserCode = userId;
-                DbSet<Quiz> dbs = _dbContext.Quiz;
+            quiz.UserCode = userId;
+            DbSet<Quiz> dbs = _dbContext.Quiz;
 
             if (ModelState.IsValid)
             {
-                
+
                 dbs.Add(quiz);
                 _dbContext.SaveChanges();
 
@@ -188,17 +188,42 @@ namespace fyp.Controllers
                             quizQuestionBind.QuestionId = y;
                             quizQuestionBind.QuizId = quiz.QuizId;
                             dbs3.Add(quizQuestionBind);
-
                         }
                     }
-
                 }
 
                 if (_dbContext.SaveChanges() == 1)
                     TempData["Msg"] = "New quiz added!";
-                else
-                    TempData["Msg"] = "Failed to update database!";
             }
+
+            else if (ModelState.IsValid)
+            {
+
+                dbs.Add(quiz);
+                _dbContext.SaveChanges();
+
+
+                for (var x = 0; x < dbcount; x++)
+                {
+
+                    QuizQuestionBindDb quizQuestionBind = new QuizQuestionBindDb();
+                    var y = x + 1;
+                    var radiocheck = form["Add" + y];
+
+                    if (radiocheck.Equals("False"))
+                    {
+                        if (ModelState.IsValid)
+                        {
+                            quizQuestionBind.QuestionId = y;
+                            quizQuestionBind.QuizId = quiz.QuizId;
+                            dbs3.Add(quizQuestionBind);
+                        }
+                    }
+                }
+                if (_dbContext.SaveChanges() == 1)
+                    TempData["Msg"] = "New quiz added!";
+            }
+
             else
             {
                 TempData["Msg"] = "Invalid information entered";
@@ -368,7 +393,7 @@ namespace fyp.Controllers
             ViewData["Quiz"] = lstQuiz.ToList();
             ViewData["Test"] = lstQuiz.Select(mo => mo.QuizId).ToList();
             return View();
-            
+
         }
 
         [Authorize(Roles = "Admin")]
@@ -462,7 +487,7 @@ namespace fyp.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult UpdateQuestions(Question question,IFormCollection form )
+        public IActionResult UpdateQuestions(Question question, IFormCollection form)
         {
             var quizid = form["QuizIdInput"];
             if (ModelState.IsValid)
@@ -519,6 +544,8 @@ namespace fyp.Controllers
                     tOrder.FourthOption = question.FourthOption;
                     tOrder.Topic = question.Topic;
                     tOrder.CorrectAns = question.CorrectAns;
+                    tOrder.Segment = question.Segment;
+
 
 
                     _dbContext.SaveChanges();
@@ -576,8 +603,8 @@ namespace fyp.Controllers
             DbSet<Quiz> dbs = _dbContext.Quiz;
             Quiz model = dbs.Where(mo => mo.QuizId == id)
                 .Include(mo => mo.UserCodeNavigation)
-                .Include(mo=> mo.QuizQuestionBindDb)
-                .FirstOrDefault(); 
+                .Include(mo => mo.QuizQuestionBindDb)
+                .FirstOrDefault();
 
             DbSet<QuizQuestionBindDb> dbs2 = _dbContext.QuizQuestionBindDb;
             List<int> qtnlist = dbs2.ToList().Where(m => m.QuizId == id).Select(m => m.QuestionId).ToList();
@@ -597,15 +624,15 @@ namespace fyp.Controllers
                     PageSize = Rotativa.AspNetCore.Options.Size.A4,
                     PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait
 
-        };
+                };
             else
             {
                 TempData["Msg"] = "Quiz not found!";
                 return RedirectToAction("Index");
             }
 
-            
-            
+
+
 
 
         }
