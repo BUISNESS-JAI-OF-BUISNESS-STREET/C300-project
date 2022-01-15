@@ -1,4 +1,4 @@
-﻿@model Announcement; 
+﻿@model Announcement;
 
 <form asp-controller="Home" asp-action="SaveRemarks" method="post"
       class="form-horizontal" role="form">
@@ -9,17 +9,15 @@
         <input readonly="readonly" asp-for="@Model.ClassId"
                class="form-control-plaintext no-border col-2" style="border: 0" />
 
-        <label class="col-offset-1 control-label col-2"
-               style="text-align:left">Id: </label>
-        <input readonly="readonly" asp-for="@Model.Id"
-               class="form-control-plaintext col-1" style="border: 0" />
-    </div>
 
-    <hr />
-    <div class="form-group row row">
-        <label class="control-label col-3" style="text-align:left">Class:</label>
-        <input readonly="readonly" asp-for="@Model.Class.Name" class="form-control-plaintext no-border col-2" style="border:0" />
-    </div>
+
+        <label class="col-offset-1 control-label col-2"
+           style="text-align:left">Class : </label>
+          <input readonly="readonly" asp-for="@Model.Class.Name"
+           class="form-control-plaintext col-1" style="border: 0" />
+          </div>
+            
+
 
 
     <hr />
@@ -41,7 +39,7 @@
     {
         <div class="form-group row row">
             <label class="control-label col-1" style="text-align:left">Notes:</label>
-            <input readonly="readonly" asp-for="@Model.Remarks" rows="15"></input>
+            <textarea readonly="readonly" class="form-control" asp-for="@Model.Remarks" rows="15"></textarea>
         </div>
 
     }

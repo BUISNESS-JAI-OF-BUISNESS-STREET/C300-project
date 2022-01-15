@@ -39,20 +39,16 @@
         @if (Model != null)
         {
             @foreach (Class m in Model)
-            {
-                @foreach (Announcement l in m.Announcement.ToList())
+
             {
 
-                    <button class="btn btn-link text-left" data-toggle="collapse" data-target="@String.Format("#{0}div", m.ClassId)" style="text-align:left">@m.Name</button>
-                    <div id="@String.Format("{0}div", m.ClassId)" class="collapse" onclick="return LoadRemarks('@m.ClassId',@l.Id)">
-                        <div class="btn-group-vertical col-1">
-                          
-                        </div>
-                    </div>
+                <button class="btn btn-link text-left" data-target="@String.Format("#{0}div", m.ClassId)" style="text-align:left">@m.Name</button>
+                <div id="@String.Format("{0}div", m.ClassId)" class="collapse" onclick="return LoadRemarks('@m.ClassId, ')">
+                </div>
 
-                }
             }
         }
+
     </div>
 </div>
 
