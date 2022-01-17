@@ -127,18 +127,18 @@
             <div class="col-6">
 
                 <input type="hidden" id="QuizId" name="QuizId" value="@ViewData["quizid"]" />@ViewData["quizid"]
-                @foreach (var item in Model)
+                @foreach (Question question in Model.Question)
                 {
 
                     <div class="form-group" id="@("testdiv" +x)">
                         <p>
-                            Question @x: @item.Questions
+                            Question @x: @question.Questions
                         </p>
                         <div class="col-12">
-                            <input type="radio" id="rdOption1" value="@item.FirstOption" name="@("Answer" +x)" /> @item.FirstOption
-                            <input type="radio" id="rdOption2" value="@item.SecondOption" name="@("Answer" +x)" /> @item.SecondOption
-                            <input type="radio" id="rdOption3" value="@item.ThirdOption" name="@("Answer" +x)" /> @item.ThirdOption
-                            <input type="radio" id="rdOption4" value="@item.FourthOption" name="@("Answer" +x)" /> @item.FourthOption
+                            <input type="radio" id="rdOption1" value="@question.FirstOption" name="@("Answer" +x)" /> @question.FirstOption
+                            <input type="radio" id="rdOption2" value="@question.SecondOption" name="@("Answer" +x)" /> @question.SecondOption
+                            <input type="radio" id="rdOption3" value="@question.ThirdOption" name="@("Answer" +x)" /> @question.ThirdOption
+                            <input type="radio" id="rdOption4" value="@question.FourthOption" name="@("Answer" +x)" /> @question.FourthOption
                         </div>
 
 
