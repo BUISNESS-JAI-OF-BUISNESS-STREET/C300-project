@@ -16,7 +16,9 @@ namespace fyp.Models
 
         public int ClassId { get; set; }
         public string Name { get; set; }
+        public string AddedBy { get; set; }
 
+        public virtual Account AddedByNavigation { get; set; }
         public virtual ICollection<Announcement> Announcement { get; set; }
         public virtual ICollection<StudentClassBindDb> StudentClassBindDb { get; set; }
         public virtual ICollection<TeacherClassBindDb> TeacherClassBindDb { get; set; }

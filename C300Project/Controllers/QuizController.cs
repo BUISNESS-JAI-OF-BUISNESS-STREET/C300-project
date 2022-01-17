@@ -664,13 +664,18 @@ namespace fyp.Controllers
         }*/
 
         {
+            DbSet<QuizQuestionBindDb> dbs = _dbContext.QuizQuestionBindDb;
             DbSet<Quiz> dbs2 = _dbContext.Quiz;
             DbSet<Question> dbs3 = _dbContext.Question;
 
+            List<int> quizidlist = dbs.Where(m => m.QuizId == id).Select(m => m.QuestionId).ToList();
+            List<Question> questions = dbs3.Where(m => quizidlist.Contains(m.QuestionId)).ToList();
+
             dynamic previewmodel = new ExpandoObject();
 
+
             previewmodel.Quiz = dbs2.Where(mo => mo.QuizId == id).ToList();
-            previewmodel.Question = dbs3.ToList();
+            previewmodel.Question = questions;
 
             if (previewmodel != null)
                 return new ViewAsPdf(previewmodel)

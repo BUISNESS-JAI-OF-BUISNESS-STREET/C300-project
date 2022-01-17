@@ -21,7 +21,6 @@ namespace fyp.Models
         public string SchLvl { get; set; }
         public string Email { get; set; }
         public string Class { get; set; }
-        public byte[] Password { get; set; }
         public string AddedBy { get; set; }
 
         public virtual Account AddedByNavigation { get; set; }
