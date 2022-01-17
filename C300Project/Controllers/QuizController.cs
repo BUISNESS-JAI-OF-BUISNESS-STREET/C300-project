@@ -596,10 +596,11 @@ namespace fyp.Controllers
             return RedirectToAction("Index");
         }
 
+        
         [Authorize]
         [HttpGet]
         public IActionResult PreviewQuiz(int id)
-        {
+        /*{
             DbSet<Quiz> dbs = _dbContext.Quiz;
             Quiz model = dbs.Where(mo => mo.QuizId == id)
                 .Include(mo => mo.UserCodeNavigation)
@@ -613,9 +614,6 @@ namespace fyp.Controllers
             DbSet<Question> dbs3 = _dbContext.Question;
             List<Question> qtnlist1 = dbs3.Where(m => qtnlist.Contains(m.QuestionId)).ToList();
             ViewData["QtnPull"] = qtnlist1;
-
-
-
 
 
             if (dbs3 != null)
@@ -632,11 +630,63 @@ namespace fyp.Controllers
             }
 
 
+        }*/
+        /*{
+            DbSet<QuizQuestionBindDb> dbs = _dbContext.QuizQuestionBindDb;
+            List<QuizQuestionBindDb> model = dbs.Where(mo => mo.QuizId == id).ToList();
+            List<int> overlapList = model.Select(mo => mo.QuestionId).ToList();
+
+            DbSet<Quiz> dbs2 = _dbContext.Quiz;
+            List<Quiz> model2 = dbs2.Where(mo => mo.QuizId == id).Include(m => m.UserCodeNavigation).ToList();
+            ViewData["quizid"] = id;
+
+            DbSet<Question> dbs3 = _dbContext.Question;
+            List<Question> model3 = dbs3.ToList();
+            List<int> overlappedquestno = model3.Select(mo => mo.QuestionId).ToList().Intersect(overlapList).ToList();
+            List<Question> questionlist = dbs3.Where(r => overlappedquestno.Contains(r.QuestionId)).ToList();
+
+
+
+            if (model != null && model2 != null)
+                return new ViewAsPdf(questionlist)
+                {
+                    PageSize = Rotativa.AspNetCore.Options.Size.A4,
+                    PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait
+
+                };
+            else
+            {
+                TempData["Msg"] = "Quiz not found!";
+                return RedirectToAction("Index");
+            }
+
+
+        }*/
+
+        {
+            DbSet<Quiz> dbs2 = _dbContext.Quiz;
+            DbSet<Question> dbs3 = _dbContext.Question;
+
+            dynamic previewmodel = new ExpandoObject();
+
+            previewmodel.Quiz = dbs2.Where(mo => mo.QuizId == id).ToList();
+            previewmodel.Question = dbs3.ToList();
+
+            if (previewmodel != null)
+                return new ViewAsPdf(previewmodel)
+                {
+                    PageSize = Rotativa.AspNetCore.Options.Size.A4,
+                    PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait
+
+                };
+            else
+            {
+                TempData["Msg"] = "Quiz not found!";
+                return RedirectToAction("Index");
+            }
 
 
 
         }
-
-
     }
 }
