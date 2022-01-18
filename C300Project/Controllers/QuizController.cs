@@ -40,7 +40,7 @@ namespace fyp.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "Student")]
         public IActionResult Instruction(int id)
         {
             DbSet<Quiz> dbs = _dbContext.Quiz;
@@ -50,7 +50,7 @@ namespace fyp.Controllers
         }
 
 
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "Student")]
         public IActionResult Attempt(int id) //for users to attempt the quiz
         {
             //TODO: require attention
@@ -88,7 +88,7 @@ namespace fyp.Controllers
 
         }
 
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "Student")]
         [HttpPost]
         public IActionResult Attempt(IFormCollection form)
         {
