@@ -186,26 +186,98 @@
             <form asp-controller="Quiz" asp-action="Attempt" method="post" class="form-horizontal" role="form">
                 <div class="form-horizontal">
                     <input type="hidden" id="QuizId" name="QuizId" value="@ViewData["quizid"]" />@ViewData["quizid"]
+
                     @foreach (var item in Model)
                     {
+                        @if (item.Topic.Equals("English") && item.Segment.Equals("Grammer"))
+                        {
+                            <h1>Grammer</h1>
+                            <h2></h2>
+                            <div class="form-group" id="@("testdiv" +x)">
+                                <p>
+                                    Question @x: @item.Questions
+                                </p>
+                                <div class="col-12">
+                                    <input type="radio" id="rdOption1" value="@item.FirstOption" name="@("Answer" +x)" /> @item.FirstOption
+                                    <input type="radio" id="rdOption2" value="@item.SecondOption" name="@("Answer" +x)" /> @item.SecondOption
+                                    <input type="radio" id="rdOption3" value="@item.ThirdOption" name="@("Answer" +x)" /> @item.ThirdOption
+                                    <input type="radio" id="rdOption4" value="@item.FourthOption" name="@("Answer" +x)" /> @item.FourthOption
+                                </div>
 
-                        <div class="form-group" id="@("testdiv" +x)">
-                            <p>
-                                Question @x: @item.Questions
-                            </p>
-                            <div class="col-12">
-                                <input type="radio" id="rdOption1" value="@item.FirstOption" name="@("Answer" +x)" /> @item.FirstOption
-                                <input type="radio" id="rdOption2" value="@item.SecondOption" name="@("Answer" +x)" /> @item.SecondOption
-                                <input type="radio" id="rdOption3" value="@item.ThirdOption" name="@("Answer" +x)" /> @item.ThirdOption
-                                <input type="radio" id="rdOption4" value="@item.FourthOption" name="@("Answer" +x)" /> @item.FourthOption
+
+
                             </div>
+                            x++;
+                            <br />
+                         }
+
+                        @if (item.Topic.Equals("English") && item.Segment.Equals("Comprehension"))
+                        {
+                            <h1>Comprehension</h1>
+                            <h2></h2>
+                            <div class="form-group" id="@("testdiv" +x)">
+                                <p>
+                                    Question @x: @item.Questions
+                                </p>
+                                <div class="col-12">
+                                    <input type="radio" id="rdOption1" value="@item.FirstOption" name="@("Answer" +x)" /> @item.FirstOption
+                                    <input type="radio" id="rdOption2" value="@item.SecondOption" name="@("Answer" +x)" /> @item.SecondOption
+                                    <input type="radio" id="rdOption3" value="@item.ThirdOption" name="@("Answer" +x)" /> @item.ThirdOption
+                                    <input type="radio" id="rdOption4" value="@item.FourthOption" name="@("Answer" +x)" /> @item.FourthOption
+                                </div>
 
 
 
-                        </div>
-                        x++;
-                        <br />
-                    }
+                            </div>
+                            x++;
+                            <br />
+                         }
+
+                        @if (item.Topic.Equals("English") && item.Segment.Equals("Vocabulary"))
+                        {
+                            <h1>Vocabulary</h1>
+                            <h2></h2>
+                            <div class="form-group" id="@("testdiv" +x)">
+                                <p>
+                                    Question @x: @item.Questions
+                                </p>
+                                <div class="col-12">
+                                    <input type="radio" id="rdOption1" value="@item.FirstOption" name="@("Answer" +x)" /> @item.FirstOption
+                                    <input type="radio" id="rdOption2" value="@item.SecondOption" name="@("Answer" +x)" /> @item.SecondOption
+                                    <input type="radio" id="rdOption3" value="@item.ThirdOption" name="@("Answer" +x)" /> @item.ThirdOption
+                                    <input type="radio" id="rdOption4" value="@item.FourthOption" name="@("Answer" +x)" /> @item.FourthOption
+                                </div>
+
+
+
+                            </div>
+                            x++;
+                            <br />
+                         }
+
+                        @if (item.Topic.Equals("Mathematics"))
+                        {
+                            <h1>Mathematics</h1>
+                            <div class="form-group" id="@("testdiv" +x)">
+                                <p>
+                                    Question @x: @item.Questions
+                                </p>
+                                <div class="col-12">
+                                    <input type="radio" id="rdOption1" value="@item.FirstOption" name="@("Answer" +x)" /> @item.FirstOption
+                                    <input type="radio" id="rdOption2" value="@item.SecondOption" name="@("Answer" +x)" /> @item.SecondOption
+                                    <input type="radio" id="rdOption3" value="@item.ThirdOption" name="@("Answer" +x)" /> @item.ThirdOption
+                                    <input type="radio" id="rdOption4" value="@item.FourthOption" name="@("Answer" +x)" /> @item.FourthOption
+                                </div>
+
+
+
+                            </div>
+                            x++;
+                            <br />
+                         }
+
+
+                     }
                 </div>
                 <div class="form-group row">
                     <div class="offset-sm-4 col-8">
