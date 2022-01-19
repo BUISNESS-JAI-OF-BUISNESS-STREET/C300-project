@@ -33,6 +33,15 @@
             <form asp-controller="Teacher" asp-action="Update" method="post" class="form-horizontal" role="form">
                 <div class="form-horizontal">
                     <div class="form-group">
+                        <label asp-for="TeacherId" class="col-sm-3 control-label">Teacher Id:</label>
+                        <div class="col-sm-6">
+                            <input asp-for="TeacherId" class="form-control" readonly="readonly" />
+                        </div>
+                        <div class="has-error">
+                            <span asp-validation-for="TeacherId" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label asp-for="Name" class="col-sm-3 control-label">Name: </label>
                         <div class="col-sm-6">
                             <input asp-for="Name" class="form-control" />
@@ -66,8 +75,8 @@
                     <div class="form-group">
                         <label asp-for="Role" class="col-sm-3 control-label">Role: </label>
                         <div class="col-sm-6">
-                            <input type="radio" id="Role1" value="Full-Time" name="Role" asp-for="Role"/> Full-Time
-                            <input type="radio" id="Role2" value="Part-Time" name="Role" asp-for="Role"/> Part-Time
+                            <input type="radio" id="Role1" value="Full-Time" name="Role" asp-for="Role" /> Full-Time
+                            <input type="radio" id="Role2" value="Part-Time" name="Role" asp-for="Role" /> Part-Time
                         </div>
                         <div class="has-error">
                             <span asp-validation-for="Role" class="text-danger"></span>
@@ -86,30 +95,30 @@
                             @foreach (var item in @b)
 
                             {
-                        <tr>
-                            <td>
-                                @x
-                            </td>
-                            <td>
-                                @item.Name
-                            </td>
-                            @if (c.Contains(item.ClassId))
-                            {
-                                <td>
-                                    <input type="radio" id="rdOption1" value="True" name="@("Add" +x)" checked="checked" /> Yes
-                                    <input type="radio" id="rdOption2" value="False" name="@("Add" +x)" /> No
-                                </td>
+                                <tr>
+                                    <td>
+                                        @x
+                                    </td>
+                                    <td>
+                                        @item.Name
+                                    </td>
+                                    @if (c.Contains(item.ClassId))
+                                    {
+                                        <td>
+                                            <input type="radio" id="rdOption1" value="True" name="@("Add" +x)" checked="checked" /> Yes
+                                            <input type="radio" id="rdOption2" value="False" name="@("Add" +x)" /> No
+                                        </td>
 
-                            }
-                            else
-                            {
-                                <td>
-                                    <input type="radio" id="rdOption1" value="True" name="@("Add" +x)" /> Yes
-                                    <input type="radio" id="rdOption2" value="False" name="@("Add" +x)" /> No
-                                </td>
-                            }
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            <input type="radio" id="rdOption1" value="True" name="@("Add" +x)" /> Yes
+                                            <input type="radio" id="rdOption2" value="False" name="@("Add" +x)" /> No
+                                        </td>
+                                    }
 
-                        </tr>
+                                </tr>
                                 x++;
                             }
 

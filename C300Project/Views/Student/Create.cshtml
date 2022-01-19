@@ -94,52 +94,13 @@
                     <div class="form-group">
                         <label asp-for="Class" class="col-sm-3 control-label">Class: </label>
                         <div class="col-sm-6">
-                            <input asp-for="Class" class="form-control" />
+                            <select asp-for="Class" asp-items="@((SelectList)ViewData["Class"])" class="form-control">
+                                <option value="">-- SELECT --</option>
+                                </select>
                         </div>
                         <div class="has-error">
                             <span asp-validation-for="Class" class="text-danger"></span>
                         </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="Password" class="col-sm-3 control-label">Password: </label>
-                        <div class="col-sm-6">
-                            <input asp-for="Password" class="form-control" />
-                        </div>
-                        <div class="has-error">
-                            <span asp-validation-for="Password" class="text-danger"></span>
-                        </div>
-                    </div>
-
-                    <div>
-                        <table class="table table-bordered table-condensed table-hover table-striped">
-                            <tr>
-                                <th>Id</th>
-                                <th>Class Name</th>
-                                <th>Add To Class?</th>
-                            </tr>
-
-
-                            @foreach (var item in @b)
-
-                            {
-                                <tr>
-                                    <td>
-                                        @x
-                                    </td>
-                                    <td>
-                                        @item.Name
-                                    </td>
-                                    <td>
-                                        <input type="radio" id="rdOption1" value="True" name="@("Add" +x)" /> Yes
-                                        <input type="radio" id="rdOption2" value="False" name="@("Add" +x)" /> No
-                                    </td>
-                                </tr>
-                                x++;
-                            }
-
-                        </table>
-
                     </div>
 
                     <div class="form-group">
