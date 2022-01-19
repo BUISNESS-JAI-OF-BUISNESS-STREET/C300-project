@@ -29,6 +29,7 @@
         }
     </style>
 </head>
+
 <body>
     <div style="page-break-after: always;">
         <header>
@@ -48,59 +49,69 @@
                             </p>
                         </address>
                     </td>
-                    <td style="text-align:right;vertical-align:bottom">
-                        <span style="font-size:x-large;font-weight:bold;font-family:'Arial'">Created by: </span>
-                    </td>
+                    @foreach (Quiz quiz in Model.Quiz)
+                    {
+
+                        <td style="text-align:right;vertical-align:bottom">
+                            <span style="font-size:x-large;font-weight:bold;font-family:'Arial'">Created by: @quiz.UserCodeNavigation.Name </span>
+                        </td>
+                    }
                 </tr>
             </table>
         </header>
         <hr />
-        
-            @foreach (Quiz quiz in Model.Quiz)
 
-            {
-                <article style="border:solid">
-                    <table style="width:100%">
-                        <tr class="lineitem">
-                            <td class="label">Quiz</td>
-                            <td class="label">:</td>
-                            <td class="item">@quiz.Title</td>
-                        </tr>
-                        <tr class="lineitem">
-                            <td class="label">Level</td>
-                            <td class="label">:</td>
-                            <td class="item">@quiz.Sec</td>
-                        </tr>
-                        <tr class="lineitem">
-                            <td class="label">Topic</td>
-                            <td class="label">:</td>
-                            <td class="item">@quiz.Topic</td>
-                        </tr>
-                        <tr class="lineitem">
-                            <td class="label">Duration</td>
-                            <td class="label">:</td>
-                            <td class="item">@quiz.Duration  MINUTES</td>
-                        </tr>
-                        }
-                        <tr class="lineitem">
-                            <td class="label">Name</td>
-                            <td class="label">:</td>
-                            <td class="item"></td>
-                        </tr>
-                        <tr class="lineitem">
-                            <td class="label">Registration Number</td>
-                            <td class="label">:</td>
-                            <td class="item"></td>
-                        </tr>
+        @foreach (Quiz quiz in Model.Quiz)
+
+        {
+            <article style="border:solid">
+                <table style="width:100%">
+                    <tr class="lineitem">
+                        <td class="label">Quiz</td>
+                        <td class="label">:</td>
+                        <td class="item">@quiz.Title</td>
+                    </tr>
+                    <tr class="lineitem">
+                        <td class="label">Level</td>
+                        <td class="label">:</td>
+                        <td class="item">@quiz.Sec</td>
+                    </tr>
+                    <tr class="lineitem">
+                        <td class="label">Topic</td>
+                        <td class="label">:</td>
+                        <td class="item">@quiz.Topic</td>
+                    </tr>
+                    <tr class="lineitem">
+                        <td class="label">Duration</td>
+                        <td class="label">:</td>
+                        <td class="item">@quiz.Duration  MINUTES</td>
+                    </tr>
+
+                    <tr class="lineitem">
+                        <td class="label">Name</td>
+                        <td class="label">:</td>
+                        <td class="item"></td>
+                    </tr>
+                    <tr class="lineitem">
+                        <td class="label">Registration Number</td>
+                        <td class="label">:</td>
+                        <td class="item"></td>
+                    </tr>
+
+                    <tr class="lineitem">
+                        <td class="label">Total Score</td>
+                        <td class="label">:</td>
+                        <td class="item"></td>
+                    </tr>
 
 
 
 
 
-                    </table>
-                </article>
-            }
-        
+                </table>
+            </article>
+        }
+
         <aside>
             <h1>
                 <span>
@@ -126,34 +137,81 @@
 
             <div class="col-6">
 
+                <p>
+                    <span style="font-size:x-large;font-family:'Arial'"> Part I - GRAMMAR </span><br /><br />
+                    For questions 1-10, choose the most suitable answer and shade on the Optical
+                    Answer Sheet (OAS). (10 marks)<br /><br />
+
+                </p>
+
                 <input type="hidden" id="QuizId" name="QuizId" value="@ViewData["quizid"]" />@ViewData["quizid"]
                 @foreach (Question question in Model.Question)
-                {
+                    if (question.Segment == "Grammar")
+                    {
+            <div class="form-group" id="@("testdiv" +x)">
+                <p>
+                    Question @x: @question.Questions
+                </p>
+                <div class="col-12">
+                    <input type="radio" id="rdOption1" value="@question.FirstOption" name="@("Answer" + x)" /> @question.FirstOption
+                    <input type="radio" id="rdOption2" value="@question.SecondOption" name="@("Answer" + x)" /> @question.SecondOption
+                    <input type="radio" id="rdOption3" value="@question.ThirdOption" name="@("Answer" + x)" /> @question.ThirdOption
+                    <input type="radio" id="rdOption4" value="@question.FourthOption" name="@("Answer" + x)" /> @question.FourthOption
+                </div>
 
-                    <div class="form-group" id="@("testdiv" +x)">
-                        <p>
-                            Question @x: @question.Questions
-                        </p>
-                        <div class="col-12">
-                            <input type="radio" id="rdOption1" value="@question.FirstOption" name="@("Answer" +x)" /> @question.FirstOption
-                            <input type="radio" id="rdOption2" value="@question.SecondOption" name="@("Answer" +x)" /> @question.SecondOption
-                            <input type="radio" id="rdOption3" value="@question.ThirdOption" name="@("Answer" +x)" /> @question.ThirdOption
-                            <input type="radio" id="rdOption4" value="@question.FourthOption" name="@("Answer" +x)" /> @question.FourthOption
-                        </div>
 
 
 
-                    </div>
-                    x++;
-                    <br />
-                }
+            </div>
+                    }
+
             </div>
         </div>
-
-
-
-        ----- End of Paper-----
-
     </div>
+
+    <div>
+
+        <div class="row">
+
+            <div class="col-6">
+
+                <p>
+                    <span style="font-size:x-large;font-family:'Arial'"> Part II Vocabulary </span><br /><br />
+                    For questions 11-20, choose the most suitable answer and shade on the Optical
+                    Answer Sheet (OAS). (10 marks) <br /><br />
+
+                </p>
+                <input type="hidden" id="QuizId" name="QuizId" value="@ViewData["quizid"]" />@ViewData["quizid"]
+
+                @foreach (Question question in Model.Question)
+                    if (question.Segment == "Vocabulary")
+                    {
+
+
+                        <div class="form-group" id="@("testdiv" + x)">
+                            <p>
+                                Question @x: @question.Questions
+                            </p>
+                            <div class="col-12">
+                                <input type="radio" id="rdOption1" value="@question.FirstOption" name="@("Answer" + x)" /> @question.FirstOption
+                                <input type="radio" id="rdOption2" value="@question.SecondOption" name="@("Answer" + x)" /> @question.SecondOption
+                                <input type="radio" id="rdOption3" value="@question.ThirdOption" name="@("Answer" + x)" /> @question.ThirdOption
+                                <input type="radio" id="rdOption4" value="@question.FourthOption" name="@("Answer" + x)" /> @question.FourthOption
+                            </div>
+
+
+
+                        </div>
+                        x++;
+                        <br />
+                    }
+            </div>
+        </div>
+    </div>
+
+
+
+    ----- End of Paper-----
+
 </body>
 </html>

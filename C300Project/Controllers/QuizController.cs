@@ -674,7 +674,7 @@ namespace fyp.Controllers
             dynamic previewmodel = new ExpandoObject();
 
 
-            previewmodel.Quiz = dbs2.Where(mo => mo.QuizId == id).ToList();
+            previewmodel.Quiz = dbs2.Where(mo => mo.QuizId == id).Include(mo => mo.UserCodeNavigation).ToList();
             previewmodel.Question = questions;
 
             if (previewmodel != null)
