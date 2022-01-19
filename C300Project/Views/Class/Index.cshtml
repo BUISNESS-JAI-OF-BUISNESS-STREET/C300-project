@@ -1,7 +1,7 @@
-﻿@model List<Student>
+﻿@model List<Class>
 
 @{
-    ViewBag.Title = "Student Database";
+    ViewBag.Title = "Class Database";
     int x = 1;
 }
 
@@ -32,7 +32,7 @@
 <span style="color:red">@TempData["Msg"]</span>
 <br />
 <p>
-    <a asp-controller="Student" asp-action="Create">Add New Student</a>
+    <a asp-controller="Class" asp-action="Create">Add New Class</a>
 </p>
 <div class="tab-content" style="margin-top:10px">
     <div>
@@ -40,12 +40,6 @@
             <tr>
                 <th>Id</th>
                 <th>Name</th>
-                <th>Mobile No</th>
-                <th>Foreigner</th>
-                <th>SchLvl</th>
-                <th>Email</th>
-                <th>Class</th>
-
 
                 @if (User.IsInRole("Admin"))
                 {
@@ -53,8 +47,8 @@
                 }
                 <th>Action</th>
             </tr>
-            @foreach (var item in Model)
 
+            @foreach (var item in Model)
             {
         <tr>
             <td>
@@ -63,21 +57,6 @@
             <td>
                 @item.Name
             </td>
-            <td>
-                @item.MobileNo
-            </td>
-            <td>
-                @item.Foreigner
-            </td>
-            <td>
-                @item.SchLvl
-            </td>
-            <td>
-                @item.Email
-            </td>
-            <td>
-                @item.Class
-            </td>
 
             @if (User.IsInRole("Admin"))
             {
@@ -85,8 +64,8 @@
             }
 
             <td>
-                <a asp-action="Update" asp-route-id="@item.StudentId" onclick="return ConfirmUpdate()">Update</a>
-                <a asp-action="Delete" asp-route-id="@item.StudentId" onclick="return ConfirmDelete()">Delete</a>
+                <a asp-action="Update" asp-route-id="@item.ClassId" onclick="return ConfirmUpdate()">Update</a>
+                <a asp-action="Delete" asp-route-id="@item.ClassId" onclick="return ConfirmDelete()">Delete</a>
 
             </td>
         </tr>

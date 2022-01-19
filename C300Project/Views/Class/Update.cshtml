@@ -1,9 +1,9 @@
-﻿@model Student
+﻿@model Class
 
 @{
-    var b = ViewData["Test"] as List<Class>;
+    var b = ViewData["Teachers"] as List<Teacher>;
     var c = ViewData["common"] as List<int>;
-    ViewBag.Title = "Update Student!";
+    ViewBag.Title = "Update Class!";
     int x = 1;
 }
 
@@ -30,8 +30,17 @@
         <span style="color:red">@ViewData["Msg"]</span><br />
         <div class="container">
 
-            <form asp-controller="Student" asp-action="Update" method="post" class="form-horizontal" role="form">
+            <form asp-controller="Class" asp-action="Update" method="post" class="form-horizontal" role="form">
                 <div class="form-horizontal">
+                    <div class="form-group">
+                        <label asp-for="ClassId" class="col-sm-3 control-label">Class Id: </label>
+                        <div class="col-sm-6">
+                            <input asp-for="ClassId" class="form-control" readonly="readonly"/>
+                        </div>
+                        <div class="has-error">
+                            <span asp-validation-for="ClassId" class="text-danger"></span>
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label asp-for="Name" class="col-sm-3 control-label">Name: </label>
                         <div class="col-sm-6">
@@ -42,32 +51,14 @@
                         </div>
                     </div>
 
-
-                    <div class="form-group">
-                        <label asp-for="MobileNo" class="col-sm-3 control-label">MobileNo: </label>
-                        <div class="col-sm-6">
-                            <input asp-for="MobileNo" class="form-control" />
-                        </div>
-                        <div class="has-error">
-                            <span asp-validation-for="MobileNo" class="text-danger"></span>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="Email" class="col-sm-3 control-label">Email: </label>
-                        <div class="col-sm-6">
-                            <input asp-for="Email" class="form-control" />
-                        </div>
-                        <div class="has-error">
-                            <span asp-validation-for="Email" class="text-danger"></span>
-                        </div>
-                    </div>
-
                     <div>
                         <table class="table table-bordered table-condensed table-hover table-striped">
                             <tr>
                                 <th>Id</th>
-                                <th>Class Name</th>
+                                <th>Name</th>
+                                <th>Mobile No</th>
+                                <th>Email</th>
+                                <th>Role</th>
                                 <th>Add To Class?</th>
                             </tr>
 
@@ -75,30 +66,39 @@
                             @foreach (var item in @b)
 
                             {
-                        <tr>
-                            <td>
-                                @x
-                            </td>
-                            <td>
-                                @item.Name
-                            </td>
-                            @if (c.Contains(item.ClassId))
-                            {
-                                <td>
-                                    <input type="radio" id="rdOption1" value="True" name="@("Add" +x)" checked="checked" /> Yes
-                                    <input type="radio" id="rdOption2" value="False" name="@("Add" +x)" /> No
-                                </td>
+                                <tr>
+                                    <td>
+                                        @x
+                                    </td>
+                                    <td>
+                                        @item.Name
+                                    </td>
+                                    <td>
+                                        @item.MobileNo
+                                    </td>
+                                    <td>
+                                        @item.Email
+                                    </td>
+                                    <td>
+                                        @item.Role
+                                    </td>
+                                    @if (c.Contains(item.TeacherId))
+                                    {
+                                        <td>
+                                            <input type="radio" id="rdOption1" value="True" name="@("Add" +x)" checked="checked" /> Yes
+                                            <input type="radio" id="rdOption2" value="False" name="@("Add" +x)" /> No
+                                        </td>
 
-                            }
-                            else
-                            {
-                                <td>
-                                    <input type="radio" id="rdOption1" value="True" name="@("Add" +x)" /> Yes
-                                    <input type="radio" id="rdOption2" value="False" name="@("Add" +x)" /> No
-                                </td>
-                            }
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            <input type="radio" id="rdOption1" value="True" name="@("Add" +x)" /> Yes
+                                            <input type="radio" id="rdOption2" value="False" name="@("Add" +x)" /> No
+                                        </td>
+                                    }
 
-                        </tr>
+                                </tr>
                                 x++;
                             }
 

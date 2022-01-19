@@ -1,8 +1,8 @@
-﻿@model Student
+﻿@model Class
 
 @{
-    var b = ViewData["Class"] as List<Class>;
-    ViewBag.Title = "Add new student";
+    var b = ViewData["Teachers"] as List<Teacher>;
+    ViewBag.Title = "Add new class";
     int x = 1;
 }
 
@@ -11,7 +11,7 @@
     
     <script>
         function ConfirmCreate() {
-            if (confirm("Confirm create Question?") == false) {
+            if (confirm("Confirm create class?") == false) {
                 event.preventDefault();
                 event.stopPropagation();
                 return false;
@@ -28,7 +28,7 @@
     <div class="row">
         <div class="col-sm-7">
             <span style="color:red">@ViewData["Msg"]</span><br />
-            <form asp-controller="Student" asp-action="Create" method="post" class="form-horizontal" role="form">
+            <form asp-controller="Class" asp-action="Create" method="post" class="form-horizontal" role="form">
                 <div class="form-horizontal">
                     <div class="form-group">
                         <label asp-for="Name" class="col-sm-3 control-label">Name: </label>
@@ -40,82 +40,11 @@
                         </div>
                     </div>
 
-
-                    <div class="form-group">
-                        <label asp-for="MobileNo" class="col-sm-3 control-label">MobileNo: </label>
-                        <div class="col-sm-6">
-                            <input asp-for="MobileNo" class="form-control" />
-                        </div>
-                        <div class="has-error">
-                            <span asp-validation-for="MobileNo" class="text-danger"></span>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="Country" class="col-sm-3 control-label">Country: </label>
-                        <div class="col-sm-6">
-                            <input asp-for="Country" class="form-control" />
-                        </div>
-                        <div class="has-error">
-                            <span asp-validation-for="Country" class="text-danger"></span>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="Foreigner" class="col-sm-3 control-label">Foreigner: </label>
-                        <div class="col-sm-6">
-                            <input asp-for="Foreigner" class="form-control" />
-                        </div>
-                        <div class="has-error">
-                            <span asp-validation-for="Foreigner" class="text-danger"></span>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="SchLvl" class="col-sm-3 control-label">School Level: </label>
-                        <div class="col-sm-6">
-                            <input asp-for="SchLvl" class="form-control" />
-                        </div>
-                        <div class="has-error">
-                            <span asp-validation-for="SchLvl" class="text-danger"></span>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="Email" class="col-sm-3 control-label">Email: </label>
-                        <div class="col-sm-6">
-                            <input asp-for="Email" class="form-control" />
-                        </div>
-                        <div class="has-error">
-                            <span asp-validation-for="Email" class="text-danger"></span>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="Class" class="col-sm-3 control-label">Class: </label>
-                        <div class="col-sm-6">
-                            <input asp-for="Class" class="form-control" />
-                        </div>
-                        <div class="has-error">
-                            <span asp-validation-for="Class" class="text-danger"></span>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="Password" class="col-sm-3 control-label">Password: </label>
-                        <div class="col-sm-6">
-                            <input asp-for="Password" class="form-control" />
-                        </div>
-                        <div class="has-error">
-                            <span asp-validation-for="Password" class="text-danger"></span>
-                        </div>
-                    </div>
-
                     <div>
                         <table class="table table-bordered table-condensed table-hover table-striped">
                             <tr>
                                 <th>Id</th>
-                                <th>Class Name</th>
+                                <th>Teacher Name</th>
                                 <th>Add To Class?</th>
                             </tr>
 

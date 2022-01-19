@@ -21,6 +21,7 @@ namespace fyp.Controllers
             _dbContext = dbContext;
         }
 
+        #region Index
         [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
@@ -29,6 +30,7 @@ namespace fyp.Controllers
 
             return View(model);
         }
+        #endregion
 
         #region HttpGet Add Student Action
         [Authorize(Roles = "Admin")]
@@ -37,7 +39,7 @@ namespace fyp.Controllers
         {
             DbSet<Class> dbs = _dbContext.Class;
             var lstClass = dbs.ToList();
-            ViewData["Class"] = lstClass;
+            ViewData["Class"] = new SelectList(lstClass, "Name", "Name");
             return View();
         }
         #endregion
@@ -48,18 +50,16 @@ namespace fyp.Controllers
         [HttpPost]
         public IActionResult Create(Student student, IFormCollection form)
         {
-            DbSet<Teacher> dbsteach = _dbContext.Teacher;
-
-
             DbSet<Class> dbsclass = _dbContext.Class;
-            List<Class> lstClass = dbsclass.ToList();
-            var dbcount = lstClass.Count();
-
             DbSet<Student> dbsstudent = _dbContext.Student;
-
+            DbSet<Teacher> dbsteach = _dbContext.Teacher;
             DbSet<TeacherClassBindDb> dbsTchCls = _dbContext.TeacherClassBindDb;
             DbSet<StudentClassBindDb> dbsStdCls = _dbContext.StudentClassBindDb;
             DbSet<TeacherStudentBindDb> dbsTchStd = _dbContext.TeacherStudentBindDb;
+
+            List<Class> lstClass = dbsclass.ToList();
+            var classid = dbsclass.Where(mo => mo.Name == student.Class).Select(mo => mo.ClassId).FirstOrDefault();
+            
 
             if (ModelState.IsValid)
             {
@@ -67,24 +67,18 @@ namespace fyp.Controllers
 
                 dbsstudent.Add(student);
                 _dbContext.SaveChanges();
-                for (var x = 0; x < dbcount; x++)
-                {
 
                     StudentClassBindDb studentClassBindDb = new StudentClassBindDb();
-                    var y = x + 1;
-                    var radiocheck = form["Add" + y];
 
-                    if (radiocheck.Equals("True"))
-                    {
                         if (ModelState.IsValid)
                         {
                             studentClassBindDb.StudentId = student.StudentId;
-                            studentClassBindDb.ClassId = y;
+                            studentClassBindDb.ClassId = classid;
 
 
                             List<TeacherClassBindDb> lstTchCls =
                                 dbsTchCls.
-                                Where(m => m.ClassId == y)
+                                Where(m => m.ClassId == classid)
                                 .ToList();
 
                             List<Teacher> lstTch = dbsteach
@@ -107,19 +101,13 @@ namespace fyp.Controllers
                                 }
                                 _dbContext.SaveChanges();
                             }
-                            else
-                            {
-                                continue;
-                            }
 
                             #endregion Add entry to TeacherStudentBindDb  
 
                             dbsStdCls.Add(studentClassBindDb);
 
                         }
-                    }
 
-                }
                 if (_dbContext.SaveChanges() >= 1)
                     TempData["Msg"] = "New student added!";
 
@@ -139,100 +127,57 @@ namespace fyp.Controllers
         [HttpGet]
         public IActionResult Update(int id)
         {
-            DbSet<StudentClassBindDb> dbs2 = _dbContext.StudentClassBindDb;
-            List<StudentClassBindDb> lstdb2 = dbs2.Where(mo => mo.StudentId == id).ToList();
-            List<int> lstoverlap = lstdb2.Select(mo => mo.ClassId).ToList();
             DbSet<Class> dbs3 = _dbContext.Class;
-            List<int> lstdb3 = dbs3.Select(mo => mo.ClassId).ToList();
+            var lstClass = dbs3.ToList();
+            
             DbSet<Student> dbs = _dbContext.Student;
             List<Student> lstdb = dbs.ToList();
             Student student = dbs.Where(mo => mo.StudentId == id).FirstOrDefault();
 
-            List<int> commonlist = lstoverlap.Intersect(lstdb3).ToList();
-
             if (student != null)
             {
-                var lstClass = dbs3.ToList();
-                ViewData["Test"] = lstClass;
-                ViewData["common"] = commonlist;
+                ViewData["Class"] = new SelectList(lstClass, "ClassId", "Name");
                 return View(student);
             }
             else
             {
-                TempData["Msg"] = "Question not found!";
+                TempData["Msg"] = "Student not found!";
                 return RedirectToAction("Index");
             }
         }
         #endregion
 
-        #region HttpPost Student Action
+        #region HttpPost Update Student Action
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public IActionResult Update(Teacher teacher, IFormCollection form)
+        public IActionResult Update(Student student, IFormCollection form)
         {
             if (ModelState.IsValid)
             {
-                DbSet<Teacher> dbs = _dbContext.Teacher;
-                Teacher tTeach = dbs.Where(mo => mo.TeacherId == teacher.TeacherId).FirstOrDefault();
+                DbSet<Student> dbs = _dbContext.Student;
+                Student tStud = dbs.Where(mo => mo.StudentId == student.StudentId).FirstOrDefault();
 
                 DbSet<Class> dbs3 = _dbContext.Class;
                 List<Class> lstCls = dbs3.ToList();
-                var dbcount = lstCls.Count();
 
-                DbSet<TeacherClassBindDb> dbs2 = _dbContext.TeacherClassBindDb;
-                List<TeacherClassBindDb> lstdb2 = dbs2.Where(mo => mo.TeacherId == teacher.TeacherId).ToList();
-
-                List<int> lstoverlap = lstdb2.Select(mo => mo.ClassId).ToList();
-                List<int> lstdb3 = dbs2.Select(mo => mo.ClassId).ToList();
-                List<int> commonlist = lstoverlap.Intersect(lstdb3).ToList();
-
-                for (var x = 0; x < dbcount; x++)
+                if (tStud != null)
                 {
-
-                    TeacherClassBindDb teacherClassBindDb = new TeacherClassBindDb();
-                    var y = x + 1;
-                    var radiocheck = form["Add" + y];
-
-                    if (commonlist.Contains(y) && radiocheck.Equals("False"))
-                    {
-                        dbs2.Remove(dbs2.Where(mo => mo.TeacherId == teacher.TeacherId && mo.ClassId == y).FirstOrDefault());
-                        _dbContext.SaveChanges();
-                    }
-                    else if (commonlist.Contains(y) && radiocheck.Equals("True"))
-                    {
-                        continue;
-                    }
-                    else if (radiocheck.Equals("True"))
-                    {
-                        if (ModelState.IsValid)
-                        {
-                            teacherClassBindDb.TeacherId = teacherClassBindDb.TeacherId;
-                            teacherClassBindDb.ClassId = y;
-                            dbs2.Add(teacherClassBindDb);
-
-                        }
-                    }
-
-                }
-
-                if (tTeach != null)
-                {
-                    tTeach.Name = teacher.Name;
-                    tTeach.MobileNo = teacher.MobileNo;
-                    tTeach.Email = teacher.Email;
-                    tTeach.Role = teacher.Role;
-
-
-                    _dbContext.SaveChanges();
+                    tStud.Name = student.Name;
+                    tStud.MobileNo = student.MobileNo;
+                    tStud.Country = student.Country;
+                    tStud.Foreigner = student.Foreigner;
+                    tStud.SchLvl = student.SchLvl;
+                    tStud.Email = student.Email;
+                    tStud.Class = student.Class;
 
                     if (_dbContext.SaveChanges() == 1)
-                        TempData["Msg"] = "Question updated!";
+                        TempData["Msg"] = "Student updated!";
                     else
                         TempData["Msg"] = "Failed to update database!";
                 }
                 else
                 {
-                    TempData["Msg"] = "Question not found!";
+                    TempData["Msg"] = "Student not found!";
                     return RedirectToAction("Index");
                 }
             }
@@ -278,3 +223,5 @@ namespace fyp.Controllers
         #endregion
     }
 }
+
+//19046587 Alfie Farhan

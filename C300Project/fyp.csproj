@@ -29,4 +29,10 @@
 	  </Content>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Views\Class\" />
+	  <Folder Include="Views\Student\" />
+	  <Folder Include="Views\Teacher\" />
+	</ItemGroup>
+
 </Project>

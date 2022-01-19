@@ -50,23 +50,30 @@
                                     <li class="nav-item">
                                         <a class="nav-link" asp-action="Index" asp-controller="Questions">Questions</a>
                                     </li>
-                                }
 
-
-                                @if (User.IsInRole("Admin"))
-                                {
                                     <li class="nav-item">
                                         <a class="nav-link" asp-action="Index" asp-controller="Reports">Report</a>
                                     </li>
-                                }
-                                @if (User.Identity.IsAuthenticated)
-                                {
 
                                     <li class="nav-item">
-                                        <a class="nav-link" asp-action="ChangePassword" asp-controller="Account">Change Password</a>
+                                        <a class="nav-link" asp-action="Index" asp-controller="Class">Class</a>
                                     </li>
-                                    }
+
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-action="Index" asp-controller="Teacher">Teachers</a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-action="Index" asp-controller="Student">Students</a>
+                                    </li>
+                                    
+                                    
                                 }
+
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-action="ChangePassword" asp-controller="Account">Change Password</a>
+                                </li>
+                            }
                         </ul>
                     </div>
                 </nav>

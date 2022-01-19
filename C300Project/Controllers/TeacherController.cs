@@ -21,6 +21,7 @@ namespace fyp.Controllers
             _dbContext = dbContext;
         }
 
+        #region Teacher Index
         //Main page that will show teachers and their details
         [Authorize(Roles = "Admin")]
         public IActionResult Index()
@@ -30,6 +31,7 @@ namespace fyp.Controllers
             
             return View(model);
         }
+        #endregion Teacher Index
 
         #region HttpGet Create Teacher Action
         [Authorize(Roles = "Admin")]
@@ -135,6 +137,7 @@ namespace fyp.Controllers
         }
         #endregion HttpPost Create Teacher Action
 
+        #region HttpGet Update Teacher Action
         [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Update(int id)
@@ -163,7 +166,9 @@ namespace fyp.Controllers
                 return RedirectToAction("Index");
             }
         }
+        #endregion HttpPost Create Teacher Action
 
+        #region HttpPost Update Teacher Action
         [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult Update(Teacher teacher, IFormCollection form)
@@ -204,7 +209,7 @@ namespace fyp.Controllers
                     {
                         if (ModelState.IsValid)
                         {
-                            teacherClassBindDb.TeacherId = teacherClassBindDb.TeacherId;
+                            teacherClassBindDb.TeacherId = teacher.TeacherId;
                             teacherClassBindDb.ClassId = y;
                             dbs2.Add(teacherClassBindDb);
 
@@ -220,17 +225,14 @@ namespace fyp.Controllers
                     tTeach.Email = teacher.Email;
                     tTeach.Role = teacher.Role;
 
-
-                    _dbContext.SaveChanges();
-
-                    if (_dbContext.SaveChanges() == 1)
-                        TempData["Msg"] = "Question updated!";
+                    if (_dbContext.SaveChanges() >= 1)
+                        TempData["Msg"] = "Teacher updated!";
                     else
                         TempData["Msg"] = "Failed to update database!";
                 }
                 else
                 {
-                    TempData["Msg"] = "Question not found!";
+                    TempData["Msg"] = "Teacher not found!";
                     return RedirectToAction("Index");
                 }
             }
@@ -240,8 +242,9 @@ namespace fyp.Controllers
             }
             return RedirectToAction("Index");
         }
+        #endregion HttpPost Update Teacher Action
 
-
+        #region HttpPost Delete Teacher Action
         [Authorize]
         public IActionResult Delete(int id)
         {
@@ -272,5 +275,7 @@ namespace fyp.Controllers
             }
             return RedirectToAction("Index");
         }
+        #endregion HttpPost Update Teacher Action
     }
 }
+//19046587 Alfie Farhan
