@@ -122,7 +122,7 @@
          <a asp-action="QuestionIndex" asp-route-id="">View Questions</a>
         </td>-->
                 }
-                @if (User.IsInRole("User"))
+                @if (User.IsInRole("Student"))
 
                 //use && then check if the date of the paper is more then current date
                 {
@@ -216,7 +216,7 @@
          <a asp-action="QuestionIndex" asp-route-id="">View Questions</a>
         </td>-->
                 }
-                @if (User.IsInRole("User"))//use && then check if the date of the paper is more then current date
+                @if (User.IsInRole("Student"))//use && then check if the date of the paper is more then current date
                 {
                     <td>
                         <a asp-action="Instruction" asp-route-id="@item.QuizId">Instruction</a>
@@ -295,7 +295,6 @@
 
                 @if (User.IsInRole("Admin"))
 
-                //use && then check if the date of the paper has passed yet
                 {
                     <!--<td>
          <a asp-action="ViewReport" asp-route-id="">View Results</a>
@@ -303,15 +302,13 @@
                 }
                 @if (User.IsInRole("Admin"))
 
-                //use && then check if the date of the paper is more then current date
                 {
                     <!--<td>
          <a asp-action="QuestionIndex" asp-route-id="">View Questions</a>
         </td>-->
                 }
-                @if (User.IsInRole("User"))
+                @if (User.IsInRole("Student"))
 
-                //use && then check if the date of the paper is more then current date
                 {
                     <td>
                         <a asp-action="Instruction" asp-route-id="@item.QuizId">Instruction</a>
