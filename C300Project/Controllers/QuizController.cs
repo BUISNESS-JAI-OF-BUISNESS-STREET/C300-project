@@ -24,7 +24,8 @@ namespace fyp.Controllers
             _dbContext = dbContext;
         }
 
-        [AllowAnonymous]
+        #region Index Action
+        [Authorize(Roles = "Student,Admin,Teacher")]
         public IActionResult Index()
         {
             DbSet<Quiz> dbs = _dbContext.Quiz;
@@ -34,17 +35,21 @@ namespace fyp.Controllers
             
             return View(model);
         }
+        #endregion
 
+        #region Instruction Action
         [Authorize(Roles = "Student")]
         public IActionResult Instruction(int id)
         {
             DbSet<Quiz> dbs = _dbContext.Quiz;
             List<Quiz> model = dbs.Where(mo => mo.QuizId == id).ToList();
 
-            return View(model);
+         return View(model);
         }
+        #endregion
 
-
+        //TODO Update Attempt
+        #region Attempt Get Action
         [Authorize(Roles = "Student")]
         public IActionResult Attempt(int id) 
         {
@@ -75,7 +80,10 @@ namespace fyp.Controllers
             }
 
         }
+        #endregion
 
+        //TODO Update Attempt Post
+        #region Attempt Post Action
         [Authorize(Roles = "Student")]
         [HttpPost]
         public IActionResult Attempt(IFormCollection form)
@@ -132,7 +140,9 @@ namespace fyp.Controllers
 
             return RedirectToAction("Index");
         }
+        #endregion
 
+        #region Create Quiz Action
         [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
@@ -144,30 +154,31 @@ namespace fyp.Controllers
             var lstClass = dbs5.ToList();
             ViewData["listClass"] = lstClass;
             return View();
-
-
         }
+        #endregion
 
+        #region Create Quiz Post Action
         [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult Create(Quiz quiz, IFormCollection form)
         {
+            DbSet<Quiz> dbs = _dbContext.Quiz;
             DbSet<Question> dbs2 = _dbContext.Question;
-            List<Question> lstQuestion = dbs2.ToList<Question>();
-            var dbcount = lstQuestion.Count();
-
             DbSet<QuizQuestionBindDb> dbs3 = _dbContext.QuizQuestionBindDb;
+            DbSet<Class> dbs4 = _dbContext.Class;
+            DbSet<QuizClassBindDb> dbs5 = _dbContext.QuizClassBindDb;
+
+
+            List<Question> lstQuestion = dbs2.ToList();
+            List<Class> lstClass = dbs4.ToList();
+            
+
+            
             var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             quiz.UserCode = userId;
 
-            DbSet<Class> dbs4 = _dbContext.Class;
-            List<Class> lstClass = dbs4.ToList<Class>();
+            var dbcount = lstQuestion.Count();
             var dbcount2 = lstClass.Count();
-
-            DbSet<QuizClassBindDb> dbs5 = _dbContext.QuizClassBindDb;
-
-            DbSet<Quiz> dbs = _dbContext.Quiz;
-
 
             if (ModelState.IsValid)
             {
@@ -175,7 +186,7 @@ namespace fyp.Controllers
                 dbs.Add(quiz);
                 _dbContext.SaveChanges();
 
-
+                #region Quiz Question Bind Add
                 for (var x = 0; x < dbcount; x++)
                 {
 
@@ -192,14 +203,20 @@ namespace fyp.Controllers
                             dbs3.Add(quizQuestionBind);
                         }
                     }
+                    else
+                    {
+                        continue;
+                    }
                 }
+                #endregion
 
+                #region Quiz Class Add
                 for (var b = 0; b < dbcount2; b++)
                 {
 
                     QuizClassBindDb quizClassBindDb = new QuizClassBindDb();
                     var a = b + 1;
-                    var radiocheck = form["Add" + a];
+                    var radiocheck = form["AddClass" + a];
 
                     if (radiocheck.Equals("True"))
                     {
@@ -210,60 +227,47 @@ namespace fyp.Controllers
                             dbs5.Add(quizClassBindDb);
                         }
                     }
-                }
-
-                if (_dbContext.SaveChanges() == 1)
-                    TempData["Msg"] = "New quiz added!";
-            }
-
-            else if (ModelState.IsValid)
-            {
-
-                dbs.Add(quiz);
-                _dbContext.SaveChanges();
-
-
-                for (var x = 0; x < dbcount; x++)
-                {
-
-                    QuizQuestionBindDb quizQuestionBind = new QuizQuestionBindDb();
-                    var y = x + 1;
-                    var radiocheck = form["Add" + y];
-
-                    if (radiocheck.Equals("False"))
+                    else
                     {
-                        if (ModelState.IsValid)
-                        {
-                            quizQuestionBind.QuestionId = y;
-                            quizQuestionBind.QuizId = quiz.QuizId;
-                            dbs3.Add(quizQuestionBind);
-                        }
+                        continue;
                     }
                 }
-                if (_dbContext.SaveChanges() == 1)
+                #endregion
+
+                if (_dbContext.SaveChanges() >= 1)
                     TempData["Msg"] = "New quiz added!";
             }
-
             else
             {
                 TempData["Msg"] = "Invalid information entered";
             }
             return RedirectToAction("Index");
         }
+        #endregion Create Quiz Post Action
 
-
+        #region Update Quiz Action
         [Authorize]
+        [HttpGet]
         public IActionResult Update(int id)
         {
             DbSet<QuizQuestionBindDb> dbs2 = _dbContext.QuizQuestionBindDb;
-            List<QuizQuestionBindDb> lstdb2 = dbs2.Where(mo => mo.QuizId == id).ToList();
-            List<int> lstoverlap = lstdb2.Select(mo => mo.QuestionId).ToList();
+            DbSet<QuizClassBindDb> dbs4 = _dbContext.QuizClassBindDb;
+            DbSet<Class> dbs5 = _dbContext.Class;
             DbSet<Quiz> dbs3 = _dbContext.Quiz;
-            List<int> lstdb3 = dbs3.Select(mo => mo.QuizId).ToList();
             DbSet<Question> dbs = _dbContext.Question;
+
+            List<QuizQuestionBindDb> lstdb2 = dbs2.Where(mo => mo.QuizId == id).ToList();
+            List<QuizClassBindDb> lstdb4 = dbs4.Where(mo => mo.QuizId == id).ToList();
+
+            List<int> lstoverlap = lstdb2.Select(mo => mo.QuestionId).ToList();
+            List<int> lstdb3 = dbs3.Select(mo => mo.QuizId).ToList();
             List<int> lstdb = dbs.Select(mo => mo.QuestionId).ToList();
 
+            List<int> lstoverlap2 = lstdb4.Select(mo => mo.ClassId).ToList();
+            List<int> lstdb5 = dbs5.Select(mo => mo.ClassId).ToList();
+
             List<int> commonlist = lstoverlap.Intersect(lstdb).ToList();
+            List<int> commonClasslist = lstoverlap2.Intersect(lstdb5).ToList();
 
             Quiz quiz = dbs3.Where(mo => mo.QuizId == id).FirstOrDefault();
 
@@ -271,8 +275,12 @@ namespace fyp.Controllers
             if (quiz != null)
             {
                 var lstQuestion = dbs.ToList();
+                var lstClass = dbs5.ToList();
+                ViewData["listClass"] = lstClass;
                 ViewData["Test"] = lstQuestion;
                 ViewData["common"] = commonlist;
+                ViewData["commonClass"] = commonClasslist;
+
 
                 return View(quiz);
             }
@@ -282,7 +290,9 @@ namespace fyp.Controllers
                 return RedirectToAction("Index");
             }
         }
+        #endregion
 
+        #region Update Post Action
         [Authorize]
         [HttpPost]
         public IActionResult Update(Quiz quiz, IFormCollection form)
@@ -290,21 +300,32 @@ namespace fyp.Controllers
             if (ModelState.IsValid)
             {
                 DbSet<Quiz> dbs = _dbContext.Quiz;
+                DbSet<Question> dbs2 = _dbContext.Question;
+                DbSet<QuizQuestionBindDb> dbs3 = _dbContext.QuizQuestionBindDb;
+                DbSet<Class> dbs4 = _dbContext.Class;
+                DbSet<QuizClassBindDb> dbs5 = _dbContext.QuizClassBindDb;
+
                 Quiz tOrder = dbs.Where(mo => mo.QuizId == quiz.QuizId).FirstOrDefault();
 
-                DbSet<Question> dbs2 = _dbContext.Question;
                 List<Question> lstQuestion = dbs2.ToList();
-                var dbcount = lstQuestion.Count();
-
-                DbSet<QuizQuestionBindDb> dbs3 = _dbContext.QuizQuestionBindDb;
                 List<QuizQuestionBindDb> lstdb2 = dbs3.Where(mo => mo.QuizId == quiz.QuizId).ToList();
+                List<QuizClassBindDb> lstdb3 = dbs5.Where(mo => mo.QuizId == quiz.QuizId).ToList();
+                List<Class> lstClass = dbs4.ToList();
 
                 List<int> lstoverlap = lstdb2.Select(mo => mo.QuestionId).ToList();
-
                 List<int> lstdb = dbs2.Select(mo => mo.QuestionId).ToList();
-
                 List<int> commonlist = lstoverlap.Intersect(lstdb).ToList();
 
+                List<int> lstoverlap2 = lstdb3.Select(mo => mo.ClassId).ToList();
+                List<int> lstdb4 = dbs4.Select(mo => mo.ClassId).ToList();
+                List<int> commonlist2 = lstoverlap2.Intersect(lstdb4).ToList();
+
+                
+                
+                var dbcount = lstQuestion.Count();
+                var dbcount2 = lstClass.Count();
+
+                #region QuizQuestionBind Update Check Code
                 for (var x = 0; x < dbcount; x++)
                 {
 
@@ -333,6 +354,37 @@ namespace fyp.Controllers
                     }
 
                 }
+                #endregion
+
+                #region QuizClassBind Update Check Code
+                for (var x = 0; x < dbcount2; x++)
+                {
+
+                    QuizClassBindDb quizClassBindDb = new QuizClassBindDb();
+                    var y = x + 1;
+                    var radiocheck = form["AddClass" + y];
+
+                    if (commonlist2.Contains(y) && radiocheck.Equals("False"))
+                    {
+                        dbs5.Remove(dbs5.Where(mo => mo.ClassId == y && mo.QuizId == quiz.QuizId).FirstOrDefault());
+                    }
+                    else if (commonlist2.Contains(y) && radiocheck.Equals("True"))
+                    {
+                        continue;
+                    }
+                    else if (radiocheck.Equals("True"))
+                    {
+                        if (ModelState.IsValid)
+                        {
+                            quizClassBindDb.ClassId = y;
+                            quizClassBindDb.QuizId = quiz.QuizId;
+                            dbs5.Add(quizClassBindDb);
+
+                        }
+                    }
+
+                }
+                #endregion
 
                 if (tOrder != null)
                 {
@@ -340,9 +392,10 @@ namespace fyp.Controllers
                     tOrder.Topic = quiz.Topic;
                     tOrder.Sec = quiz.Sec;
                     tOrder.StartDt = quiz.StartDt;
+                    tOrder.EndDt = quiz.EndDt;
 
 
-                    if (_dbContext.SaveChanges() == 1)
+                    if (_dbContext.SaveChanges() >= 1)
                         TempData["Msg"] = "Quiz updated!";
                     else
                         TempData["Msg"] = "Failed to update database!";
@@ -359,23 +412,28 @@ namespace fyp.Controllers
             }
             return RedirectToAction("Index");
         }
+        #endregion
 
-
+        #region Delete Quiz
         [Authorize]
         public IActionResult Delete(int id)
         {
+            DbSet<Quiz> dbs = _dbContext.Quiz;
             DbSet<QuizQuestionBindDb> dbs2 = _dbContext.QuizQuestionBindDb;
+            DbSet<QuizClassBindDb> dbs3 = _dbContext.QuizClassBindDb;
+
             dbs2.RemoveRange(dbs2.Where(mo => mo.QuizId == id).ToList());
+            dbs3.RemoveRange(dbs3.Where(mo => mo.QuizId == id).ToList());
             _dbContext.SaveChanges();
 
-            DbSet<Quiz> dbs = _dbContext.Quiz;
+            
 
-            Quiz tOrder = dbs.Where(mo => mo.QuizId == id)
+            Quiz tQuiz = dbs.Where(mo => mo.QuizId == id)
                                      .FirstOrDefault();
 
-            if (tOrder != null)
+            if (tQuiz != null)
             {
-                dbs.Remove(tOrder);
+                dbs.Remove(tQuiz);
                 if (_dbContext.SaveChanges() == 1)
                     TempData["Msg"] = "Quiz deleted!";
                 else
@@ -387,7 +445,9 @@ namespace fyp.Controllers
             }
             return RedirectToAction("Index");
         }
+        #endregion Delete Quiz
 
+        #region View Questions Action
         [Authorize(Roles = "Admin")]
         public IActionResult ViewQuestions(int id)
         {
@@ -403,7 +463,9 @@ namespace fyp.Controllers
             List<Question> questionlist = dbs3.Where(r => overlappedquestno.Contains(r.QuestionId)).Include(mo => mo.UserCodeNavigation).ToList();
             return View(questionlist);
         }
+        #endregion
 
+        #region Create Question From Quiz Action
         [Authorize(Roles = "Admin")]
         public IActionResult CreateQuestions(int id)
         {
@@ -415,29 +477,22 @@ namespace fyp.Controllers
             return View();
 
         }
+        #endregion Create Question From Quiz Action
 
+        #region Create Question From Quiz Post
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public IActionResult CreateQuestions(IFormCollection form)
+        public IActionResult CreateQuestions(Question question, IFormCollection form)
         {
-            var quizid = form["QuizIdInput"];
             DbSet<Question> dbs = _dbContext.Question;
-            Question question = new Question();
-
-            question.Questions = form["Questions"];
-            question.Topic = form["Topic"];
-            question.FirstOption = form["FirstOption"];
-            question.SecondOption = form["SecondOption"];
-            question.ThirdOption = form["ThirdOption"];
-            question.FourthOption = form["FourthOption"];
-            question.CorrectAns = form["CorrectAns"];
-            question.CorrectAns = form["Segment"];
-            question.UserCode = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
             DbSet<Quiz> dbs2 = _dbContext.Quiz;
+            DbSet<QuizQuestionBindDb> dbs3 = _dbContext.QuizQuestionBindDb;
+
+            var quizid = form["QuizIdInput"];
+            question.UserCode = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             List<Quiz> lstQuiz = dbs2.ToList<Quiz>();
             var dbcount = lstQuiz.Count();
-            DbSet<QuizQuestionBindDb> dbs3 = _dbContext.QuizQuestionBindDb;
+            
 
             if (ModelState.IsValid)
             {
@@ -475,7 +530,9 @@ namespace fyp.Controllers
             }
             return RedirectToAction("ViewQuestions", new { id = quizid });
         }
+        #endregion
 
+        #region Update Questions From Quiz Action
         [Authorize]
         public IActionResult UpdateQuestions(int id)
         {
@@ -504,7 +561,9 @@ namespace fyp.Controllers
                 return RedirectToAction("Index");
             }
         }
+        #endregion
 
+        #region Update Questions from quiz Action
         [Authorize]
         [HttpPost]
         public IActionResult UpdateQuestions(Question question, IFormCollection form)
@@ -587,8 +646,9 @@ namespace fyp.Controllers
             }
             return RedirectToAction("Index");
         }
+        #endregion
 
-
+        #region Delete Question Actions
         [Authorize]
         public IActionResult DeleteQuestions(int id, IFormCollection form)
         {
@@ -615,8 +675,9 @@ namespace fyp.Controllers
             }
             return RedirectToAction("Index");
         }
+        #endregion Delete Questions
 
-        
+        #region Preview Quiz Action
         [Authorize]
         [HttpGet]
         public IActionResult PreviewQuiz(int id)
@@ -651,5 +712,6 @@ namespace fyp.Controllers
 
 
         }
+        #endregion Preview Quiz Action
     }
 }

@@ -2,8 +2,11 @@
 
 @{
     ViewBag.Title = "Update quiz!";
+    var a = ViewData["listClass"] as List<Class>;
     var b = ViewData["Test"] as List<Question>;
     var c = ViewData["common"] as List<int>;
+    var d = ViewData["commonClass"] as List<int>;
+    int s = 1;
     int x = 1;
 }
 
@@ -93,14 +96,47 @@
                         <div class="form-group">
 
                             @{/*<label asp-for="Duration" class="col-sm-3 control-label">Duration (Minutes): </label>
-                                  <div class="col-sm-6">
-                                      <input asp-for="Duration" class="form-control" />
-                                  </div>
-                                  <div class="has-error">
-                                      <span asp-validation-for="Duration" class="text-danger"></span>
-                                  </div>
-                                */
+                                    <div class="col-sm-6">
+                                        <input asp-for="Duration" class="form-control" />
+                                    </div>
+                                    <div class="has-error">
+                                        <span asp-validation-for="Duration" class="text-danger"></span>
+                                    </div>
+                                  */
                             }
+                        </div>
+
+                        <div>
+                            <table class="table table-bordered table-condensed table-hover table-striped">
+                                <tr>
+                                    <th>ClassId</th>
+                                    <th>Class Name</th>
+
+                                    <th>Assign To Class?</th>
+                                </tr>
+
+
+                                @foreach (var item in @a)
+
+                                {
+                                    <tr>
+                                        <td>
+                                            @item.ClassId
+                                        </td>
+                                        <td>
+                                            @item.Name
+                                        </td>
+
+                                        <td>
+                                            <input type="radio" id="rdOption1" value="True" name="@("Add" +s)" /> Yes
+                                            <input type="radio" id="rdOption2" value="False" name="@("Add" +s)" /> No
+                                        </td>
+                                    </tr>
+                                    x++;
+                                }
+
+                            </table>
+
                         </div>
 
 
