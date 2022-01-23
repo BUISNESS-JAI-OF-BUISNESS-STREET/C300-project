@@ -4,6 +4,7 @@
     ViewBag.Title = "Create new quiz!";
     var b = ViewData["Test"] as List<Question>;
     int x = 1;
+    var z = ViewData["listClass"] as List<Class>;
 }
 
 @section ScriptSection {
@@ -30,6 +31,8 @@
             <span style="color:red">@ViewData["Msg"]</span><br />
             <form asp-controller="Quiz" asp-action="Create" method="post" class="form-horizontal" role="form">
                 <div class="form-horizontal">
+
+
 
                     <div class="form-group">
                         <label asp-for="Title" class="col-sm-3 control-label">Quiz Title: </label>
@@ -104,7 +107,38 @@
                         </div>
                     </div>
 
+                    <div>
+                        <table class="table table-bordered table-condensed table-hover table-striped">
+                            <tr>
+                                <th>ClassId</th>
+                                <th>Class Name</th>
 
+                                <th>Assign To Class?</th>
+                            </tr>
+
+
+                            @foreach (var item in @z)
+
+                            {
+                                <tr>
+                                    <td>
+                                        @item.ClassId
+                                    </td>
+                                    <td>
+                                        @item.Name
+                                    </td>
+
+                                    <td>
+                                        <input type="radio" id="rdOption1" value="True" name="@("Add" +x)" /> Yes
+                                        <input type="radio" id="rdOption2" value="False" name="@("Add" +x)" /> No
+                                    </td>
+                                </tr>
+                                x++;
+                            }
+
+                        </table>
+
+                    </div>
 
 
                     <div>

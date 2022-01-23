@@ -27,22 +27,7 @@ namespace fyp.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "Admin")]
-        public IActionResult Report()
-        {
-            
-
-            DbSet<Question> dbsQues= _dbContext.Question;
-            DbSet<Result> dbsRes = _dbContext.Result;
-            DbSet<Account> dbsAcc = _dbContext.Account;
-
-            ViewData["questions"] = dbsQues.ToList<Question>();
-            ViewData["results"] = dbsRes.ToList<Result>();
-            ViewData["account"] = dbsAcc.ToList<Account>();
-
-            return View();
-        }
-
+        [HttpGet]
         public IActionResult GetRemarks(int classId, int id)
         {
             DbSet<Announcement> dbs = _dbContext.Announcement;
@@ -74,6 +59,22 @@ namespace fyp.Controllers
             else
                 TempData["Msg"] = "Invalid data entry!";
             return RedirectToAction("Index");
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult Report()
+        {
+
+
+            DbSet<Question> dbsQues = _dbContext.Question;
+            DbSet<Result> dbsRes = _dbContext.Result;
+            DbSet<Account> dbsAcc = _dbContext.Account;
+
+            ViewData["questions"] = dbsQues.ToList<Question>();
+            ViewData["results"] = dbsRes.ToList<Result>();
+            ViewData["account"] = dbsAcc.ToList<Account>();
+
+            return View();
         }
     }
 }

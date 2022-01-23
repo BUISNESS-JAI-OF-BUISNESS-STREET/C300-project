@@ -29,14 +29,9 @@ namespace fyp.Controllers
         {
             DbSet<Quiz> dbs = _dbContext.Quiz;
             List<Quiz> model = dbs.ToList();
-            //if (User.IsInRole("Admin"))
             model = dbs.Include(mo => mo.UserCodeNavigation)
                         .ToList();
-            /* else
-             {
-                 var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                 model = dbs.Where(so => so.UserCode == userId).ToList();
-             }*/
+            
             return View(model);
         }
 
@@ -51,9 +46,8 @@ namespace fyp.Controllers
 
 
         [Authorize(Roles = "Student")]
-        public IActionResult Attempt(int id) //for users to attempt the quiz
+        public IActionResult Attempt(int id) 
         {
-            //TODO: require attention
             DbSet<QuizQuestionBindDb> dbs = _dbContext.QuizQuestionBindDb;
             List<QuizQuestionBindDb> model = dbs.Where(mo => mo.QuizId == id).ToList();
             List<int> overlapList = model.Select(mo => mo.QuestionId).ToList();
@@ -76,15 +70,9 @@ namespace fyp.Controllers
             }
             else
             {
-                //ViewData["title"] = model2[id].Title;
-                //ViewData["topic"] = model2[id].Topic;
+                
                 return View(questionlist);
             }
-
-
-
-
-
 
         }
 
@@ -126,7 +114,6 @@ namespace fyp.Controllers
             newResult.Dt = DateTime.Now;
 
 
-            //TODO: require attention
             if (ModelState.IsValid)
             {
 
@@ -152,7 +139,13 @@ namespace fyp.Controllers
             DbSet<Question> dbs = _dbContext.Question;
             var lstQuestion = dbs.ToList();
             ViewData["Test"] = lstQuestion;
+
+            DbSet<Class> dbs5 = _dbContext.Class;
+            var lstClass = dbs5.ToList();
+            ViewData["listClass"] = lstClass;
             return View();
+
+
         }
 
         [Authorize(Roles = "Admin")]
@@ -162,10 +155,19 @@ namespace fyp.Controllers
             DbSet<Question> dbs2 = _dbContext.Question;
             List<Question> lstQuestion = dbs2.ToList<Question>();
             var dbcount = lstQuestion.Count();
+
             DbSet<QuizQuestionBindDb> dbs3 = _dbContext.QuizQuestionBindDb;
             var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             quiz.UserCode = userId;
+
+            DbSet<Class> dbs4 = _dbContext.Class;
+            List<Class> lstClass = dbs4.ToList<Class>();
+            var dbcount2 = lstClass.Count();
+
+            DbSet<QuizClassBindDb> dbs5 = _dbContext.QuizClassBindDb;
+
             DbSet<Quiz> dbs = _dbContext.Quiz;
+
 
             if (ModelState.IsValid)
             {
@@ -188,6 +190,24 @@ namespace fyp.Controllers
                             quizQuestionBind.QuestionId = y;
                             quizQuestionBind.QuizId = quiz.QuizId;
                             dbs3.Add(quizQuestionBind);
+                        }
+                    }
+                }
+
+                for (var b = 0; b < dbcount2; b++)
+                {
+
+                    QuizClassBindDb quizClassBindDb = new QuizClassBindDb();
+                    var a = b + 1;
+                    var radiocheck = form["Add" + a];
+
+                    if (radiocheck.Equals("True"))
+                    {
+                        if (ModelState.IsValid)
+                        {
+                            quizClassBindDb.ClassId = a;
+                            quizClassBindDb.QuizId = quiz.QuizId;
+                            dbs5.Add(quizClassBindDb);
                         }
                     }
                 }
@@ -369,7 +389,7 @@ namespace fyp.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        public IActionResult ViewQuestions(int id) //for viewing questions in the specific quiz
+        public IActionResult ViewQuestions(int id)
         {
             DbSet<QuizQuestionBindDb> dbs = _dbContext.QuizQuestionBindDb;
             List<QuizQuestionBindDb> model = dbs.Where(mo => mo.QuizId == id).ToList();
@@ -600,68 +620,6 @@ namespace fyp.Controllers
         [Authorize]
         [HttpGet]
         public IActionResult PreviewQuiz(int id)
-        /*{
-            DbSet<Quiz> dbs = _dbContext.Quiz;
-            Quiz model = dbs.Where(mo => mo.QuizId == id)
-                .Include(mo => mo.UserCodeNavigation)
-                .Include(mo => mo.QuizQuestionBindDb)
-                .FirstOrDefault();
-
-            DbSet<QuizQuestionBindDb> dbs2 = _dbContext.QuizQuestionBindDb;
-            List<int> qtnlist = dbs2.ToList().Where(m => m.QuizId == id).Select(m => m.QuestionId).ToList();
-
-
-            DbSet<Question> dbs3 = _dbContext.Question;
-            List<Question> qtnlist1 = dbs3.Where(m => qtnlist.Contains(m.QuestionId)).ToList();
-            ViewData["QtnPull"] = qtnlist1;
-
-
-            if (dbs3 != null)
-                return new ViewAsPdf(model)
-                {
-                    PageSize = Rotativa.AspNetCore.Options.Size.A4,
-                    PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait
-
-                };
-            else
-            {
-                TempData["Msg"] = "Quiz not found!";
-                return RedirectToAction("Index");
-            }
-
-
-        }*/
-        /*{
-            DbSet<QuizQuestionBindDb> dbs = _dbContext.QuizQuestionBindDb;
-            List<QuizQuestionBindDb> model = dbs.Where(mo => mo.QuizId == id).ToList();
-            List<int> overlapList = model.Select(mo => mo.QuestionId).ToList();
-
-            DbSet<Quiz> dbs2 = _dbContext.Quiz;
-            List<Quiz> model2 = dbs2.Where(mo => mo.QuizId == id).Include(m => m.UserCodeNavigation).ToList();
-            ViewData["quizid"] = id;
-
-            DbSet<Question> dbs3 = _dbContext.Question;
-            List<Question> model3 = dbs3.ToList();
-            List<int> overlappedquestno = model3.Select(mo => mo.QuestionId).ToList().Intersect(overlapList).ToList();
-            List<Question> questionlist = dbs3.Where(r => overlappedquestno.Contains(r.QuestionId)).ToList();
-
-
-
-            if (model != null && model2 != null)
-                return new ViewAsPdf(questionlist)
-                {
-                    PageSize = Rotativa.AspNetCore.Options.Size.A4,
-                    PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait
-
-                };
-            else
-            {
-                TempData["Msg"] = "Quiz not found!";
-                return RedirectToAction("Index");
-            }
-
-
-        }*/
 
         {
             DbSet<QuizQuestionBindDb> dbs = _dbContext.QuizQuestionBindDb;
