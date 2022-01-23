@@ -19,6 +19,7 @@ namespace fyp.Controllers
             _dbContext = dbContext;
         }
 
+        #region Homepage Index Action
         [Authorize]
         public IActionResult Index()
         {
@@ -26,6 +27,8 @@ namespace fyp.Controllers
             var model = dbs.Include(m => m.Announcement).ToList();
             return View(model);
         }
+        #endregion
+
 
         [Authorize(Roles = "Admin")]
         public IActionResult Report()

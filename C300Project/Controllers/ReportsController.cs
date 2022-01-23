@@ -26,6 +26,7 @@ namespace fyp.Controllers.Controllers
             _dbContext = dbContext;
         }
 
+        #region Reports Index Action
         [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
@@ -33,8 +34,9 @@ namespace fyp.Controllers.Controllers
             List<Quiz> model = dbs.ToList();
             return View(model);
         }
+        #endregion
 
-
+        #region Reports ViewReports Action
         [Authorize(Roles = "Admin")]
         public IActionResult ViewReport(int id)
         {
@@ -43,7 +45,9 @@ namespace fyp.Controllers.Controllers
             ViewData["QuizId"] = id;
             return View(model);
         }
+        #endregion
 
+        #region Reports export to excel Action
         public IActionResult exportExcel(int id)
         {
             using(var workbook = new XLWorkbook())
@@ -99,7 +103,7 @@ namespace fyp.Controllers.Controllers
                 
             }
         }
-
+        #endregion
     }
 }
 //19046587 Alfie Farhan
