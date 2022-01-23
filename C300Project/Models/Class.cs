@@ -10,6 +10,7 @@ namespace fyp.Models
         public Class()
         {
             Announcement = new HashSet<Announcement>();
+            QuizClassBindDb = new HashSet<QuizClassBindDb>();
             StudentClassBindDb = new HashSet<StudentClassBindDb>();
             TeacherClassBindDb = new HashSet<TeacherClassBindDb>();
         }
@@ -20,6 +21,7 @@ namespace fyp.Models
 
         public virtual Account AddedByNavigation { get; set; }
         public virtual ICollection<Announcement> Announcement { get; set; }
+        public virtual ICollection<QuizClassBindDb> QuizClassBindDb { get; set; }
         public virtual ICollection<StudentClassBindDb> StudentClassBindDb { get; set; }
         public virtual ICollection<TeacherClassBindDb> TeacherClassBindDb { get; set; }
     }

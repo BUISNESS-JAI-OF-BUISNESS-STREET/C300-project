@@ -9,6 +9,7 @@ namespace fyp.Models
     {
         public Quiz()
         {
+            QuizClassBindDb = new HashSet<QuizClassBindDb>();
             QuizQuestionBindDb = new HashSet<QuizQuestionBindDb>();
         }
 
@@ -22,6 +23,7 @@ namespace fyp.Models
         public string UserCode { get; set; }
 
         public virtual Account UserCodeNavigation { get; set; }
+        public virtual ICollection<QuizClassBindDb> QuizClassBindDb { get; set; }
         public virtual ICollection<QuizQuestionBindDb> QuizQuestionBindDb { get; set; }
     }
 }
