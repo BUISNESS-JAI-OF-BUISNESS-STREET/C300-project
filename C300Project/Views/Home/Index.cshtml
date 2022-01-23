@@ -5,13 +5,13 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Announcement</h1>
+<h1>General Announcements</h1>
 
 @section ScriptSection {
 <script>
 
             function LoadRemarks(ClassId, Id) {
-                var url = "/RPNotes/getRemarks?ClassId=" + ClassId + "&Id=" + Id; //change url
+                var url = "/Home/getRemarks?ClassId=" + ClassId + "&Id=" + Id; 
                 $("#divRemarks").load(url);
         }
 
@@ -43,7 +43,7 @@
             {
 
                 <button class="btn btn-link text-left" data-target="@String.Format("#{0}div", m.ClassId)" style="text-align:left">@m.Name</button>
-                <div id="@String.Format("{0}div", m.ClassId)" class="collapse" onclick="return LoadRemarks('@m.ClassId, ')">
+                <div id="@String.Format("{0}div", m.ClassId)" onclick="return LoadRemarks('@m.ClassId')">
                 </div>
 
             }
