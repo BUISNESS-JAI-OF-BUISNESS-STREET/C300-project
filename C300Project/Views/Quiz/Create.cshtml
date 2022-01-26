@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Create new quiz!";
-    var b = ViewData["Test"] as List<Question>
+    var b = ViewData["Test"] as List<Question>;
         int s = 1;
     int x = 1;
     var z = ViewData["listClass"] as List<Class>;
@@ -130,8 +130,8 @@
                                     </td>
 
                                     <td>
-                                        <input type="radio" id="rdOption1" value="True" name="@("AddClass" +s)" /> Yes
-                                        <input type="radio" id="rdOption2" value="False" name="@("AddClass" +s)" /> No
+                                        <input type="radio" id="rdOption3" value="True" name="@("AddClass" +s)" /> Yes
+                                        <input type="radio" id="rdOption4" value="False" name="@("AddClass" +s)" /> No
                                     </td>
                                 </tr>
                                 s++;

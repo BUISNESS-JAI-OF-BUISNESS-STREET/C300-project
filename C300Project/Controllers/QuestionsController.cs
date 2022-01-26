@@ -22,6 +22,7 @@ namespace fyp.Controllers
             _dbContext = dbContext;
         }
 
+        #region Index Action
         public IActionResult Index()
         {
             DbSet<Question> dbs = _dbContext.Question;
@@ -37,7 +38,9 @@ namespace fyp.Controllers
             return View(model);
 
         }
+        #endregion
 
+        #region Create Get Action
         [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
@@ -46,30 +49,29 @@ namespace fyp.Controllers
             var lstQuiz = dbs.ToList();
             ViewData["Quiz"] = new SelectList(lstQuiz, "QuizId", "Title");
             ViewData["Test"] = lstQuiz;
+
+            
+            DbSet<Segment> dbs2 = _dbContext.Segment;
+            var lstSegment = dbs2.ToList();
+            ViewData["Segment"] = new SelectList(lstSegment, "SegmentId", "Name");
             return View();
         }
+        #endregion
 
+        #region Create Post Action
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public IActionResult Create(IFormCollection form)
+        public IActionResult Create(Question question, IFormCollection form)
         {
             DbSet<Question> dbs = _dbContext.Question;
-            Question question = new Question();
-
-            question.Questions = form["Questions"];
-            question.Topic = form["Topic"];
-            question.FirstOption = form["FirstOption"];
-            question.SecondOption = form["SecondOption"];
-            question.ThirdOption = form["ThirdOption"];
-            question.FourthOption = form["FourthOption"];
-            question.CorrectAns = form["CorrectAns"];
-            question.Segment = form["Segment"];
-            question.UserCode = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            
             DbSet<Quiz> dbs2 = _dbContext.Quiz;
+            DbSet<QuizQuestionBindDb> dbs3= _dbContext.QuizQuestionBindDb;
+            
+            
+            
             List<Quiz> lstQuiz = dbs2.ToList<Quiz>();
             var dbcount = lstQuiz.Count();
-            DbSet<QuizQuestionBindDb> dbs3= _dbContext.QuizQuestionBindDb;
+            question.UserCode = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             if (ModelState.IsValid)
             {   
@@ -95,7 +97,7 @@ namespace fyp.Controllers
                     }
                         
                     }
-                if (_dbContext.SaveChanges() == 1)
+                if (_dbContext.SaveChanges() >= 1)
                     TempData["Msg"] = "New question added!";    
                     
                 else
@@ -107,25 +109,35 @@ namespace fyp.Controllers
             }
             return RedirectToAction("Index");
         }
+        #endregion
 
+        #region Update Get Action
         [Authorize]
         public IActionResult Update(int id)
         {
-            DbSet<QuizQuestionBindDb> dbs2 = _dbContext.QuizQuestionBindDb;
-            List<QuizQuestionBindDb> lstdb2 = dbs2.Where(mo => mo.QuestionId == id).ToList();
-            List<int> lstoverlap = lstdb2.Select(mo => mo.QuizId).ToList();
-            DbSet<Quiz> dbs3 = _dbContext.Quiz;
-            List<int> lstdb3 = dbs3.Select(mo => mo.QuizId).ToList();
             DbSet<Question> dbs = _dbContext.Question;
+            DbSet<QuizQuestionBindDb> dbs2 = _dbContext.QuizQuestionBindDb;
+            DbSet<Quiz> dbs3 = _dbContext.Quiz;
+            DbSet<Segment> dbs4 = _dbContext.Segment;
+
+            List<QuizQuestionBindDb> lstdb2 = dbs2.Where(mo => mo.QuestionId == id).ToList();
             List<Question> lstdb = dbs.ToList();
+            var lstSegment = dbs4.ToList();
+
+            List<int> lstoverlap = lstdb2.Select(mo => mo.QuizId).ToList();
+            List<int> lstdb3 = dbs3.Select(mo => mo.QuizId).ToList();
+            List<int> commonlist = lstoverlap.Intersect(lstdb3).ToList();
+            
             Question question = dbs.Where(mo => mo.QuestionId == id).FirstOrDefault();
 
-            List<int> commonlist = lstoverlap.Intersect(lstdb3).ToList();
+            
+            
 
             if (question != null)
             {
                 DbSet<Quiz> dbsQuiz = _dbContext.Quiz;
                 var lstQuiz = dbsQuiz.ToList();
+                ViewData["Segment"] = new SelectList(lstSegment, "SegmentId", "Name");
                 ViewData["Test"] = lstQuiz;
                 ViewData["common"] = commonlist;
                 return View(question);
@@ -136,7 +148,9 @@ namespace fyp.Controllers
                 return RedirectToAction("Index");
             }
         }
+        #endregion
 
+        #region Update Post Action
         [Authorize]
         [HttpPost]
         public IActionResult Update(Question question, IFormCollection form)
@@ -144,14 +158,15 @@ namespace fyp.Controllers
             if (ModelState.IsValid)
             {
                 DbSet<Question> dbs = _dbContext.Question;
+                DbSet<QuizQuestionBindDb> dbs2 = _dbContext.QuizQuestionBindDb;
+                DbSet<Quiz> dbs3 = _dbContext.Quiz;
+
                 Question tOrder = dbs.Where(mo => mo.QuestionId == question.QuestionId).FirstOrDefault();
 
-                DbSet<Quiz> dbs3 = _dbContext.Quiz;
+                
                 List<Quiz> lstQuiz = dbs3.ToList<Quiz>();
-                var dbcount = lstQuiz.Count();
-
-                DbSet<QuizQuestionBindDb> dbs2 = _dbContext.QuizQuestionBindDb;
                 List<QuizQuestionBindDb> lstdb2 = dbs2.Where(mo => mo.QuestionId == question.QuestionId).ToList();
+                var dbcount = lstQuiz.Count();
 
                 List<int> lstoverlap = lstdb2.Select(mo => mo.QuizId).ToList();
                 List<int> lstdb3 = dbs2.Select(mo => mo.QuizId).ToList();
@@ -195,10 +210,7 @@ namespace fyp.Controllers
                     tOrder.Topic = question.Topic;
                     tOrder.CorrectAns = question.CorrectAns;
 
-
-                    _dbContext.SaveChanges();
-
-                    if (_dbContext.SaveChanges() == 1)
+                    if (_dbContext.SaveChanges() >= 1)
                         TempData["Msg"] = "Question updated!";
                     else
                         TempData["Msg"] = "Failed to update database!";
@@ -215,8 +227,9 @@ namespace fyp.Controllers
             }
             return RedirectToAction("Index");
         }
-         
+        #endregion
 
+        #region Delete Action
         [Authorize]
         public IActionResult Delete(int id)
         {
@@ -243,5 +256,6 @@ namespace fyp.Controllers
             }
             return RedirectToAction("Index");
         }
+        #endregion
     }
 }

@@ -119,19 +119,29 @@
                                 @foreach (var item in @a)
 
                                 {
-                                    <tr>
-                                        <td>
-                                            @item.ClassId
-                                        </td>
-                                        <td>
-                                            @item.Name
-                                        </td>
-
-                                        <td>
-                                            <input type="radio" id="rdOption1" value="True" name="@("Add" +s)" /> Yes
-                                            <input type="radio" id="rdOption2" value="False" name="@("Add" +s)" /> No
-                                        </td>
-                                    </tr>
+                            <tr>
+                                <td>
+                                    @item.ClassId
+                                </td>
+                                <td>
+                                    @item.Name
+                                </td>
+                                @if (d.Contains(item.ClassId))
+                                {
+                                    <td>
+                                        <input type="radio" id="rdOption3" value="True" name="@("AddClass" + s)" checked="checked"/> Yes
+                                        <input type="radio" id="rdOption4" value="False" name="@("AddClass" + s)" /> No
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        <input type="radio" id="rdOption3" value="True" name="@("AddClass" + s)" /> Yes
+                                        <input type="radio" id="rdOption4" value="False" name="@("AddClass" + s)" /> No
+                                    </td>
+                                }
+                                }
+                            </tr>
                                     x++;
                                 }
 
