@@ -31,11 +31,11 @@ namespace fyp.Controllers
 
 
         [HttpGet]
-        public IActionResult GetRemarks(int classId, int id)
+        public IActionResult GetRemarks(int classId)
         {
             DbSet<Announcement> dbs = _dbContext.Announcement;
             var announcement = dbs.Where
-                (l => l.ClassId == classId && l.Id == id).
+                (l => l.ClassId == classId).
                 Include(l => l.Class).FirstOrDefault();
             return PartialView("_Remarks", announcement);
         }
@@ -46,7 +46,7 @@ namespace fyp.Controllers
             if (ModelState.IsValid)
             {
                 DbSet<Announcement> dbs = _dbContext.Announcement;
-                var tAnnouncement = dbs.Where(l => l.ClassId == uannouncement.ClassId && l.Id == uannouncement.Id).FirstOrDefault();
+                var tAnnouncement = dbs.Where(l => l.ClassId == uannouncement.ClassId).FirstOrDefault();
 
                 if (tAnnouncement != null)
                 {

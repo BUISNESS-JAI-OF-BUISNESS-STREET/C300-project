@@ -1,6 +1,6 @@
 ﻿@model List<Class>;
 
-@{ //add a date and time to the announcement page 
+@{ //add a date and time to the announcement page
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -8,10 +8,10 @@
 <h1>General Announcements</h1>
 
 @section ScriptSection {
-<script>
+    <script>
 
-            function LoadRemarks(ClassId, Id) {
-                var url = "/Home/getRemarks?ClassId=" + ClassId + "&Id=" + Id; 
+            function LoadRemarks(ClassId) {
+                var url = "/Home/getRemarks?ClassId=" + ClassId;
                 $("#divRemarks").load(url);
         }
 
@@ -25,13 +25,13 @@
             </text>
 
         }
-</script>
-<style>
-    .pre-scrollable {
-        max-height: 100%;
-        overflow-y: scroll;
-    }
-</style>
+    </script>
+    <style>
+        .pre-scrollable {
+            max-height: 100%;
+            overflow-y: scroll;
+        }
+    </style>
 }
 
 <div class="col-2">
@@ -39,24 +39,23 @@
         @if (Model != null)
         {
             @foreach (Class m in Model)
-
             {
-
-                <button class="btn btn-link text-left" data-target="@String.Format("#{0}div", m.ClassId)" style="text-align:left">@m.Name</button>
                 <div id="@String.Format("{0}div", m.ClassId)" onclick="return LoadRemarks('@m.ClassId')">
+
+                    <button class="btn btn-link text-left" data-target="@String.Format("#{0}div", m.ClassId)" style="text-align:left">@m.Name</button>
                 </div>
+                }
 
             }
-        }
 
+        </div>
     </div>
-</div>
 
-<div id="divRemarks" class="col-8">
-    
+    <div id="divRemarks" class="col-8">
+
 
         <partial name="_Remarks" model="Model[0].Announcement.ToList()[0]" />
 
-    
 
-</div>
+
+    </div>
