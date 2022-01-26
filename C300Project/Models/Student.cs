@@ -14,12 +14,24 @@ namespace fyp.Models
         }
 
         public int StudentId { get; set; }
+
+        [Required(ErrorMessage = "Name must not be empty!")]
         public string Name { get; set; }
+
+        [Required(ErrorMessage = "Phone Number must not be empty!")]
         public string MobileNo { get; set; }
+
+        [Required(ErrorMessage = "Country must not be empty!")]
         public string Country { get; set; }
         public bool Foreigner { get; set; }
+
+        [Required(ErrorMessage = "School Level must not be empty!")]
         public string SchLvl { get; set; }
+
+        [Required(ErrorMessage = "Email must not be empty!")]
         public string Email { get; set; }
+
+        [Required(ErrorMessage = "Class must not be empty!")]
         public string Class { get; set; }
         public string AddedBy { get; set; }
 
