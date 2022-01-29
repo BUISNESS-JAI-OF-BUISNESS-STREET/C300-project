@@ -1,0 +1,84 @@
+﻿@model Question
+
+<div class="form-group">
+    <label asp-for="Questions" class="col-sm-3 control-label">Question: </label>
+    <div class="col-sm-6">
+        <input asp-for="Questions" class="form-control" />
+    </div>
+    <div class="has-error">
+        <span asp-validation-for="Questions" class="text-danger"></span>
+    </div>
+</div>
+
+
+<div class="form-group">
+    <label asp-for="Topic" class="col-sm-3 control-label">Topic: </label>
+    <div class="col-sm-6">
+        <input asp-for="Topic" class="form-control" />
+    </div>
+    <div class="has-error">
+        <span asp-validation-for="Topic" class="text-danger"></span>
+    </div>
+</div>
+
+<div class="form-group">
+    <label asp-for="FirstOption" class="col-sm-3 control-label">First Option: </label>
+    <div class="col-sm-6">
+        <input asp-for="FirstOption" class="form-control" />
+    </div>
+    <div class="has-error">
+        <span asp-validation-for="FirstOption" class="text-danger"></span>
+    </div>
+</div>
+
+<div class="form-group">
+    <label asp-for="SecondOption" class="col-sm-3 control-label">Second Option: </label>
+    <div class="col-sm-6">
+        <input asp-for="SecondOption" class="form-control" />
+    </div>
+    <div class="has-error">
+        <span asp-validation-for="SecondOption" class="text-danger"></span>
+    </div>
+</div>
+
+<div class="form-group">
+    <label asp-for="ThirdOption" class="col-sm-3 control-label">Third Option: </label>
+    <div class="col-sm-6">
+        <input asp-for="ThirdOption" class="form-control" />
+    </div>
+    <div class="has-error">
+        <span asp-validation-for="ThirdOption" class="text-danger"></span>
+    </div>
+</div>
+
+<div class="form-group">
+    <label asp-for="FourthOption" class="col-sm-3 control-label">Fourth Option: </label>
+    <div class="col-sm-6">
+        <input asp-for="FourthOption" class="form-control" />
+    </div>
+    <div class="has-error">
+        <span asp-validation-for="FourthOption" class="text-danger"></span>
+    </div>
+</div>
+
+<div class="form-group">
+    <label asp-for="CorrectAns" class="col-sm-3 control-label">Correct Answer: </label>
+    <div class="col-sm-6">
+        <input asp-for="CorrectAns" class="form-control" />
+    </div>
+    <div class="has-error">
+        <span asp-validation-for="CorrectAns" class="text-danger"></span>
+    </div>
+</div>
+
+<div class="form-group">
+    <label asp-for="Segment" class="col-sm-3 control-label">Segment: </label>
+    <div class="col-sm-6">
+        <select asp-for="Segment" asp-items="@((SelectList)ViewData["Segment"])" class="form-control">
+            <option value="">-- SELECT --</option>
+        </select>
+    </div>
+    <div class="has-error">
+        <span asp-validation-for="Segment" class="text-danger"></span>
+    </div>
+</div>

@@ -12,7 +12,6 @@ using System.Dynamic;
 using System.Data.SqlClient;
 using Rotativa.AspNetCore;
 
-
 namespace fyp.Controllers
 {
     public class QuizController : Controller
@@ -185,31 +184,7 @@ namespace fyp.Controllers
 
                 dbs.Add(quiz);
                 _dbContext.SaveChanges();
-
-                #region Quiz Question Bind Add
-                for (var x = 0; x < dbcount; x++)
-                {
-
-                    QuizQuestionBindDb quizQuestionBind = new QuizQuestionBindDb();
-                    var y = x + 1;
-                    var radiocheck = form["Add" + y];
-
-                    if (radiocheck.Equals("True"))
-                    {
-                        if (ModelState.IsValid)
-                        {
-                            quizQuestionBind.QuestionId = y;
-                            quizQuestionBind.QuizId = quiz.QuizId;
-                            dbs3.Add(quizQuestionBind);
-                        }
-                    }
-                    else
-                    {
-                        continue;
-                    }
-                }
-                #endregion
-
+                
                 #region Quiz Class Add
                 for (var b = 0; b < dbcount2; b++)
                 {
@@ -233,6 +208,32 @@ namespace fyp.Controllers
                     }
                 }
                 #endregion
+
+                #region Quiz Question Bind Add
+                for (var x = 0; x < dbcount; x++)
+                {
+
+                    QuizQuestionBindDb quizQuestionBind = new QuizQuestionBindDb();
+                    var y = x + 1;
+                    var radiocheck = form["Add" + y];
+
+                    if (!radiocheck.Equals(""))
+                    {
+                        if (ModelState.IsValid)
+                        {
+                            quizQuestionBind.QuestionId = y;
+                            quizQuestionBind.QuizId = quiz.QuizId;
+                            dbs3.Add(quizQuestionBind);
+                        }
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+                #endregion
+
+                
 
                 if (_dbContext.SaveChanges() >= 1)
                     TempData["Msg"] = "New quiz added!";

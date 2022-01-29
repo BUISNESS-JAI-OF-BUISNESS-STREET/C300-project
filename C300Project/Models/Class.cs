@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+
 #nullable disable
 
 namespace fyp.Models
@@ -16,8 +16,6 @@ namespace fyp.Models
         }
 
         public int ClassId { get; set; }
-
-        [Required(ErrorMessage = "Name must not be empty!")]
         public string Name { get; set; }
         public string AddedBy { get; set; }
 

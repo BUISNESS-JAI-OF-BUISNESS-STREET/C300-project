@@ -20,6 +20,7 @@ namespace fyp.Models
         public virtual DbSet<Account> Account { get; set; }
         public virtual DbSet<Announcement> Announcement { get; set; }
         public virtual DbSet<Class> Class { get; set; }
+        public virtual DbSet<Papers> Papers { get; set; }
         public virtual DbSet<Question> Question { get; set; }
         public virtual DbSet<Quiz> Quiz { get; set; }
         public virtual DbSet<QuizClassBindDb> QuizClassBindDb { get; set; }
@@ -31,6 +32,8 @@ namespace fyp.Models
         public virtual DbSet<Teacher> Teacher { get; set; }
         public virtual DbSet<TeacherClassBindDb> TeacherClassBindDb { get; set; }
         public virtual DbSet<TeacherStudentBindDb> TeacherStudentBindDb { get; set; }
+        public virtual DbSet<Topic> Topic { get; set; }
+        public virtual DbSet<TopicPaperSegmentBind> TopicPaperSegmentBind { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -68,7 +71,7 @@ namespace fyp.Models
                     .WithMany(p => p.Announcement)
                     .HasForeignKey(d => d.ClassId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Announcem__Class__2E5BD364");
+                    .HasConstraintName("FK__Announcem__Class__6359AB88");
             });
 
             modelBuilder.Entity<Class>(entity =>
@@ -87,7 +90,15 @@ namespace fyp.Models
                     .WithMany(p => p.Class)
                     .HasForeignKey(d => d.AddedBy)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Class__AddedBy__1A54DAB7");
+                    .HasConstraintName("FK__Class__AddedBy__47B19113");
+            });
+
+            modelBuilder.Entity<Papers>(entity =>
+            {
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<Question>(entity =>
@@ -139,7 +150,7 @@ namespace fyp.Models
                     .WithMany(p => p.Question)
                     .HasForeignKey(d => d.UserCode)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Question__UserCo__092A4EB5");
+                    .HasConstraintName("FK__Question__UserCo__36870511");
             });
 
             modelBuilder.Entity<Quiz>(entity =>
@@ -167,7 +178,7 @@ namespace fyp.Models
                     .WithMany(p => p.Quiz)
                     .HasForeignKey(d => d.UserCode)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Quiz__UserCode__0C06BB60");
+                    .HasConstraintName("FK__Quiz__UserCode__396371BC");
             });
 
             modelBuilder.Entity<QuizClassBindDb>(entity =>
@@ -180,13 +191,13 @@ namespace fyp.Models
                     .WithMany(p => p.QuizClassBindDb)
                     .HasForeignKey(d => d.ClassId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__QuizClass__Class__2B7F66B9");
+                    .HasConstraintName("FK__QuizClass__Class__607D3EDD");
 
                 entity.HasOne(d => d.Quiz)
                     .WithMany(p => p.QuizClassBindDb)
                     .HasForeignKey(d => d.QuizId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__QuizClass__QuizI__2A8B4280");
+                    .HasConstraintName("FK__QuizClass__QuizI__5F891AA4");
             });
 
             modelBuilder.Entity<QuizQuestionBindDb>(entity =>
@@ -199,13 +210,13 @@ namespace fyp.Models
                     .WithMany(p => p.QuizQuestionBindDb)
                     .HasForeignKey(d => d.QuestionId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__QuizQuest__Quest__10CB707D");
+                    .HasConstraintName("FK__QuizQuest__Quest__3E2826D9");
 
                 entity.HasOne(d => d.Quiz)
                     .WithMany(p => p.QuizQuestionBindDb)
                     .HasForeignKey(d => d.QuizId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__QuizQuest__QuizI__11BF94B6");
+                    .HasConstraintName("FK__QuizQuest__QuizI__3F1C4B12");
             });
 
             modelBuilder.Entity<Result>(entity =>
@@ -282,7 +293,7 @@ namespace fyp.Models
                     .WithMany(p => p.Student)
                     .HasForeignKey(d => d.AddedBy)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Student__AddedBy__17786E0C");
+                    .HasConstraintName("FK__Student__AddedBy__44D52468");
             });
 
             modelBuilder.Entity<StudentClassBindDb>(entity =>
@@ -295,13 +306,13 @@ namespace fyp.Models
                     .WithMany(p => p.StudentClassBindDb)
                     .HasForeignKey(d => d.ClassId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__StudentCl__Class__23DE44F1");
+                    .HasConstraintName("FK__StudentCl__Class__58DC1D15");
 
                 entity.HasOne(d => d.Student)
                     .WithMany(p => p.StudentClassBindDb)
                     .HasForeignKey(d => d.StudentId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__StudentCl__Stude__22EA20B8");
+                    .HasConstraintName("FK__StudentCl__Stude__57E7F8DC");
             });
 
             modelBuilder.Entity<Teacher>(entity =>
@@ -335,7 +346,7 @@ namespace fyp.Models
                     .WithMany(p => p.Teacher)
                     .HasForeignKey(d => d.AddedBy)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Teacher__AddedBy__149C0161");
+                    .HasConstraintName("FK__Teacher__AddedBy__41F8B7BD");
             });
 
             modelBuilder.Entity<TeacherClassBindDb>(entity =>
@@ -348,13 +359,13 @@ namespace fyp.Models
                     .WithMany(p => p.TeacherClassBindDb)
                     .HasForeignKey(d => d.ClassId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__TeacherCl__Class__200DB40D");
+                    .HasConstraintName("FK__TeacherCl__Class__550B8C31");
 
                 entity.HasOne(d => d.Teacher)
                     .WithMany(p => p.TeacherClassBindDb)
                     .HasForeignKey(d => d.TeacherId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__TeacherCl__Teach__1F198FD4");
+                    .HasConstraintName("FK__TeacherCl__Teach__541767F8");
             });
 
             modelBuilder.Entity<TeacherStudentBindDb>(entity =>
@@ -367,13 +378,44 @@ namespace fyp.Models
                     .WithMany(p => p.TeacherStudentBindDb)
                     .HasForeignKey(d => d.StudentId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__TeacherSt__Stude__26BAB19C");
+                    .HasConstraintName("FK__TeacherSt__Stude__5BB889C0");
 
                 entity.HasOne(d => d.Teacher)
                     .WithMany(p => p.TeacherStudentBindDb)
                     .HasForeignKey(d => d.TeacherId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__TeacherSt__Teach__27AED5D5");
+                    .HasConstraintName("FK__TeacherSt__Teach__5CACADF9");
+            });
+
+            modelBuilder.Entity<Topic>(entity =>
+            {
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<TopicPaperSegmentBind>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.HasOne(d => d.Papers)
+                    .WithMany()
+                    .HasForeignKey(d => d.PapersId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__TopicPape__Paper__5046D714");
+
+                entity.HasOne(d => d.Segment)
+                    .WithMany()
+                    .HasForeignKey(d => d.SegmentId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__TopicPape__Segme__513AFB4D");
+
+                entity.HasOne(d => d.Topic)
+                    .WithMany()
+                    .HasForeignKey(d => d.TopicId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__TopicPape__Topic__4F52B2DB");
             });
 
             OnModelCreatingPartial(modelBuilder);

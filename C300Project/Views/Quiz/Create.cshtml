@@ -185,8 +185,8 @@
                                         @item.CorrectAns
                                     </td>
                                     <td>
-                                        <input type="radio" id="rdOption1" value="True" name="@("Add" +x)" /> Yes
-                                        <input type="radio" id="rdOption2" value="False" name="@("Add" +x)" /> No
+                                        <input type="radio" id="rdOption1" value="@item.QuestionId" name="@("Add" +x)" /> Yes
+                                        <input type="radio" id="rdOption2" value="" name="@("Add" +x)" /> No
                                     </td>
                                 </tr>
                                 x++;

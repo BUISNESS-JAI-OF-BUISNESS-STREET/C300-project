@@ -30,78 +30,7 @@
             <span style="color:red">@ViewData["Msg"]</span><br />
             <form asp-controller="Student" asp-action="Create" method="post" class="form-horizontal" role="form">
                 <div class="form-horizontal">
-                    <div class="form-group">
-                        <label asp-for="Name" class="col-sm-3 control-label">Name: </label>
-                        <div class="col-sm-6">
-                            <input asp-for="Name" class="form-control" />
-                        </div>
-                        <div class="has-error">
-                            <span asp-validation-for="Name" class="text-danger"></span>
-                        </div>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label asp-for="MobileNo" class="col-sm-3 control-label">MobileNo: </label>
-                        <div class="col-sm-6">
-                            <input asp-for="MobileNo" class="form-control" />
-                        </div>
-                        <div class="has-error">
-                            <span asp-validation-for="MobileNo" class="text-danger"></span>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="Country" class="col-sm-3 control-label">Country: </label>
-                        <div class="col-sm-6">
-                            <input asp-for="Country" class="form-control" />
-                        </div>
-                        <div class="has-error">
-                            <span asp-validation-for="Country" class="text-danger"></span>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="Foreigner" class="col-sm-3 control-label">Foreigner: </label>
-                        <div class="col-sm-6">
-                            <input asp-for="Foreigner" class="form-control" />
-                        </div>
-                        <div class="has-error">
-                            <span asp-validation-for="Foreigner" class="text-danger"></span>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="SchLvl" class="col-sm-3 control-label">School Level: </label>
-                        <div class="col-sm-6">
-                            <input asp-for="SchLvl" class="form-control" />
-                        </div>
-                        <div class="has-error">
-                            <span asp-validation-for="SchLvl" class="text-danger"></span>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="Email" class="col-sm-3 control-label">Email: </label>
-                        <div class="col-sm-6">
-                            <input asp-for="Email" class="form-control" />
-                        </div>
-                        <div class="has-error">
-                            <span asp-validation-for="Email" class="text-danger"></span>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="Class" class="col-sm-3 control-label">Class: </label>
-                        <div class="col-sm-6">
-                            <select asp-for="Class" asp-items="@((SelectList)ViewData["Class"])" class="form-control">
-                                <option value="">-- SELECT --</option>
-                                </select>
-                        </div>
-                        <div class="has-error">
-                            <span asp-validation-for="Class" class="text-danger"></span>
-                        </div>
-                    </div>
+                    <partial name="_Student" />
 
                     <div class="form-group">
                         <div class="col-sm-offset-3 col-sm-10">

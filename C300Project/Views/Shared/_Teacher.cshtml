@@ -1,0 +1,43 @@
+﻿@model Teacher
+
+<div class="form-group">
+    <label asp-for="Name" class="col-sm-3 control-label">Name: </label>
+    <div class="col-sm-6">
+        <input asp-for="Name" class="form-control" />
+    </div>
+    <div class="has-error">
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+</div>
+
+
+<div class="form-group">
+    <label asp-for="MobileNo" class="col-sm-3 control-label">MobileNo: </label>
+    <div class="col-sm-6">
+        <input asp-for="MobileNo" class="form-control" />
+    </div>
+    <div class="has-error">
+        <span asp-validation-for="MobileNo" class="text-danger"></span>
+    </div>
+</div>
+
+<div class="form-group">
+    <label asp-for="Email" class="col-sm-3 control-label">Email: </label>
+    <div class="col-sm-6">
+        <input asp-for="Email" class="form-control" />
+    </div>
+    <div class="has-error">
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+</div>
+
+<div class="form-group">
+    <label asp-for="Role" class="col-sm-3 control-label">Role: </label>
+    <div class="col-sm-6">
+        <input type="radio" id="Role1" value="Full-Time" name="Role" /> Full-Time
+        <input type="radio" id="Role2" value="Part-Time" name="Role" /> Part-Time
+    </div>
+    <div class="has-error">
+        <span asp-validation-for="Role" class="text-danger"></span>
+    </div>
+</div>
