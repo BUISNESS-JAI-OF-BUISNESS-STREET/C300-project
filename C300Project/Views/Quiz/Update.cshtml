@@ -12,7 +12,7 @@
 
 @section ScriptSection {
 
-   
+
     <script>
         function ConfirmUpdate() {
             if (confirm("Are you sure you want to update?") == false) {
@@ -27,83 +27,98 @@
 }
 
 
-    <h2>@ViewData["Title"]</h2>
+<h2>@ViewData["Title"]</h2>
 
-    <div class="row">
-        <div class="col-sm-7">
-            <span style="color:red">@ViewData["Msg"]</span><br />
-            <div class="container">
+<div class="row">
+    <div class="col-sm-7">
+        <span style="color:red">@ViewData["Msg"]</span><br />
+        <div class="container">
 
-                <form asp-controller="Quiz" asp-action="Update" method="post" class="form-horizontal" role="form">
-                    <div class="form-horizontal">
-                        <div class="form-group">
-                            <label asp-for="QuizId" class="col-sm-3 control-label">Quiz Id:</label>
-                            <div class="col-sm-6">
-                                <input asp-for="QuizId" class="form-control" readonly="readonly" />
-                            </div>
-                            <div class="has-error">
-                                <span asp-validation-for="QuizId" class="text-danger"></span>
+            <form asp-controller="Quiz" asp-action="Update" method="post" class="form-horizontal" role="form">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label asp-for="QuizId" class="col-sm-3 control-label">Quiz Id:</label>
+                        <div class="col-sm-6">
+                            <input asp-for="QuizId" class="form-control" readonly="readonly" />
+                        </div>
+                        <div class="has-error">
+                            <span asp-validation-for="QuizId" class="text-danger"></span>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label asp-for="Title" class="col-sm-3 control-label">Quiz Title: </label>
+                        <div class="col-sm-6">
+                            <input asp-for="Title" class="form-control" />
+                        </div>
+                        <div class="has-error">
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label asp-for="Topic" class="col-sm-3 control-label">Topic: </label>
+                        <div class="col-sm-6">
+                            <input asp-for="Topic" class="form-control" />
+                        </div>
+                        <div class="has-error">
+                            <span asp-validation-for="Topic" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Sec" class="col-sm-3 control-label">Secondary Level: </label>
+                        <div class="col-sm-6">
+                            <input asp-for="Sec" class="form-control" />
+                        </div>
+                        <div class="has-error">
+                            <span asp-validation-for="Sec" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row row">
+                        <label class="control-label col-3" asp-for="StartDt">Start Date and Time: </label>
+                        <div class="col-3">
+                            <div class='input-group date' id='BsDateTimePicker'>
+                                <input class="form-control" asp-for="StartDt"
+                                       placeholder="YYYY-MM-DD" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
                             </div>
                         </div>
+                        <div class="col-3">
+                            <span asp-validation-for="StartDt" class="text-danger"></span>
+                        </div>
+                    </div>
 
-
-                        <div class="form-group">
-                            <label asp-for="Title" class="col-sm-3 control-label">Quiz Title: </label>
-                            <div class="col-sm-6">
-                                <input asp-for="Title" class="form-control" />
-                            </div>
-                            <div class="has-error">
-                                <span asp-validation-for="Title" class="text-danger"></span>
+                    <div class="form-group row row">
+                        <label class="control-label col-3" asp-for="EndDt">End Date and Time: </label>
+                        <div class="col-3">
+                            <div class='input-group date' id='BsDateTimePicker'>
+                                <input class="form-control" asp-for="EndDt"
+                                       placeholder="YYYY-MM-DD" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
                             </div>
                         </div>
-
-
-                        <div class="form-group">
-                            <label asp-for="Topic" class="col-sm-3 control-label">Topic: </label>
-                            <div class="col-sm-6">
-                                <input asp-for="Topic" class="form-control" />
-                            </div>
-                            <div class="has-error">
-                                <span asp-validation-for="Topic" class="text-danger"></span>
-                            </div>
+                        <div class="col-3">
+                            <span asp-validation-for="EndDt" class="text-danger"></span>
                         </div>
-
-                        <div class="form-group">
-                            <label asp-for="Sec" class="col-sm-3 control-label">Secondary Level: </label>
-                            <div class="col-sm-6">
-                                <input asp-for="Sec" class="form-control" />
-                            </div>
-                            <div class="has-error">
-                                <span asp-validation-for="Sec" class="text-danger"></span>
-                            </div>
                         </div>
 
                         <div class="form-group row row">
-                            <label class="control-label col-3" asp-for="StartDt">Quiz Date: </label>
-                            <div class="col-3">
-                                <div class='input-group date' id='BsDateTimePicker'>
-                                    <input class="form-control" asp-for="StartDt"
-                                           placeholder="YYYY-MM-DD" />
-                                    <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-calendar"></span>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="col-3">
-                                <span asp-validation-for="StartDt" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="form-group">
 
-                            @{/*<label asp-for="Duration" class="col-sm-3 control-label">Duration (Minutes): </label>
-                                    <div class="col-sm-6">
-                                        <input asp-for="Duration" class="form-control" />
-                                    </div>
-                                    <div class="has-error">
-                                        <span asp-validation-for="Duration" class="text-danger"></span>
-                                    </div>
-                                  */
-                            }
+                            <label asp-for="Duration" class="col-3 control-label">Duration (Minutes): </label>
+                            <div class="col-3">
+                                <input asp-for="Duration" class="form-control" />
+                            </div>
+                            <div class="has-error">
+                                <span asp-validation-for="Duration" class="text-danger"></span>
+                            </div>
                         </div>
 
                         <div>
@@ -119,29 +134,29 @@
                                 @foreach (var item in @a)
 
                                 {
-                            <tr>
-                                <td>
-                                    @item.ClassId
-                                </td>
-                                <td>
-                                    @item.Name
-                                </td>
-                                @if (d.Contains(item.ClassId))
-                                {
-                                    <td>
-                                        <input type="radio" id="rdOption3" value="True" name="@("AddClass" + s)" checked="checked"/> Yes
-                                        <input type="radio" id="rdOption4" value="False" name="@("AddClass" + s)" /> No
-                                    </td>
-                                }
-                                else
-                                {
-                                    <td>
-                                        <input type="radio" id="rdOption3" value="True" name="@("AddClass" + s)" /> Yes
-                                        <input type="radio" id="rdOption4" value="False" name="@("AddClass" + s)" /> No
-                                    </td>
-                                }
-                                }
-                            </tr>
+                                    <tr>
+                                        <td>
+                                            @item.ClassId
+                                        </td>
+                                        <td>
+                                            @item.Name
+                                        </td>
+                                        @if (d.Contains(item.ClassId))
+                                        {
+                                            <td>
+                                                <input type="radio" id="rdOption3" value="True" name="@("AddClass" + s)" checked="checked" /> Yes
+                                                <input type="radio" id="rdOption4" value="False" name="@("AddClass" + s)" /> No
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                                <input type="radio" id="rdOption3" value="True" name="@("AddClass" + s)" /> Yes
+                                                <input type="radio" id="rdOption4" value="False" name="@("AddClass" + s)" /> No
+                                            </td>
+                                        }
+
+                                    </tr>
                                     x++;
                                 }
 
@@ -221,7 +236,7 @@
                             </div>
                         </div>
                     </div>
-                </form>
-            </div>
+            </form>
         </div>
     </div>
+</div>
