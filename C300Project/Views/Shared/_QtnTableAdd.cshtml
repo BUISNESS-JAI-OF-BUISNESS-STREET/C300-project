@@ -1,0 +1,57 @@
+﻿@model List<Question>
+
+@{
+    int b = 1;
+}
+
+
+    <table class="table table-bordered table-condensed table-hover table-striped">
+        <tr>
+            <th>Id</th>
+            <th>Questions</th>
+            <th>Topic</th>
+            <th>First Option</th>
+            <th>Second Option</th>
+            <th>Third Option</th>
+            <th>Fourth Option</th>
+            <th>Correct Answer</th>
+            <th>Add To Quiz?</th>
+        </tr>
+
+
+        @foreach (var item in Model)
+
+        {
+            <tr>
+                <td>
+                    @b
+                </td>
+                <td>
+                    @item.Questions
+                </td>
+                <td>
+                    @item.Topic
+                </td>
+                <td>
+                    @item.FirstOption
+                </td>
+                <td>
+                    @item.SecondOption
+                </td>
+                <td>
+                    @item.ThirdOption
+                <td>
+                    @item.FourthOption
+                </td>
+                <td>
+                    @item.CorrectAns
+                </td>
+                <td>
+                    <input type="radio" id="rdOption1" value="@item.QuestionId" name="@("Add" +b)" /> Yes
+                    <input type="radio" id="rdOption2" value="-1" name="@("Add" +b)" /> No
+                </td>
+            </tr>
+            b++;
+        }
+
+    </table>

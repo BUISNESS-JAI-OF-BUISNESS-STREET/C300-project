@@ -18,11 +18,13 @@ namespace fyp.Models
         public string SecondOption { get; set; }
         public string ThirdOption { get; set; }
         public string FourthOption { get; set; }
-        public string Topic { get; set; }
+        public int Topic { get; set; }
         public string CorrectAns { get; set; }
-        public string Segment { get; set; }
+        public int? Segment { get; set; }
         public string UserCode { get; set; }
 
+        public virtual Segment SegmentNavigation { get; set; }
+        public virtual Topic TopicNavigation { get; set; }
         public virtual Account UserCodeNavigation { get; set; }
         public virtual ICollection<QuizQuestionBindDb> QuizQuestionBindDb { get; set; }
     }

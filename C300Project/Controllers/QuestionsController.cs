@@ -26,7 +26,11 @@ namespace fyp.Controllers
         public IActionResult Index()
         {
             DbSet<Question> dbs = _dbContext.Question;
-            List<Question> model = dbs.ToList();
+            List<Question> model = dbs
+                .Include(mo => mo.SegmentNavigation)
+                .Include(mo => mo.TopicNavigation)
+                .ToList();
+
             if (User.IsInRole("Admin"))
                 model = dbs.Include(mo => mo.UserCodeNavigation)
                             .ToList();
@@ -35,6 +39,11 @@ namespace fyp.Controllers
                 var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 model = dbs.Where(so => so.UserCode == userId).ToList();
             }
+
+            DbSet<Topic> dbs3 = _dbContext.Topic;
+            var lstTopic = dbs3.ToList();
+            ViewData["Topic"] = new SelectList(lstTopic, "TopicId", "Name");
+
             return View(model);
 
         }
@@ -46,14 +55,17 @@ namespace fyp.Controllers
         {
             
             DbSet<Quiz> dbs = _dbContext.Quiz;
-            var lstQuiz = dbs.ToList();
-            ViewData["Quiz"] = new SelectList(lstQuiz, "QuizId", "Title");
-            ViewData["Test"] = lstQuiz;
-
+            var lstQuiz = dbs
+                .Include(mo => mo.TopicNavigation)
+                .ToList();
             
             DbSet<Segment> dbs2 = _dbContext.Segment;
             var lstSegment = dbs2.ToList();
             ViewData["Segment"] = new SelectList(lstSegment, "SegmentId", "Name");
+
+            DbSet<Topic> dbs3 = _dbContext.Topic;
+            var lstTopic = dbs3.ToList();
+            ViewData["Topic"] = new SelectList(lstTopic, "TopicId", "Name");
             return View();
         }
         #endregion
@@ -66,11 +78,10 @@ namespace fyp.Controllers
             DbSet<Question> dbs = _dbContext.Question;
             DbSet<Quiz> dbs2 = _dbContext.Quiz;
             DbSet<QuizQuestionBindDb> dbs3= _dbContext.QuizQuestionBindDb;
-            
-            
-            
-            List<Quiz> lstQuiz = dbs2.ToList<Quiz>();
+
+            List<Quiz> lstQuiz = dbs2.ToList();
             var dbcount = lstQuiz.Count();
+
             question.UserCode = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             if (ModelState.IsValid)
@@ -83,20 +94,18 @@ namespace fyp.Controllers
 
                     QuizQuestionBindDb quizQuestionBind = new QuizQuestionBindDb();
                     var y = x + 1;
-                    var radiocheck = form["Add" + y];
+                    var radiocheck = Convert.ToInt32(form["Add" + y]);
                         
-                    if (radiocheck.Equals("True"))
+                    if (radiocheck > 0)
                     {
                         if (ModelState.IsValid)
                             {
                             quizQuestionBind.QuestionId = question.QuestionId;
-                            quizQuestionBind.QuizId = y;
+                            quizQuestionBind.QuizId = radiocheck;
                             dbs3.Add(quizQuestionBind);
-                            
                             }
-                    }
-                        
-                    }
+                    }  
+                }
                 if (_dbContext.SaveChanges() >= 1)
                     TempData["Msg"] = "New question added!";    
                     
@@ -119,6 +128,10 @@ namespace fyp.Controllers
             DbSet<QuizQuestionBindDb> dbs2 = _dbContext.QuizQuestionBindDb;
             DbSet<Quiz> dbs3 = _dbContext.Quiz;
             DbSet<Segment> dbs4 = _dbContext.Segment;
+            DbSet<Topic> dbs5 = _dbContext.Topic;
+
+            var lstTopic = dbs5.ToList();
+            
 
             List<QuizQuestionBindDb> lstdb2 = dbs2.Where(mo => mo.QuestionId == id).ToList();
             List<Question> lstdb = dbs.ToList();
@@ -128,7 +141,10 @@ namespace fyp.Controllers
             List<int> lstdb3 = dbs3.Select(mo => mo.QuizId).ToList();
             List<int> commonlist = lstoverlap.Intersect(lstdb3).ToList();
             
-            Question question = dbs.Where(mo => mo.QuestionId == id).FirstOrDefault();
+            Question question = dbs
+                .Where(mo => mo.QuestionId == id)
+                .Include(mo => mo.SegmentNavigation)
+                .Include(mo => mo.TopicNavigation).FirstOrDefault();
 
             
             
@@ -137,8 +153,8 @@ namespace fyp.Controllers
             {
                 DbSet<Quiz> dbsQuiz = _dbContext.Quiz;
                 var lstQuiz = dbsQuiz.ToList();
+                ViewData["Topic"] = new SelectList(lstTopic, "TopicId", "Name");
                 ViewData["Segment"] = new SelectList(lstSegment, "SegmentId", "Name");
-                ViewData["Test"] = lstQuiz;
                 ViewData["common"] = commonlist;
                 return View(question);
             }
@@ -164,7 +180,7 @@ namespace fyp.Controllers
                 Question tOrder = dbs.Where(mo => mo.QuestionId == question.QuestionId).FirstOrDefault();
 
                 
-                List<Quiz> lstQuiz = dbs3.ToList<Quiz>();
+                List<Quiz> lstQuiz = dbs3.ToList();
                 List<QuizQuestionBindDb> lstdb2 = dbs2.Where(mo => mo.QuestionId == question.QuestionId).ToList();
                 var dbcount = lstQuiz.Count();
 
@@ -177,22 +193,21 @@ namespace fyp.Controllers
 
                     QuizQuestionBindDb quizQuestionBind = new QuizQuestionBindDb();
                     var y = x + 1;
-                    var radiocheck = form["Add" + y];
+                    var radiocheck = Convert.ToInt32(form["Add" + y]);
 
-                    if(commonlist.Contains(y) && radiocheck.Equals("False"))
+                    if(commonlist.Contains(y) && radiocheck == -1)
                     {
-                        dbs2.Remove(dbs2.Where(mo =>mo.QuestionId == question.QuestionId).Where(mo => mo.QuizId == y).FirstOrDefault());
-                        _dbContext.SaveChanges();
-                    }else if (commonlist.Contains(y) && radiocheck.Equals("True"))
+                        dbs2.Remove(dbs2.Where(mo =>mo.QuestionId == question.QuestionId && mo.QuizId == radiocheck).FirstOrDefault());
+                    }else if (commonlist.Contains(y) && radiocheck > 0)
                     {
                         continue;
                     }
-                    else if (radiocheck.Equals("True"))
+                    else if (radiocheck > 0)
                     {
                         if (ModelState.IsValid)
                         {
                             quizQuestionBind.QuestionId = question.QuestionId;
-                            quizQuestionBind.QuizId = y;
+                            quizQuestionBind.QuizId = radiocheck;
                             dbs2.Add(quizQuestionBind);
 
                         }
@@ -208,6 +223,7 @@ namespace fyp.Controllers
                     tOrder.ThirdOption = question.ThirdOption;
                     tOrder.FourthOption = question.FourthOption;
                     tOrder.Topic = question.Topic;
+                    tOrder.Segment = question.Segment;
                     tOrder.CorrectAns = question.CorrectAns;
 
                     if (_dbContext.SaveChanges() >= 1)
@@ -256,6 +272,119 @@ namespace fyp.Controllers
             }
             return RedirectToAction("Index");
         }
+        #endregion
+
+        #region GetQtns
+        public IActionResult GetQtns(int moduleId)
+        {
+            DbSet<Question> dbs = _dbContext.Question;
+            DbSet<Topic> dbs2 = _dbContext.Topic;
+
+            List<Question> question;
+
+            if(moduleId == -1)
+            {
+                question = dbs
+                    .Include(q => q.TopicNavigation)
+                    .Include(q => q.SegmentNavigation)
+                    .Include(q => q.UserCodeNavigation)
+                    .ToList();
+            }
+            else
+            {
+                question = dbs
+                    .Where(q => q.Topic == moduleId)
+                    .Include(q => q.TopicNavigation)
+                    .Include(q => q.SegmentNavigation)
+                    .Include(q => q.UserCodeNavigation)
+                    .ToList();
+            }
+
+
+            return PartialView("_QtnTable", question);
+        }
+
+        #endregion
+
+        #region GetAddQtns
+        public IActionResult GetAddQtns(int moduleId)
+        {
+            DbSet<Question> dbs = _dbContext.Question;
+            DbSet<Topic> dbs2 = _dbContext.Topic;
+
+            List<Question> question;
+
+            if (moduleId == -1)
+            {
+                question = dbs
+                    .Include(q => q.TopicNavigation)
+                    .Include(q => q.SegmentNavigation)
+                    .Include(q => q.UserCodeNavigation)
+                    .ToList();
+            }
+            else
+            {
+                question = dbs
+                    .Where(q => q.Topic == moduleId)
+                    .Include(q => q.TopicNavigation)
+                    .Include(q => q.SegmentNavigation)
+                    .Include(q => q.UserCodeNavigation)
+                    .ToList();
+            }
+
+
+            return PartialView("_QtnTableAdd", question);
+        }
+
+        #endregion
+
+        #region GetQtnTableUpdate
+        public IActionResult GetQuizTableUpdate(int questionId, int quizId)
+        {
+            DbSet<Quiz> dbs = _dbContext.Quiz;
+            DbSet<Topic> dbs2 = _dbContext.Topic;
+            DbSet<Question> dbs3 = _dbContext.Question;
+            DbSet<QuizQuestionBindDb> dbs4 = _dbContext.QuizQuestionBindDb;
+            DbSet<Segment> dbs5 = _dbContext.Segment;
+            DbSet<Topic> dbs6 = _dbContext.Topic;
+
+            var lstTopic = dbs5.ToList();
+
+
+            List<QuizQuestionBindDb> lstdb4 = dbs4.Where(mo => mo.QuizId == quizId).ToList();
+            List<Quiz> lstdb = dbs.ToList();
+            var lstSegment = dbs4.ToList();
+
+            List<int> lstoverlap = lstdb4.Select(mo => mo.QuestionId).ToList();
+            List<int> lstdb3 = dbs3.Select(mo => mo.QuestionId).ToList();
+            List<int> commonlist = lstoverlap.Intersect(lstdb3).ToList();
+
+            ViewData["common"] = commonlist;
+
+            List<Question> question;
+
+            if (questionId == -1)
+            {
+                question = dbs3
+                    .Include(q => q.TopicNavigation)
+                    .Include(q => q.SegmentNavigation)
+                    .Include(q => q.UserCodeNavigation)
+                    .ToList();
+            }
+            else
+            {
+                question = dbs3
+                    .Where(q => q.Topic == questionId)
+                    .Include(q => q.TopicNavigation)
+                    .Include(q => q.SegmentNavigation)
+                    .Include(q => q.UserCodeNavigation)
+                    .ToList();
+            }
+
+
+            return PartialView("_QtnTableUpdate", question);
+        }
+
         #endregion
     }
 }

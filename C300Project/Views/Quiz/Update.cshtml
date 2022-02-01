@@ -3,11 +3,8 @@
 @{
     ViewBag.Title = "Update quiz!";
     var a = ViewData["listClass"] as List<Class>;
-    var b = ViewData["Test"] as List<Question>;
-    var c = ViewData["common"] as List<int>;
     var d = ViewData["commonClass"] as List<int>;
     int s = 1;
-    int x = 1;
 }
 
 @section ScriptSection {
@@ -22,6 +19,25 @@
 
             }
         }
+
+        function LoadQtnUpdateTable(questionId,quizId) {
+            var url = "/Question/GetQuizTableUpdate?questionId=" + questionId + "&quizId=" + quizId;
+
+            $("#divUpdateQuestion").html("");
+            $("#divUpdateQuestion").load(url);
+        }
+
+        $(document).ready(function () {
+            var qzId = $("#QzId").val();
+
+
+            $("#QuestionSelect").change(function () {
+                var quizId = $("#QuestionSelect").val();
+                LoadQuizUpdateTable(quizId, qzId);
+            });
+
+            LoadQuizUpdateTable(-1, qzId);
+        })
 
     </script>
 }
@@ -39,203 +55,74 @@
                     <div class="form-group">
                         <label asp-for="QuizId" class="col-sm-3 control-label">Quiz Id:</label>
                         <div class="col-sm-6">
-                            <input asp-for="QuizId" class="form-control" readonly="readonly" />
+                            <input id="QzId" asp-for="QuizId" class="form-control" readonly="readonly" />
                         </div>
                         <div class="has-error">
                             <span asp-validation-for="QuizId" class="text-danger"></span>
                         </div>
                     </div>
 
+                    <partial name="_Quiz" />
 
-                    <div class="form-group">
-                        <label asp-for="Title" class="col-sm-3 control-label">Quiz Title: </label>
-                        <div class="col-sm-6">
-                            <input asp-for="Title" class="form-control" />
-                        </div>
-                        <div class="has-error">
-                            <span asp-validation-for="Title" class="text-danger"></span>
-                        </div>
-                    </div>
+                    <div>
+                        <table class="table table-bordered table-condensed table-hover table-striped">
+                            <tr>
+                                <th>ClassId</th>
+                                <th>Class Name</th>
+
+                                <th>Assign To Class?</th>
+                            </tr>
 
 
-                    <div class="form-group">
-                        <label asp-for="Topic" class="col-sm-3 control-label">Topic: </label>
-                        <div class="col-sm-6">
-                            <input asp-for="Topic" class="form-control" />
-                        </div>
-                        <div class="has-error">
-                            <span asp-validation-for="Topic" class="text-danger"></span>
-                        </div>
-                    </div>
+                            @foreach (var item in @a)
 
-                    <div class="form-group">
-                        <label asp-for="Sec" class="col-sm-3 control-label">Secondary Level: </label>
-                        <div class="col-sm-6">
-                            <input asp-for="Sec" class="form-control" />
-                        </div>
-                        <div class="has-error">
-                            <span asp-validation-for="Sec" class="text-danger"></span>
-                        </div>
-                    </div>
-
-                    <div class="form-group row row">
-                        <label class="control-label col-3" asp-for="StartDt">Start Date and Time: </label>
-                        <div class="col-3">
-                            <div class='input-group date' id='BsDateTimePicker'>
-                                <input class="form-control" asp-for="StartDt"
-                                       placeholder="YYYY-MM-DD" />
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="col-3">
-                            <span asp-validation-for="StartDt" class="text-danger"></span>
-                        </div>
-                    </div>
-
-                    <div class="form-group row row">
-                        <label class="control-label col-3" asp-for="EndDt">End Date and Time: </label>
-                        <div class="col-3">
-                            <div class='input-group date' id='BsDateTimePicker'>
-                                <input class="form-control" asp-for="EndDt"
-                                       placeholder="YYYY-MM-DD" />
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="col-3">
-                            <span asp-validation-for="EndDt" class="text-danger"></span>
-                        </div>
-                        </div>
-
-                        <div class="form-group row row">
-
-                            <label asp-for="Duration" class="col-3 control-label">Duration (Minutes): </label>
-                            <div class="col-3">
-                                <input asp-for="Duration" class="form-control" />
-                            </div>
-                            <div class="has-error">
-                                <span asp-validation-for="Duration" class="text-danger"></span>
-                            </div>
-                        </div>
-
-                        <div>
-                            <table class="table table-bordered table-condensed table-hover table-striped">
+                            {
                                 <tr>
-                                    <th>ClassId</th>
-                                    <th>Class Name</th>
+                                    <td>
+                                        @s
+                                    </td>
+                                    <td>
+                                        @item.Name
+                                    </td>
+                                    @if (d.Contains(item.ClassId))
+                                    {
+                                        <td>
+                                            <input type="radio" id="rdOption3" value="ClassId" name="@("AddClass" + s)" checked="checked" /> Yes
+                                            <input type="radio" id="rdOption4" value="-1" name="@("AddClass" + s)" /> No
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            <input type="radio" id="rdOption3" value="True" name="@("AddClass" + s)" /> Yes
+                                            <input type="radio" id="rdOption4" value="False" name="@("AddClass" + s)" /> No
+                                        </td>
+                                    }
 
-                                    <th>Assign To Class?</th>
                                 </tr>
+                                s++;
+                            }
 
+                        </table>
 
-                                @foreach (var item in @a)
+                    </div>
 
-                                {
-                                    <tr>
-                                        <td>
-                                            @item.ClassId
-                                        </td>
-                                        <td>
-                                            @item.Name
-                                        </td>
-                                        @if (d.Contains(item.ClassId))
-                                        {
-                                            <td>
-                                                <input type="radio" id="rdOption3" value="True" name="@("AddClass" + s)" checked="checked" /> Yes
-                                                <input type="radio" id="rdOption4" value="False" name="@("AddClass" + s)" /> No
-                                            </td>
-                                        }
-                                        else
-                                        {
-                                            <td>
-                                                <input type="radio" id="rdOption3" value="True" name="@("AddClass" + s)" /> Yes
-                                                <input type="radio" id="rdOption4" value="False" name="@("AddClass" + s)" /> No
-                                            </td>
-                                        }
+                    <div class="col-sm-6">
+                        Question Topic:
+                        <select id="QuestionSelect" name="QuestionSelect" asp-items="@((SelectList)ViewData["Topic"])" class="form-control">
+                            <option value="-1">All</option>
+                        </select>
+                    </div>
 
-                                    </tr>
-                                    x++;
-                                }
+                    <div id="divUpdateQuestion">
+                    </div>
 
-                            </table>
-
-                        </div>
-
-
-                        <div>
-                            <table class="table table-bordered table-condensed table-hover table-striped">
-                                <tr>
-                                    <th>QuestionId</th>
-                                    <th>Questions</th>
-                                    <th>Topic</th>
-                                    <th>First Option</th>
-                                    <th>Second Option</th>
-                                    <th>Third Option</th>
-                                    <th>Fourth Option</th>
-                                    <th>Correct Answer</th>
-                                    <th>Add To Quiz?</th>
-                                </tr>
-
-
-                                @foreach (var item in @b)
-
-                                {
-                                    <tr>
-                                        <td>
-                                            @item.QuestionId
-                                        </td>
-                                        <td>
-                                            @item.Questions
-                                        </td>
-                                        <td>
-                                            @item.Topic
-                                        </td>
-                                        <td>
-                                            @item.FirstOption
-                                        </td>
-                                        <td>
-                                            @item.SecondOption
-                                        </td>
-                                        <td>
-                                            @item.ThirdOption
-                                        <td>
-                                            @item.FourthOption
-                                        </td>
-                                        <td>
-                                            @item.CorrectAns
-                                        </td>
-                                        @if (c.Contains(item.QuestionId))
-                                        {
-                                            <td>
-                                                <input type="radio" id="rdOption1" value="True" name="@("Add" +x)" checked="checked" /> Yes
-                                                <input type="radio" id="rdOption2" value="False" name="@("Add" +x)" /> No
-                                            </td>
-
-                                        }
-                                        else
-                                        {
-                                            <td>
-                                                <input type="radio" id="rdOption1" value="True" name="@("Add" +x)" /> Yes
-                                                <input type="radio" id="rdOption2" value="False" name="@("Add" +x)" /> No
-                                            </td>
-                                        }
-                                    </tr>
-                                    x++;
-                                }
-
-                            </table>
-
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-sm-offset-3 col-sm-10">
-                                <input type="submit" value="Update" class="btn-primary" />
-                            </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-10">
+                            <input type="submit" value="Update" class="btn-primary" />
                         </div>
                     </div>
+                </div>
             </form>
         </div>
     </div>

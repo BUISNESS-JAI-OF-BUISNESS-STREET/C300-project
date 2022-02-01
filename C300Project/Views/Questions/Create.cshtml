@@ -1,9 +1,7 @@
 ﻿@model Question
 
 @{
-    var b = ViewData["Test"] as List<Quiz>;
     ViewBag.Title = "Create new question!";
-    int x = 1;
 }
 
 @section ScriptSection {
@@ -19,6 +17,23 @@
             }
         }
 
+        function LoadQuizAddTable(quizId) {
+            var url = "/Quiz/GetQuizTableAdd?quizId=" + quizId;
+
+            $("#divQuizTableAdd").html("");
+            $("#divQuizTableAdd").load(url);
+        }
+
+        $(document).ready(function () {
+
+            $("#QuizSelect").change(function () {
+                var quizId = $("#QuizSelect").val();
+                LoadQuizAddTable(quizId);
+            });
+
+            LoadQuizAddTable(-1);
+        })
+
     </script>
 }
 
@@ -32,47 +47,14 @@
                 <div class="form-horizontal">
                     <partial name="_Questions" />
 
-                    <div>
-                        <table class="table table-bordered table-condensed table-hover table-striped">
-                            <tr>
-                                <th>Id</th>
-                                <th>Title</th>
-                                <th>Topic</th>
-                                <th>Exam Level</th>
-                                <th>Exam Date</th>
-                                <th>Add To Quiz?</th>
-                            </tr>
+                    <div class="col-sm-6">
+                        Quiz Topic:
+                        <select id="QuizSelect" name="QuizSelect" asp-items="@((SelectList)ViewData["Topic"])" class="form-control">
+                            <option value="-1">All</option>
+                        </select>
+                    </div>
 
-
-                            @foreach (var item in @b)
-
-                            {
-                                <tr>
-                                    <td>
-                                        @item.QuizId
-                                    </td>
-                                    <td>
-                                        @item.Title
-                                    </td>
-                                    <td>
-                                        @item.Topic
-                                    </td>
-                                    <td>
-                                        @item.Sec
-                                    </td>
-                                    <td>
-                                        @item.StartDt
-                                    </td>
-                                    <td>
-                                        <input type="radio" id="rdOption1" value="True" name="@("Add" +x)" /> Yes
-                                        <input type="radio" id="rdOption2" value="False" name="@("Add" +x)" /> No
-                                    </td>
-                                </tr>
-                                x++;
-                            }
-
-                        </table>
-
+                    <div id="divQuizTableAdd">
                     </div>
 
                     <div class="form-group">

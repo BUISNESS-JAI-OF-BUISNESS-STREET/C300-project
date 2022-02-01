@@ -4,14 +4,6 @@
     ViewBag.Title = "Quiz";
 }
 
-@{
-    var AllQ = ViewData["AllQ"] as List<dynamic>;
-    var EnglishQ = ViewData["EnglishQ"] as List<dynamic>;
-    var MathematicsQ = ViewData["MathematicsQ"] as List<dynamic>;
-
-}
-
-
 @section ScriptSection {
 
     <script>
@@ -24,22 +16,28 @@
             }
         }
 
+        function LoadQuiz(moduleId) {
+            var url = "/Quiz/GetQuiz?moduleId=" + moduleId;
+
+            $("#divQuizIndex").html("");
+            $("#divQuizIndex").load(url);
+        }
+
+        $(document).ready(function () {
+
+            $("#QuizSelect").change(function () {
+                var moduleId = $("#QuizSelect").val();
+                LoadQuiz(moduleId);
+            });
+
+            LoadQuiz(-1);
+        })
+
     </script>
 }
 
 
 <h2>Quiz</h2>
-
-<div class="row">
-    <ul class="nav nav-tabs">
-        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#AllQ">All Quiz</a></li>
-        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#EnglishQ">English Quiz</a></li>
-        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#MathematicsQ">Mathematics Quiz</a></li>
-
-    </ul>
-
-
-</div>
 
 <span style="color:red">@TempData["Msg"]</span>
 <br />
@@ -52,286 +50,13 @@
 }
 
 <div class="tab-content" style="margin-top:10px">
-    <div id="AllQ" class="tab-pane fade in active">
-        <div>
-            <table class="table table-bordered table-condensed table-hover table-striped">
-                <tr>
-                    <th>Id</th>
-                    <th>Title</th>
-                    <th>Topic</th>
-                    <th>Exam Level</th>
-                    <th>Exam Date</th>
-                    <th>End Date</th>
-                    <th>Duration (Minutes)</th>
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <th>Created By</th>
-                    }
-                    <th>Action</th>
-
-                </tr>
-
-
-                @foreach (var item in Model)
-
-                {
-            <tr>
-                <td>
-                    @item.QuizId
-                </td>
-                <td>
-                    @item.Title
-                </td>
-                <td>
-                    @item.Topic
-                </td>
-
-                <td>
-                    @item.Sec
-                </td>
-                <td>
-                    @item.StartDt
-
-                </td>
-                <td>
-                    @item.EndDt
-
-                </td>
-                <td>
-                    @item.Duration
-                </td>
-
-                @if (User.IsInRole("Admin"))
-                {
-                    <td>@item.UserCodeNavigation.Name</td>
-                }
-
-                @if (User.IsInRole("Admin"))
-
-                //use && then check if the date of the paper has passed yet
-                {
-                    <!--<td>
-         <a asp-action="ViewReport" asp-route-id="">View Results</a>
-        </td>-->
-                }
-                @if (User.IsInRole("Admin"))
-
-                //use && then check if the date of the paper is more then current date
-                {
-                    <!--<td>
-         <a asp-action="QuestionIndex" asp-route-id="">View Questions</a>
-        </td>-->
-                }
-                @if (User.IsInRole("Student"))
-
-                //use && then check if the date of the paper is more then current date
-                {
-                    <td>
-                        <a asp-action="Instruction" asp-route-id="@item.QuizId">Instruction</a>
-                        <a asp-action="Attempt" asp-route-id="@item.QuizId" onclick="return watchCountdown()">Start</a>
-                    </td>
-                }
-                @if (User.IsInRole("Admin"))
-
-                //use && then check if the date of the paper is ON current date
-                {
-                    <td>
-                        <a asp-action="ViewQuestions" asp-route-id="@item.QuizId">View Questions</a>
-                        <a asp-action="Update" asp-route-id="@item.QuizId" onclick="return ConfirmUpdate()">Update</a>
-                        <a asp-action="Delete" asp-route-id="@item.QuizId" onclick="return ConfirmDelete()">Delete</a>
-                        <a asp-action="PreviewQuiz" asp-route-id="@item.QuizId" target="_blank">Preview Quiz</a>
-
-                    </td>
-                }
-
-
-
-            </tr>
-                }
-
-            </table>
-        </div>
+    <div class="col-sm-6">
+        <select id="QuizSelect" asp-items="@((SelectList)ViewData["Topic"])" class="form-control">
+            <option value="-1">All</option>
+        </select>
     </div>
-    <div id="EnglishQ" class="tab-pane fade in active">
-        <div>
-            <table class="table table-bordered table-condensed table-hover table-striped">
-                <tr>
-                    <th>Id</th>
-                    <th>Title</th>
-                    <th>Topic</th>
-                    <th>Exam Level</th>
-                    <th>Exam Date</th>
-                    <th>End Date</th>
-                    <th>Duration (Minutes)</th>
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <th>Created By</th>
-                    }
 
-                    <th>Action</th>
-
-                </tr>
-                @foreach (var item in Model)
-
-                    if (item.Topic == "English")
-                    {
-            <tr>
-                <td>
-                    @item.QuizId
-                </td>
-                <td>
-                    @item.Title
-                </td>
-                <td>
-                    @item.Topic
-                </td>
-                <td>
-                    @item.Sec
-                </td>
-                <td>
-                    @item.StartDt
-                </td>
-                <td>
-                    @item.EndDt
-
-                </td>
-                <td>
-                    @item.Duration
-                </td>
-
-                @if (User.IsInRole("Admin"))
-                {
-                    <td>@item.UserCodeNavigation.Name</td>
-                }
-
-                @if (User.IsInRole("Admin"))//use && then check if the date of the paper has passed yet
-                {
-                    <!--<td>
-         <a asp-action="ViewReport" asp-route-id="">View Results</a>
-        </td>-->
-                }
-                @if (User.IsInRole("Admin"))//use && then check if the date of the paper is more then current date
-                {
-                    <!--<td>
-         <a asp-action="QuestionIndex" asp-route-id="">View Questions</a>
-        </td>-->
-                }
-                @if (User.IsInRole("Student"))//use && then check if the date of the paper is more then current date
-                {
-                    <td>
-                        <a asp-action="Instruction" asp-route-id="@item.QuizId">Instruction</a>
-                        <a asp-action="Attempt" asp-route-id="@item.QuizId">Start</a>
-                    </td>
-                }
-                @if (User.IsInRole("Admin"))//use && then check if the date of the paper is ON current date
-                {
-                    <td>
-                        <a asp-action="ViewQuestions" asp-route-id="@item.QuizId">View Questions</a>
-                        <a asp-action="Update" asp-route-id="@item.QuizId" onclick="return ConfirmUpdate()">Update</a>
-                        <a asp-action="Delete" asp-route-id="@item.QuizId" onclick="return ConfirmDelete()">Delete</a>
-                    </td>
-                }
-
-            </tr>
-                    }
-
-
-            </table>
-        </div>
-
+    <div id="divQuizIndex">
     </div>
-    <div id="MathematicsQ" class="tab-pane fade">
-        <div>
-            <table class="table table-bordered table-condensed table-hover table-striped">
-                <tr>
 
-                    <th>Id</th>
-                    <th>Title</th>
-                    <th>Topic</th>
-                    <th>Exam Level</th>
-                    <th>Exam Date</th>
-                    <th>End Date</th>
-                    <th>Duration (Minutes)</th>
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <th>Created By</th>
-                    }
-
-                    <th>Action</th>
-
-                </tr>
-                @foreach (var item in Model)
-                    if (item.Topic == "Mathematics")
-
-                    {
-            <tr>
-                <td>
-                    @item.QuizId
-                </td>
-                <td>
-                    @item.Title
-                </td>
-                <td>
-                    @item.Topic
-                </td>
-                <td>
-                    @item.Sec
-                </td>
-                <td>
-                    @item.StartDt
-                </td>
-                <td>
-                    @item.EndDt
-
-                </td>
-                <td>
-                    @item.Duration
-                </td>
-
-                @if (User.IsInRole("Admin"))
-                {
-                    <td>@item.UserCodeNavigation.Name</td>
-                }
-
-                @if (User.IsInRole("Admin"))
-
-                {
-                    <!--<td>
-         <a asp-action="ViewReport" asp-route-id="">View Results</a>
-        </td>-->
-                }
-                @if (User.IsInRole("Admin"))
-
-                {
-                    <!--<td>
-         <a asp-action="QuestionIndex" asp-route-id="">View Questions</a>
-        </td>-->
-                }
-                @if (User.IsInRole("Student"))
-
-                {
-                    <td>
-                        <a asp-action="Instruction" asp-route-id="@item.QuizId">Instruction</a>
-                        <a asp-action="Attempt" asp-route-id="@item.QuizId">Start</a>
-
-                    </td>
-                }
-                @if (User.IsInRole("Admin"))
-
-                //use && then check if the date of the paper is ON current date
-
-                {
-                    <td>
-                        <a asp-action="ViewQuestions" asp-route-id="@item.QuizId">View Questions</a>
-                        <a asp-action="Update" asp-route-id="@item.QuizId" onclick="return ConfirmUpdate()">Update</a>
-                        <a asp-action="Delete" asp-route-id="@item.QuizId" onclick="return ConfirmDelete()">Delete</a>
-                    </td>
-                }
-
-            </tr>
-                    }
-            </table>
-
-        </div>
-    </div>
 </div>

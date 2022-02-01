@@ -4,13 +4,6 @@
     ViewBag.Title = "Questions";
 }
 
-@{
-    var All = ViewData["All"] as List<dynamic>;
-    var English = ViewData["English"] as List<dynamic>;
-    var Mathematics = ViewData["Mathematics"] as List<dynamic>;
-
-}
-
 @section ScriptSection {
 
     <script>
@@ -23,22 +16,27 @@
             }
         }
 
+        function LoadQtns(moduleId) {
+            var url = "/Questions/GetQtns?moduleId=" + moduleId;
+
+            $("#divQtnIndex").html("");
+            $("#divQtnIndex").load(url);
+        }
+
+        $(document).ready(function () {
+
+            $("#QtnSelect").change(function () {
+                var moduleId = $("#QtnSelect").val();
+                LoadQtns(moduleId);
+            });
+
+            LoadQtns(-1);
+        })
+
     </script>
 }
 
 <h2>Question Bank</h2>
-
-<div class="row">
-    <ul class="nav nav-tabs">
-        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#All">All Questions</a></li>
-        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#English">English</a></li>
-        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#Mathematics">Mathematics</a></li>
-
-    </ul>
-
-
-</div>
-
 
 <span style="color:red">@TempData["Msg"]</span>
 <br />
@@ -47,235 +45,15 @@
 </p>
 
 <div class="tab-content" style="margin-top:10px">
-    <div id="All" class="tab-pane fade in active">
-        <div>
-            <table class="table table-bordered table-condensed table-hover table-striped">
-                <tr>
-                    <th>Id</th>
-                    <th>Question</th>
-                    <th>Topic</th>
-                    <th>Option 1</th>
-                    <th>Option 2</th>
-                    <th>Option 3</th>
-                    <th>Option 4</th>
-                    <th>Correct Answer</th>
-                    <th>Segment</th>
-
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <th>Created By</th>
-                    }
-                    <th>Action</th>
-                </tr>
-                @foreach (var item in Model)
-
-                {
-                    <tr>
-                        
-                        <td>
-                            @item.QuestionId
-                        </td>
-                        <td>
-                            @item.Questions
-                        </td>
-                        <td>
-                            @item.Topic
-                        </td>
-                        <td>
-                            @item.FirstOption
-                        </td>
-
-                        <td>
-                            @item.SecondOption
-                        </td>
-
-                        <td>
-                            @item.ThirdOption
-                        </td>
-
-                        <td>
-                            @item.FourthOption
-                        </td>
-
-                        <td>
-                            @item.CorrectAns
-                        </td>
-                        <td>
-                            @item.Segment
-                        </td>
-
-                        @if (User.IsInRole("Admin"))
-                        {
-                            <td>@item.UserCodeNavigation.Name</td>
-                        }
-
-                        <td>
-                            <a asp-action="Update" asp-route-id="@item.QuestionId" onclick="return ConfirmUpdate()">Update</a>
-                            <a asp-action="Delete" asp-route-id="@item.QuestionId" onclick="return ConfirmDelete()">Delete</a>
-
-                        </td>
-                    </tr>
-
-                }
-
-
-            </table>
-        </div>
-
+    <div class="col-sm-6">
+        <select id="QtnSelect" asp-items="@((SelectList)ViewData["Topic"])" class="form-control">
+            <option value="-1">All</option>
+        </select>
     </div>
-    <div id="English" class="tab-pane fade in active">
-        <div>
-            <table class="table table-bordered table-condensed table-hover table-striped">
-                <tr>
-                    <th>Id</th>
-                    <th>Question</th>
-                    <th>Topic</th>
-                    <th>Option 1</th>
-                    <th>Option 2</th>
-                    <th>Option 3</th>
-                    <th>Option 4</th>
-                    <th>Correct Answer</th>
-                    <th>Segment</th>
 
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <th>Created By</th>
-                    }
-                    <th>Action</th>
-                </tr>
-                @foreach (var item in Model)
-                    if (item.Topic == "English")
-                    {
-
-                        <tr>
-                            
-                            <td>
-                                @item.QuestionId
-                            </td>
-                            <td>
-                                @item.Questions
-                            </td>
-                            <td>
-                                @item.Topic
-                            </td>
-                            <td>
-                                @item.FirstOption
-                            </td>
-
-                            <td>
-                                @item.SecondOption
-                            </td>
-
-                            <td>
-                                @item.ThirdOption
-                            </td>
-
-                            <td>
-                                @item.FourthOption
-                            </td>
-
-                            <td>
-                                @item.CorrectAns
-                            </td>
-
-                            <td>
-                                @item.Segment
-                            </td>
-
-                            @if (User.IsInRole("Admin"))
-                            {
-                                <td>@item.UserCodeNavigation.Name</td>
-                            }
-
-                            <td>
-                                <a asp-action="Update" asp-route-id="@item.QuestionId">Update</a>
-                                <a asp-action="Delete" asp-route-id="@item.QuestionId" onclick="return ConfirmDelete()">Delete</a>
-
-                            </td>
-                        </tr>
-
-                    }
-
-
-            </table>
-        </div>
-
+    <div id="divQtnIndex">
     </div>
-    <div id="Mathematics" class="tab-pane fade">
-        <div>
-            <table class="table table-bordered table-condensed table-hover table-striped">
-                <tr>
-                    <th>Id</th>
-                    <th>Question</th>
-                    <th>Topic</th>
-                    <th>Option 1</th>
-                    <th>Option 2</th>
-                    <th>Option 3</th>
-                    <th>Option 4</th>
-                    <th>Correct Answer</th>
-                    <th>Segment</th>
-
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <th>Created By</th>
-                    }
-                    <th>Action</th>
-                </tr>
-                @foreach (var item in Model)
-                    if (item.Topic == "Mathematics")
-
-                    {
-
-                        <tr>
-                           
-                            <td>
-                                @item.QuestionId
-                            </td>
-                            <td>
-                                @item.Questions
-                            </td>
-                            <td>
-                                @item.Topic
-                            </td>
-                            <td>
-                                @item.FirstOption
-                            </td>
-
-                            <td>
-                                @item.SecondOption
-                            </td>
-
-                            <td>
-                                @item.ThirdOption
-                            </td>
-
-                            <td>
-                                @item.FourthOption
-                            </td>
-
-                            <td>
-                                @item.CorrectAns
-                            </td>
-
-                            <td>
-                                @item.Segment
-                            </td>
-                            @if (User.IsInRole("Admin"))
-                            {
-                                <td>@item.UserCodeNavigation.Name</td>
-                            }
-
-                            <td>
-                                <a asp-action="Update" asp-route-id="@item.QuestionId" onclick="return ConfirmUpdate()">Update</a>
-                                <a asp-action="Delete" asp-route-id="@item.QuestionId" onclick="return ConfirmDelete()">Delete</a>
-
-                            </td>
-                        </tr>
-
-                    }
-            </table>
-        </div>
-    </div>
+    
 </div>
 
 

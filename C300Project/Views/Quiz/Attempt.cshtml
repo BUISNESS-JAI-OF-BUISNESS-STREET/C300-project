@@ -189,7 +189,7 @@
 
                     @foreach (var item in Model)
                     {
-                        @if (item.Segment == "Grammar")
+                        @if (item.SegmentNavigation.Name == "Grammar")
                         {
                             <p>
                                 <span style="font-size:x-large;font-family:'Arial'"> Part I - GRAMMAR </span><br /><br />
@@ -218,7 +218,7 @@
 
 
 
-                        @if (item.Segment == "Vocabulary")
+                        @if (item.SegmentNavigation.Name == "Vocabulary")
                         {
                             <p>
                                 <span style="font-size:x-large;font-family:'Arial'"> Part II Vocabulary </span><br /><br />
@@ -249,7 +249,7 @@
 
 
 
-                        @if (item.Segment == "Paper1")
+                        @if (item.SegmentNavigation.Name == "Paper1")
                         {
 
                             <div class="form-group" id="@("testdiv" +x)">

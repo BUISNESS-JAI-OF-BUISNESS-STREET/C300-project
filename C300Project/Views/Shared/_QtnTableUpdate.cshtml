@@ -1,0 +1,69 @@
+﻿@model List<Question>
+
+@{
+    var c = ViewData["common"] as List<int>;
+    int ab = 1;
+}
+
+
+<table class="table table-bordered table-condensed table-hover table-striped">
+    <tr>
+        <th>QuestionId</th>
+        <th>Questions</th>
+        <th>Topic</th>
+        <th>First Option</th>
+        <th>Second Option</th>
+        <th>Third Option</th>
+        <th>Fourth Option</th>
+        <th>Correct Answer</th>
+        <th>Add To Quiz?</th>
+    </tr>
+
+
+    @foreach (var item in Model)
+
+    {
+        <tr>
+            <td>
+                @ab
+            </td>
+            <td>
+                @item.Questions
+            </td>
+            <td>
+                @item.Topic
+            </td>
+            <td>
+                @item.FirstOption
+            </td>
+            <td>
+                @item.SecondOption
+            </td>
+            <td>
+                @item.ThirdOption
+            <td>
+                @item.FourthOption
+            </td>
+            <td>
+                @item.CorrectAns
+            </td>
+            @if (c.Contains(item.QuestionId))
+            {
+                <td>
+                    <input type="radio" id="rdOption1" value="@item.QuestionId" name="@("Add" +ab)" checked="checked" /> Yes
+                    <input type="radio" id="rdOption2" value="-1" name="@("Add" +ab)" /> No
+                </td>
+
+            }
+            else
+            {
+                <td>
+                    <input type="radio" id="rdOption1" value="@item.QuestionId" name="@("Add" +ab)" /> Yes
+                    <input type="radio" id="rdOption2" value="-1" name="@("Add" +ab)" /> No
+                </td>
+            }
+        </tr>
+        ab++;
+    }
+
+</table>

@@ -1,0 +1,64 @@
+﻿@model Quiz
+
+<div class="form-group">
+    <label asp-for="Title" class="col-sm-3 control-label">Quiz Title: </label>
+    <div class="col-sm-6">
+        <input asp-for="Title" class="form-control" />
+    </div>
+    <div class="has-error">
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+</div>
+
+
+<div class="form-group">
+    <label asp-for="Topic" class="col-sm-3 control-label">Topic: </label>
+    <div class="col-sm-6">
+        <input asp-for="Topic" class="form-control" />
+    </div>
+    <div class="has-error">
+        <span asp-validation-for="Topic" class="text-danger"></span>
+    </div>
+</div>
+
+<div class="form-group">
+    <label asp-for="Sec" class="col-sm-3 control-label">Secondary Level: </label>
+    <div class="col-sm-6">
+        <input asp-for="Sec" class="form-control" />
+    </div>
+    <div class="has-error">
+        <span asp-validation-for="Sec" class="text-danger"></span>
+    </div>
+</div>
+
+<div class="form-group row row">
+    <label class="control-label col-3" asp-for="StartDt">Start Date and Time: </label>
+    <div class="col-3">
+        <div class='input-group date' id='BsDateTimePicker'>
+            <input class="form-control" asp-for="StartDt"
+                   placeholder="YYYY-MM-DD" />
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+        </div>
+    </div>
+    <div class="col-3">
+        <span asp-validation-for="StartDt" class="text-danger"></span>
+    </div>
+</div>
+
+<div class="form-group row row">
+    <label class="control-label col-3" asp-for="EndDt">End Date and Time: </label>
+    <div class="col-3">
+        <div class='input-group date' id='BsDateTimePicker'>
+            <input class="form-control" asp-for="EndDt"
+                   placeholder="YYYY-MM-DD" />
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+        </div>
+    </div>
+    <div class="col-3">
+        <span asp-validation-for="EndDt" class="text-danger"></span>
+    </div>
+</div>

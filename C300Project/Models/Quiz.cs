@@ -15,13 +15,14 @@ namespace fyp.Models
 
         public int QuizId { get; set; }
         public string Title { get; set; }
-        public string Topic { get; set; }
+        public int Topic { get; set; }
         public int Sec { get; set; }
         public DateTime StartDt { get; set; }
         public DateTime EndDt { get; set; }
         public int Duration { get; set; }
         public string UserCode { get; set; }
 
+        public virtual Topic TopicNavigation { get; set; }
         public virtual Account UserCodeNavigation { get; set; }
         public virtual ICollection<QuizClassBindDb> QuizClassBindDb { get; set; }
         public virtual ICollection<QuizQuestionBindDb> QuizQuestionBindDb { get; set; }

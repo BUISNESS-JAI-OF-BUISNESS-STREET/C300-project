@@ -1,7 +1,7 @@
 ﻿@model List<Quiz>
 
 @foreach (var item in Model)
-    if (item.Topic == "English")
+    if (item.TopicNavigation.Name == "English")
     {
         <div class="container">
             <div class="row">
@@ -62,7 +62,7 @@
     }
 
 
-    else if (item.Topic == "Mathematics")
+    else if (item.TopicNavigation.Name == "Mathematics")
     {
         <div class="container">
             <div class="row">

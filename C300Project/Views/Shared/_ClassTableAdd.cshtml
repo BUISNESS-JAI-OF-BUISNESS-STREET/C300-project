@@ -1,0 +1,35 @@
+﻿@model List<Class>
+
+@{
+    int a = 1;
+}
+
+<table class="table table-bordered table-condensed table-hover table-striped">
+    <tr>
+        <th>ClassId</th>
+        <th>Class Name</th>
+
+        <th>Assign To Class?</th>
+    </tr>
+
+
+    @foreach (var item in Model)
+
+    {
+        <tr>
+            <td>
+                @a
+            </td>
+            <td>
+                @item.Name
+            </td>
+
+            <td>
+                <input type="radio" id="rdOption3" value="@item.ClassId" name="@("AddClass" +a)" /> Yes
+                <input type="radio" id="rdOption4" value="-1" name="@("AddClass" +a)" /> No
+            </td>
+        </tr>
+        a++;
+    }
+
+</table>
