@@ -466,7 +466,13 @@ namespace fyp.Controllers
             DbSet<Question> dbs3 = _dbContext.Question;
             List<Question> model3 = dbs3.ToList();
             List<int> overlappedquestno = model3.Select(mo => mo.QuestionId).ToList().Intersect(overlapList).ToList();
-            List<Question> questionlist = dbs3.Where(r => overlappedquestno.Contains(r.QuestionId)).Include(mo => mo.UserCodeNavigation).ToList();
+
+            List<Question> questionlist = dbs3
+                .Where(r => overlappedquestno.Contains(r.QuestionId))
+                .Include(mo => mo.UserCodeNavigation)
+                .Include(mo => mo.TopicNavigation)
+                .Include(mo => mo.SegmentNavigation)
+                .ToList();
             return View(questionlist);
         }
         #endregion
@@ -643,14 +649,14 @@ namespace fyp.Controllers
                 else
                 {
                     TempData["Msg"] = "Question not found!";
-                    return RedirectToAction("Index");
+                    return RedirectToAction("ViewQuestions");
                 }
             }
             else
             {
                 TempData["Msg"] = "Invalid information entered";
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("ViewQuestions");
         }
         #endregion
 
@@ -679,7 +685,7 @@ namespace fyp.Controllers
             {
                 TempData["Msg"] = "Question not found!";
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("ViewQuestions");
         }
         #endregion Delete Questions
 
@@ -694,7 +700,11 @@ namespace fyp.Controllers
             DbSet<Question> dbs3 = _dbContext.Question;
 
             List<int> quizidlist = dbs.Where(m => m.QuizId == id).Select(m => m.QuestionId).ToList();
-            List<Question> questions = dbs3.Where(m => quizidlist.Contains(m.QuestionId)).ToList();
+            List<Question> questions = dbs3
+                .Where(m => quizidlist.Contains(m.QuestionId))
+                .Include(mo => mo.SegmentNavigation)
+                .Include(mo => mo.TopicNavigation)
+                .ToList();
 
             dynamic previewmodel = new ExpandoObject();
 

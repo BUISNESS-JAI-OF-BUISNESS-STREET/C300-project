@@ -21,6 +21,25 @@
                 }
             }
 
+            function LoadQuizUpdateTable(quizId, questionId) {
+                var url = "/Quiz/GetQuizTableUpdate?quizId=" + quizId + "&questionId=" + questionId;
+
+                $("#divUpdateQuiz").html("");
+                $("#divUpdateQuiz").load(url);
+            }
+
+            $(document).ready(function () {
+                var qId = $("#questId").val();
+
+
+                $("#QuizSelect").change(function () {
+                    var quizId = $("#QuizSelect").val();
+                    LoadQuizUpdateTable(quizId, qId);
+                });
+
+                LoadQuizUpdateTable(-1, qId);
+            })
+
         </script>
         }
 
@@ -38,7 +57,7 @@
                             <div class="form-group">
                                 <label asp-for="QuestionId" class="col-sm-3 control-label">Question Id:</label>
                                 <div class="col-sm-6">
-                                    <input asp-for="QuestionId" class="form-control" readonly="readonly" />
+                                    <input id="questId" asp-for="QuestionId" class="form-control" readonly="readonly" />
                                 </div>
                                 <div class="has-error">
                                     <span asp-validation-for="QuestionId" class="text-danger"></span>
@@ -47,59 +66,14 @@
 
                             <partial name="_Questions" />
 
-                            <div>
-                                <table class="table table-bordered table-condensed table-hover table-striped">
-                                    <tr>
-                                        <th>Id</th>
-                                        <th>Title</th>
-                                        <th>Topic</th>
-                                        <th>Exam Level</th>
-                                        <th>Exam Date</th>
-                                        <th>Add To Quiz?</th>
-                                    </tr>
+                            <div class="col-sm-6">
+                                Quiz Topic:
+                                <select id="QuizSelect" name="QuizSelect" asp-items="@((SelectList)ViewData["Topic"])" class="form-control">
+                                    <option value="-1">All</option>
+                                </select>
+                            </div>
 
-
-                                    @foreach (var item in @b)
-
-                                    {
-                                        <tr>
-                                            <td>
-                                                @item.QuizId
-                                            </td>
-                                            <td>
-                                                @item.Title
-                                            </td>
-                                            <td>
-                                                @item.Topic
-                                            </td>
-                                            <td>
-                                                @item.Sec
-                                            </td>
-                                            <td>
-                                                @item.StartDt
-                                            </td>
-                                            @if (c.Contains(item.QuizId))
-                                            {
-                                                <td>
-                                                    <input type="radio" id="rdOption1" value="True" name="@("Add" +x)" checked="checked" /> Yes
-                                                    <input type="radio" id="rdOption2" value="False" name="@("Add" +x)" /> No
-                                                </td>
-
-                                            }
-                                            else
-                                            {
-                                                <td>
-                                                    <input type="radio" id="rdOption1" value="True" name="@("Add" +x)" /> Yes
-                                                    <input type="radio" id="rdOption2" value="False" name="@("Add" +x)" /> No
-                                                </td>
-                                            }
-
-                                        </tr>
-                                        x++;
-                                    }
-
-                                </table>
-
+                            <div id="divUpdateQuiz">
                             </div>
 
 

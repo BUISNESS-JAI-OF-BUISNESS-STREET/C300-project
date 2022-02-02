@@ -53,7 +53,7 @@
                         {
                             <tr>
                                 <td>
-                                    @item.QuizId
+                                    @x
                                 </td>
                                 <td>
                                     @item.Title
@@ -70,16 +70,16 @@
                                 @if (item.QuizId == a)
                                 {
                                     <td>
-                                        <input type="radio" id="rdOption1" value="True" name="@("Add" +x)" checked="checked" /> Yes
-                                        <input type="radio" id="rdOption2" value="False" name="@("Add" +x)" /> No
+                                        <input type="radio" id="rdOption1" value="@item.QuizId" name="@("Add" +x)" checked="checked" /> Yes
+                                        <input type="radio" id="rdOption2" value="-1" name="@("Add" +x)" /> No
                                     </td>
 
                                 }
                                 else
                                 {
                                     <td>
-                                        <input type="radio" id="rdOption1" value="True" name="@("Add" +x)" /> Yes
-                                        <input type="radio" id="rdOption2" value="False" name="@("Add" +x)" /> No
+                                        <input type="radio" id="rdOption1" value="@item.QuizId" name="@("Add" +x)" /> Yes
+                                        <input type="radio" id="rdOption2" value="-1" name="@("Add" +x)" /> No
                                     </td>
                                 }
                             </tr>
