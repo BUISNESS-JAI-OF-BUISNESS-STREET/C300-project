@@ -62,7 +62,12 @@
                         </div>
                     </div>
 
-                    <partial name="_Quiz" />
+                    @if(User.IsInRole("Admin") || User.IsInRole("Teacher"))
+            {
+                        <partial name="_Quiz" />
+
+            }
+                    
 
                     <div>
                         <table class="table table-bordered table-condensed table-hover table-striped">

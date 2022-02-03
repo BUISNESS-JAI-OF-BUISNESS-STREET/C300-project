@@ -861,5 +861,51 @@ namespace fyp.Controllers
 
         #endregion
 
+        #region GetQuizTableUpdate
+        public IActionResult GetQuizTableUpdate(int quizId, int questionId)
+        {
+            DbSet<Quiz> dbs = _dbContext.Quiz;
+            DbSet<Topic> dbs2 = _dbContext.Topic;
+            DbSet<Question> dbs3 = _dbContext.Question;
+            DbSet<QuizQuestionBindDb> dbs4 = _dbContext.QuizQuestionBindDb;
+            DbSet<Segment> dbs5 = _dbContext.Segment;
+            DbSet<Topic> dbs6 = _dbContext.Topic;
+
+            var lstTopic = dbs5.ToList();
+
+
+            List<QuizQuestionBindDb> lstdb4 = dbs4.Where(mo => mo.QuestionId == questionId).ToList();
+            List<Question> lstdb = dbs3.ToList();
+            var lstSegment = dbs4.ToList();
+
+            List<int> lstoverlap = lstdb4.Select(mo => mo.QuizId).ToList();
+            List<int> lstdb3 = dbs.Select(mo => mo.QuizId).ToList();
+            List<int> commonlist = lstoverlap.Intersect(lstdb3).ToList();
+
+            ViewData["common"] = commonlist;
+
+            List<Quiz> Quiz;
+
+            if (quizId == -1)
+            {
+                Quiz = dbs
+                    .Include(q => q.TopicNavigation)
+                    .Include(q => q.UserCodeNavigation)
+                    .ToList();
+            }
+            else
+            {
+                Quiz = dbs
+                    .Where(q => q.Topic == quizId)
+                    .Include(q => q.TopicNavigation)
+                    .Include(q => q.UserCodeNavigation)
+                    .ToList();
+            }
+
+
+            return PartialView("_QuizTableUpdate", Quiz);
+        }
+
+        #endregion
     }
 }
