@@ -21,7 +21,7 @@
 
 
     <hr />
-    @if (User.IsInRole("Admin"))
+    @if (User.IsInRole("Admin") || User.IsInRole("PartTimeTeacher") || User.IsInRole("Teacher"))
     {
         <div class="form-group row row">
             <label class="control-label col-1" style="text-align:left">Notes:</label>

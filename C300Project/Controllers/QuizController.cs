@@ -24,7 +24,7 @@ namespace fyp.Controllers
         }
 
         #region Index Action
-        [Authorize(Roles = "Student,Admin,Teacher")]
+        [Authorize(Roles = "Student,Admin,Teacher,PartTimeTeacher")]
         public IActionResult Index()
         {
             DbSet<Quiz> dbs = _dbContext.Quiz;
@@ -463,7 +463,7 @@ namespace fyp.Controllers
         #endregion Delete Quiz
 
         #region View Questions Action
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Teacher,PartTimeTeacher")]
         public IActionResult ViewQuestions(int id)
         {
             DbSet<QuizQuestionBindDb> dbs = _dbContext.QuizQuestionBindDb;

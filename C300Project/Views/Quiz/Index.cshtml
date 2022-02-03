@@ -42,7 +42,7 @@
 <span style="color:red">@TempData["Msg"]</span>
 <br />
 
-@if (User.IsInRole("Admin"))
+@if (User.IsInRole("Admin") || User.IsInRole("Teacher"))
 {
     <p>
         <a asp-controller="Quiz" asp-action="Create">Create New Quiz</a>

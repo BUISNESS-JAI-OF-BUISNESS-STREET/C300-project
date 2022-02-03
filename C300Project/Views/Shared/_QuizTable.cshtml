@@ -13,7 +13,7 @@ int d = 1;
         <th>Exam Date</th>
         <th>End Date</th>
         <th>Duration (Minutes)</th>
-        @if (User.IsInRole("Admin"))
+        @if (User.IsInRole("Admin") || User.IsInRole("Teacher") || User.IsInRole("PartTimeTeacher"))
         {
         <th>Created By</th>
         }
@@ -22,49 +22,59 @@ int d = 1;
     </tr>
     @foreach (var item in Model){
 
-    <tr>
-        <td>
-            @d
-        </td>
-        <td>
-            @item.Title
-        </td>
-        <td>
-            @item.TopicNavigation.Name
-        </td>
-        <td>
-            @item.Sec
-        </td>
-        <td>
-            @item.StartDt
-        </td>
-        <td>
-            @item.EndDt
+<tr>
+    <td>
+        @d
+    </td>
+    <td>
+        @item.Title
+    </td>
+    <td>
+        @item.TopicNavigation.Name
+    </td>
+    <td>
+        @item.Sec
+    </td>
+    <td>
+        @item.StartDt
+    </td>
+    <td>
+        @item.EndDt
 
-        </td>
-        <td>
-            @item.Duration
-        </td>
+    </td>
+    <td>
+        @item.Duration
+    </td>
 
-        @if (User.IsInRole("Admin") || User.IsInRole("Teacher"))
-        {
+    @if (User.IsInRole("Admin") || User.IsInRole("Teacher"))
+    {
         <td>@item.UserCodeNavigation.Name</td>
         <td>
-            
+
             <a asp-action="ViewQuestions" asp-route-id="@item.QuizId">View Questions</a>
             <a asp-action="Update" asp-route-id="@item.QuizId" onclick="return ConfirmUpdate()">Update</a>
             <a asp-action="Delete" asp-route-id="@item.QuizId" onclick="return ConfirmDelete()">Delete</a>
             <a asp-action="PreviewQuiz" asp-route-id="@item.QuizId">Preview Quiz</a>
         </td>
-        }
-        @if (User.IsInRole("Student"))//use && then check if the date of the paper is more then current date
-        {
+    }
+    @if (User.IsInRole("PartTimeTeacher"))
+    {
+        <td>@item.UserCodeNavigation.Name</td>
+        <td>
+
+            <a asp-action="ViewQuestions" asp-route-id="@item.QuizId">View Questions</a>
+            <a asp-action="Update" asp-route-id="@item.QuizId" onclick="return ConfirmUpdate()">Assign Quiz</a>
+            <a asp-action="PreviewQuiz" asp-route-id="@item.QuizId">Preview Quiz</a>
+        </td>
+    }
+    @if (User.IsInRole("Student"))//use && then check if the date of the paper is more then current date
+    {
         <td>
             <a asp-action="Instruction" asp-route-id="@item.QuizId">Instruction</a>
             <a asp-action="Attempt" asp-route-id="@item.QuizId">Start</a>
         </td>
-        }
-    </tr>
+    }
+</tr>
     d++;
     }
 
