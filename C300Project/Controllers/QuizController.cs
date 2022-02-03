@@ -51,7 +51,6 @@ namespace fyp.Controllers
         }
         #endregion
 
-        //TODO Update Attempt
         #region Attempt Get Action
         [Authorize(Roles = "Student")]
         public IActionResult Attempt(int id) 
@@ -88,7 +87,6 @@ namespace fyp.Controllers
         }
         #endregion
 
-        //TODO Update Attempt Post
         #region Attempt Post Action
         [Authorize(Roles = "Student")]
         [HttpPost]
@@ -497,6 +495,15 @@ namespace fyp.Controllers
             var lstQuiz = dbs.ToList();
             ViewData["Quiz"] = lstQuiz.ToList();
             ViewData["Test"] = lstQuiz.Select(mo => mo.QuizId).ToList();
+
+            DbSet<Segment> dbs2 = _dbContext.Segment;
+            var lstSegment = dbs2.ToList();
+            ViewData["Segment"] = new SelectList(lstSegment, "SegmentId", "Name");
+
+            DbSet<Topic> dbs3 = _dbContext.Topic;
+            var lstTopic = dbs3.ToList();
+            ViewData["Topic"] = new SelectList(lstTopic, "TopicId", "Name");
+
             return View();
 
         }
@@ -568,10 +575,20 @@ namespace fyp.Controllers
             List<Question> lstdb = dbs.ToList();
             Question question = dbs.Where(mo => mo.QuestionId == id).FirstOrDefault();
 
+            DbSet<Topic> dbs4 = _dbContext.Topic;
+            var lstTopic = dbs4.ToList();
+
+            DbSet<Segment> dbs5 = _dbContext.Segment;
+            var lstSegment = dbs5.ToList();
+            
+
+
             List<int> commonlist = lstoverlap.Intersect(lstdb3).ToList();
 
             if (question != null)
             {
+                ViewData["Segment"] = new SelectList(lstSegment, "SegmentId", "Name");
+                ViewData["Topic"] = new SelectList(lstTopic, "TopicId", "Name");
                 DbSet<Quiz> dbsQuiz = _dbContext.Quiz;
                 var lstQuiz = dbsQuiz.ToList();
                 ViewData["Test"] = lstQuiz;
@@ -581,7 +598,7 @@ namespace fyp.Controllers
             else
             {
                 TempData["Msg"] = "Question not found!";
-                return RedirectToAction("Index");
+                return RedirectToAction("ViewQuestions");
             }
         }
         #endregion
