@@ -1,0 +1,77 @@
+﻿@model List<Question>
+
+@{ 
+    int c = 1;
+}
+
+        <table class="table table-bordered table-condensed table-hover table-striped">
+            <tr>
+                <th>Id</th>
+                <th>Question</th>
+                <th>Topic</th>
+                <th>Option 1</th>
+                <th>Option 2</th>
+                <th>Option 3</th>
+                <th>Option 4</th>
+                <th>Correct Answer</th>
+                <th>Segment</th>
+
+                @if (User.IsInRole("Admin"))
+                {
+                <th>Created By</th>
+                }
+                <th>Action</th>
+            </tr>
+            @foreach (var item in Model)
+
+            {
+            <tr>
+
+                <td>
+                    @c
+                </td>
+                <td>
+                    @item.Questions
+                </td>
+                <td>
+                    @item.TopicNavigation.Name
+                </td>
+                <td>
+                    @item.FirstOption
+                </td>
+
+                <td>
+                    @item.SecondOption
+                </td>
+
+                <td>
+                    @item.ThirdOption
+                </td>
+
+                <td>
+                    @item.FourthOption
+                </td>
+
+                <td>
+                    @item.CorrectAns
+                </td>
+                <td>
+                    @item.SegmentNavigation.Name
+                </td>
+
+                @if (User.IsInRole("Admin"))
+                {
+                <td>@item.UserCodeNavigation.Name</td>
+                }
+
+                <td>
+                    <a asp-action="UpdateQuestions" asp-route-id="@item.QuestionId" onclick="return ConfirmUpdate()">Update</a>
+                    <a asp-action="DeleteQuestions" asp-route-id="@item.QuestionId" onclick="return ConfirmDelete()">Delete</a>
+
+                </td>
+            </tr>
+                c++;
+            }
+
+
+        </table>

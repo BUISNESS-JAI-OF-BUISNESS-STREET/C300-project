@@ -63,7 +63,10 @@ namespace fyp.Controllers
             DbSet<Question> dbs3 = _dbContext.Question;
             List<Question> model3 = dbs3.ToList();
             List<int> overlappedquestno = model3.Select(mo => mo.QuestionId).ToList().Intersect(overlapList).ToList();
-            List<Question> questionlist = dbs3.Where(r => overlappedquestno.Contains(r.QuestionId)).ToList();
+            List<Question> questionlist = dbs3.Where(r => overlappedquestno.Contains(r.QuestionId))
+                .Include(mo => mo.TopicNavigation)
+                .Include(mo => mo.SegmentNavigation)
+                .ToList();
 
             DbSet<Quiz> dbs2 = _dbContext.Quiz;
             List<Quiz> model2 = dbs2.ToList();
@@ -152,6 +155,10 @@ namespace fyp.Controllers
             DbSet<Question> dbs = _dbContext.Question;
             var lstQuestion = dbs.ToList();
             ViewData["Test"] = lstQuestion;
+
+            DbSet<Topic> dbs3 = _dbContext.Topic;
+            var lstTopic = dbs3.ToList();
+            ViewData["Topic"] = new SelectList(lstTopic, "TopicId", "Name");
 
             DbSet<Class> dbs5 = _dbContext.Class;
             var lstClass = dbs5.ToList();
@@ -261,6 +268,9 @@ namespace fyp.Controllers
             DbSet<Class> dbs5 = _dbContext.Class;
             DbSet<Quiz> dbs3 = _dbContext.Quiz;
             DbSet<Question> dbs = _dbContext.Question;
+            DbSet<Topic> dbs6 = _dbContext.Topic;
+            var lstTopic = dbs6.ToList();
+            
 
             List<QuizQuestionBindDb> lstdb2 = dbs2.Where(mo => mo.QuizId == id).ToList();
             List<QuizClassBindDb> lstdb4 = dbs4.Where(mo => mo.QuizId == id).ToList();
@@ -282,6 +292,7 @@ namespace fyp.Controllers
             {
                 var lstQuestion = dbs.ToList();
                 var lstClass = dbs5.ToList();
+                ViewData["Topic"] = new SelectList(lstTopic, "TopicId", "Name");
                 ViewData["listClass"] = lstClass;
                 ViewData["Test"] = lstQuestion;
                 ViewData["common"] = commonlist;
@@ -516,9 +527,9 @@ namespace fyp.Controllers
 
                     QuizQuestionBindDb quizQuestionBind = new QuizQuestionBindDb();
                     var y = x + 1;
-                    var radiocheck = form["Add" + y];
+                    var radiocheck = Convert.ToInt32(form["Add" + y]);
 
-                    if (radiocheck.Equals("True"))
+                    if (radiocheck > 0)
                     {
                         if (ModelState.IsValid)
                         {
@@ -530,7 +541,7 @@ namespace fyp.Controllers
                     }
 
                 }
-                if (_dbContext.SaveChanges() == 1)
+                if (_dbContext.SaveChanges() >= 1)
                     TempData["Msg"] = "New question added!";
 
                 else
@@ -587,7 +598,7 @@ namespace fyp.Controllers
                 Question tOrder = dbs.Where(mo => mo.QuestionId == question.QuestionId).FirstOrDefault();
 
                 DbSet<Quiz> dbs3 = _dbContext.Quiz;
-                List<Quiz> lstQuiz = dbs3.ToList<Quiz>();
+                List<Quiz> lstQuiz = dbs3.ToList();
                 var dbcount = lstQuiz.Count();
 
                 DbSet<QuizQuestionBindDb> dbs2 = _dbContext.QuizQuestionBindDb;
@@ -602,25 +613,25 @@ namespace fyp.Controllers
 
                     QuizQuestionBindDb quizQuestionBind = new QuizQuestionBindDb();
                     var y = x + 1;
-                    var radiocheck = form["Add" + y];
+                    var radiocheck = Convert.ToInt32(form["Add" + y]);
 
-                    if (commonlist.Contains(y) && radiocheck.Equals("False"))
+                    if (commonlist.Contains(y) && radiocheck == -1)
                     {
-                        dbs2.Remove(dbs2.Where(mo => mo.QuestionId == question.QuestionId).Where(mo => mo.QuizId == y).FirstOrDefault());
+                        dbs2.Remove(dbs2.Where(mo => mo.QuestionId == question.QuestionId).Where(mo => mo.QuizId == radiocheck).FirstOrDefault());
                         _dbContext.SaveChanges();
                     }
-                    else if (commonlist.Contains(y) && radiocheck.Equals("True"))
+                    else if (commonlist.Contains(y) && radiocheck > 0)
                     {
                         continue;
                     }
-                    else if (radiocheck.Equals("True"))
+                    else if (radiocheck > 0)
                     {
                         if (ModelState.IsValid)
                         {
                             quizQuestionBind.QuestionId = question.QuestionId;
-                            quizQuestionBind.QuizId = y;
+                            quizQuestionBind.QuizId = radiocheck;
                             dbs2.Add(quizQuestionBind);
-
+                            _dbContext.SaveChanges();
                         }
                     }
 
@@ -636,10 +647,6 @@ namespace fyp.Controllers
                     tOrder.Topic = question.Topic;
                     tOrder.CorrectAns = question.CorrectAns;
                     tOrder.Segment = question.Segment;
-
-
-
-                    _dbContext.SaveChanges();
 
                     if (_dbContext.SaveChanges() == 1)
                         TempData["Msg"] = "Question updated!";
@@ -790,8 +797,8 @@ namespace fyp.Controllers
 
         #endregion
 
-        #region GetQuizTableUpdate
-        public IActionResult GetQuizTableUpdate(int quizId, int questionId)
+        #region GetQQTableUpdate
+        public IActionResult GetQQTableUpdate(int quizId, int questionId)
         {
             DbSet<Quiz> dbs = _dbContext.Quiz;
             DbSet<Topic> dbs2 = _dbContext.Topic;
@@ -832,7 +839,7 @@ namespace fyp.Controllers
             }
 
 
-            return PartialView("_QuizTableUpdate", Quiz);
+            return PartialView("_QQTableUpdate", Quiz);
         }
 
         #endregion

@@ -21,8 +21,8 @@
                 }
             }
 
-            function LoadQuizUpdateTable(quizId, questionId) {
-                var url = "/Quiz/GetQuizTableUpdate?quizId=" + quizId + "&questionId=" + questionId;
+            function LoadQQUpdateTable(quizId, questionId) {
+                var url = "/Quiz/GetQQUpdateTable?quizId=" + quizId + "&questionId=" + questionId;
 
                 $("#divUpdateQuiz").html("");
                 $("#divUpdateQuiz").load(url);
@@ -34,10 +34,10 @@
 
                 $("#QuizSelect").change(function () {
                     var quizId = $("#QuizSelect").val();
-                    LoadQuizUpdateTable(quizId, qId);
+                    LoadQQUpdateTable(quizId, qId);
                 });
 
-                LoadQuizUpdateTable(-1, qId);
+                LoadQQUpdateTable(-1, qId);
             })
 
         </script>
@@ -57,7 +57,7 @@
                             <div class="form-group">
                                 <label asp-for="QuestionId" class="col-sm-3 control-label">Question Id:</label>
                                 <div class="col-sm-6">
-                                    <input id="questId" asp-for="QuestionId" class="form-control" readonly="readonly" />
+                                    <input id="questId" name="questId" asp-for="QuestionId" class="form-control" readonly="readonly" />
                                 </div>
                                 <div class="has-error">
                                     <span asp-validation-for="QuestionId" class="text-danger"></span>
