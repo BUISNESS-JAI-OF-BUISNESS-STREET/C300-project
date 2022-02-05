@@ -27,7 +27,7 @@ namespace fyp.Controllers.Controllers
         }
 
         #region Reports Index Action
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Teacher, PartTimeTeacher")]
         public IActionResult Index()
         {
             DbSet<Quiz> dbs = _dbContext.Quiz;
@@ -37,7 +37,7 @@ namespace fyp.Controllers.Controllers
         #endregion
 
         #region Reports ViewReports Action
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Teacher,PartTimeTeacher")]
         public IActionResult ViewReport(int id)
         {
             DbSet<Result> dbs = _dbContext.Result;
