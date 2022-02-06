@@ -32,7 +32,7 @@ namespace fyp.Controllers
                 .Include(mo => mo.TopicNavigation)
                 .ToList();
 
-            if (User.IsInRole("Admin"))
+            if (User.IsInRole("Admin") || User.IsInRole("Teacher"))
                 model = dbs.Include(mo => mo.UserCodeNavigation)
                             .ToList();
             else
@@ -51,7 +51,7 @@ namespace fyp.Controllers
         #endregion
 
         #region Create Get Action
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Teacher")]
         public IActionResult Create()
         {
             
@@ -72,7 +72,7 @@ namespace fyp.Controllers
         #endregion
 
         #region Create Post Action
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Teacher")]
         [HttpPost]
         public IActionResult Create(Question question, IFormCollection form)
         {
