@@ -37,18 +37,20 @@
             </td>
             @if (c.Contains(item.QuizId))
             {
-                <td>
-                    <input type="radio" id="rdOption1" value="@item.QuizId" name="@("Add" +f)" checked="checked" /> Yes
-                    <input type="radio" id="rdOption2" value="-1" name="@("Add" +f)" /> No
-                </td>
+        <td>
+            <input name="@("currAddId" +f)" value="@item.QuizId" hidden="hidden" />
+            <input type="radio" id="rdOption1" value="@item.QuizId" name="@("Add" +f)" checked="checked" /> Yes
+            <input type="radio" id="rdOption2" value="-1" name="@("Add" +f)" /> No
+        </td>
 
             }
             else
             {
-                <td>
-                    <input type="radio" id="rdOption1" value="@item.QuizId" name="@("Add" +f)" /> Yes
-                    <input type="radio" id="rdOption2" value="-1" name="@("Add" +f)" /> No
-                </td>
+        <td>
+            <input name="@("currAddId" +f)" value="@item.QuizId" hidden="hidden" />
+            <input type="radio" id="rdOption1" value="@item.QuizId" name="@("Add" +f)" /> Yes
+            <input type="radio" id="rdOption2" value="-1" name="@("Add" +f)" /> No
+        </td>
             }
 
         </tr>

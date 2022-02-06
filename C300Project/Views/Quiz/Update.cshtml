@@ -20,8 +20,8 @@
             }
         }
 
-        function LoadQtnUpdateTable(questionId,quizId) {
-            var url = "/Question/GetQuizTableUpdate?questionId=" + questionId + "&quizId=" + quizId;
+        function LoadQtnUpdateTable(topicId,quizId) {
+            var url = "/Question/GetQtnTableUpdate?topicId=" + topicId + "&quizId=" + quizId;
 
             $("#divUpdateQuestion").html("");
             $("#divUpdateQuestion").load(url);
@@ -32,11 +32,11 @@
 
 
             $("#QuestionSelect").change(function () {
-                var quizId = $("#QuestionSelect").val();
-                LoadQuizUpdateTable(quizId, qzId);
+                var topicId = $("#QuestionSelect").val();
+                LoadQtnUpdateTable(topicId, qzId);
             });
 
-            LoadQuizUpdateTable(-1, qzId);
+            LoadQtnUpdateTable(-1, qzId);
         })
 
     </script>

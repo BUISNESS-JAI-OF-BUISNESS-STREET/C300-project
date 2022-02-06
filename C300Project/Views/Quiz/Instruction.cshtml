@@ -1,7 +1,7 @@
 ﻿@model List<Quiz>
 
 @foreach (var item in Model)
-    if (item.TopicNavigation.Name == "English")
+    if (item.Topic == 1)
     {
         <div class="container">
             <div class="row">
@@ -9,11 +9,11 @@
 
                 <div class="col-md-8">
                     <h2>Title: @item.Title</h2><br />
-                    <h2>Topic: @item.Topic</h2><br />
+                    <h2>Topic: @item.TopicNavigation.Name</h2><br />
                     <h2>Test Duration: @item.Duration Minutes </h2><br />
 
                 </div>
-                
+
             </div>
         </div>
 
@@ -36,7 +36,7 @@
         </div>
 
 
-       
+
 
         <h5>Part I Grammar </h5>
         <h5></h5>
@@ -62,7 +62,7 @@
     }
 
 
-    else if (item.TopicNavigation.Name == "Mathematics")
+    else if (item.Topic == 2)
     {
         <div class="container">
             <div class="row">
@@ -70,11 +70,11 @@
 
                 <div class="col-md-8">
                     <h2>Title: @item.Title</h2><br />
-                    <h2>Topic: @item.Topic</h2><br />
+                    <h2>Topic: @item.TopicNavigation.Name</h2><br />
                     <h2>Test Duration: @item.Duration Minutes </h2><br />
 
                 </div>
-                
+
             </div>
         </div>
 
@@ -113,6 +113,82 @@
 
             <li>Answer all questions. Write the answer in the space provided.Show all working clearly.</li>
         </ul>
+
+
+    }
+
+    else if (item.Topic == 3)
+    {
+        <div class="container">
+            <div class="row">
+
+
+                <div class="col-md-8">
+                    <h2>Title: @item.Title</h2><br />
+                    <h2>Topic: @item.TopicNavigation.Name</h2><br />
+                    <h2>Test Duration: @item.Duration Minutes </h2><br />
+
+                </div>
+
+            </div>
+        </div>
+
+
+
+
+        <br />
+        <br />
+        <br />
+        <div class="row">
+            <div class="col-md-12">
+
+                <div>
+                    <h5>Before you begin, please read the following instructions carefully.</h5>
+                    <h5>It is recommended that you review all your answers before submitting them.</h5>
+                    <br />
+                </div>
+            </div>
+        </div>
+
+
+        <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+    }
+
+    else if (item.Topic == 4)
+    {
+        <div class="container">
+            <div class="row">
+
+
+                <div class="col-md-8">
+                    <h2>Title: @item.Title</h2><br />
+                    <h2>Topic: @item.TopicNavigation.Name</h2><br />
+                    <h2>Test Duration: @item.Duration Minutes </h2><br />
+
+                </div>
+
+            </div>
+        </div>
+
+
+
+
+        <br />
+        <br />
+        <br />
+        <div class="row">
+            <div class="col-md-12">
+
+                <div>
+                    <h5>Before you begin, please read the following instructions carefully.</h5>
+                    <h5>It is recommended that you review all your answers before submitting them.</h5>
+                    <br />
+                </div>
+            </div>
+        </div>
+
+        <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+        
 
 
     }
