@@ -50,7 +50,7 @@
 
             @foreach (var item in Model)
             {
-        <tr>
+                <tr>
             <td>
                 @x
             </td>
@@ -66,9 +66,8 @@
             <td>
                 <a asp-action="Update" asp-route-id="@item.ClassId" onclick="return ConfirmUpdate()">Update</a>
                 <a asp-action="Delete" asp-route-id="@item.ClassId" onclick="return ConfirmDelete()">Delete</a>
-
-            </td>
-        </tr>
+            </td> 
+                </tr>
                 x++;
             }
 
