@@ -350,12 +350,8 @@ namespace fyp.Controllers
             DbSet<Segment> dbs5 = _dbContext.Segment;
             DbSet<Topic> dbs6 = _dbContext.Topic;
 
-            var lstTopic = dbs5.ToList();
-
-
             List<QuizQuestionBindDb> lstdb4 = dbs4.Where(mo => mo.QuizId == quizId).ToList();
             List<Quiz> lstdb = dbs.ToList();
-            var lstSegment = dbs4.ToList();
 
             List<int> lstoverlap = lstdb4.Select(mo => mo.QuestionId).ToList();
             List<int> lstdb3 = dbs3.Select(mo => mo.QuestionId).ToList();
