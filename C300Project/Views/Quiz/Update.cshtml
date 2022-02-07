@@ -21,23 +21,18 @@
             }
         }
 
-        function LoadQtnUpdateTable(questionId, quizId) {
-            var url = "/Question/GetQuizTableUpdate?questionId=" + questionId + "&quizId=" + quizId;
-
+        function LoadQtnUpdateTable(topicId, quizId) {
+            var url = "/Questions/GetQtnTableUpdate?topicId=" + topicId + "&quizId=" + quizId;
             $("#divUpdateQuestion").html("");
             $("#divUpdateQuestion").load(url);
         }
-
         $(document).ready(function () {
-            var qzId = $("#QzId").val();
-
-
+            var qzId = $("#QuizId").val();
             $("#QuestionSelect").change(function () {
-                var quizId = $("#QuestionSelect").val();
-                LoadQuizUpdateTable(quizId, qzId);
+                var topicId = $("#QuestionSelect").val();
+                LoadQtnUpdateTable(topicId, qzId);
             });
-
-            LoadQuizUpdateTable(-1, qzId);
+            LoadQtnUpdateTable(-1, qzId);
         })
 
     </script>
@@ -65,7 +60,7 @@ else
                     <div class="form-group">
                         <label asp-for="QuizId" class="col-sm-3 control-label">Quiz Id:</label>
                         <div class="col-sm-6">
-                            <input id="QzId" asp-for="QuizId" class="form-control" readonly="readonly" />
+                            <input id="QuizId" asp-for="QuizId" class="form-control" readonly="readonly" />
                         </div>
                         <div class="has-error">
                             <span asp-validation-for="QuizId" class="text-danger"></span>
@@ -74,10 +69,13 @@ else
 
                     @if (User.IsInRole("Admin") || User.IsInRole("Teacher"))
                     {
-                        <partial name="_Quiz" />
+                <partial name="_Quiz" />}
 
-                    }
-
+                    @if (User.IsInRole("Part-Time Teacher"))
+                    {
+                <div style="display:none">
+                    <partial name="_Quiz" />
+                </div>}
 
                     <div>
                         <table class="table table-bordered table-condensed table-hover table-striped">
@@ -92,29 +90,27 @@ else
                             @foreach (var item in @a)
 
                             {
-                                <tr>
-                                    <td>
-                                        @s
-                                    </td>
-                                    <td>
-                                        @item.Name
-                                    </td>
-                                    @if (d.Contains(item.ClassId))
-                                    {
-                                        <td>
-                                            <input type="radio" id="rdOption3" value="ClassId" name="@("AddClass" + s)" checked="checked" /> Yes
-                                            <input type="radio" id="rdOption4" value="-1" name="@("AddClass" + s)" /> No
-                                        </td>
-                                    }
-                                    else
-                                    {
-                                        <td>
-                                            <input type="radio" id="rdOption3" value="True" name="@("AddClass" + s)" /> Yes
-                                            <input type="radio" id="rdOption4" value="False" name="@("AddClass" + s)" /> No
-                                        </td>
-                                    }
+                        <tr>
+                            <td>
+                                @s
+                            </td>
+                            <td>
+                                @item.Name
+                            </td>
+                            @if (d.Contains(item.ClassId))
+                            {
+                        <td>
+                            <input type="radio" id="rdOption3" value="@item.ClassId" name="@("AddClass" + s)" checked="checked" /> Yes
+                            <input type="radio" id="rdOption4" value="-1" name="@("AddClass" + s)" /> No
+                        </td> }
+                                        else
+                                        {
+                        <td>
+                            <input type="radio" id="rdOption3" value="@item.ClassId" name="@("AddClass" + s)" /> Yes
+                            <input type="radio" id="rdOption4" value="-1" name="@("AddClass" + s)" /> No
+                        </td>}
 
-                                </tr>
+                        </tr>
                                 s++;
                             }
 

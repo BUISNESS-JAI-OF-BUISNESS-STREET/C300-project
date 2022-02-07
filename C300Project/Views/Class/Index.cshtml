@@ -31,9 +31,11 @@
 
 <span style="color:red">@TempData["Msg"]</span>
 <br />
+<!--
 <p>
     <a asp-controller="Class" asp-action="Create">Add New Class</a>
 </p>
+    -->
 <div class="tab-content" style="margin-top:10px">
     <div>
         <table class="table table-bordered table-condensed table-hover table-striped">
@@ -51,22 +53,22 @@
             @foreach (var item in Model)
             {
                 <tr>
-            <td>
-                @x
-            </td>
-            <td>
-                @item.Name
-            </td>
+                    <td>
+                        @x
+                    </td>
+                    <td>
+                        @item.Name
+                    </td>
 
-            @if (User.IsInRole("Admin"))
-            {
-                <td>@item.AddedByNavigation.Name</td>
-            }
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <td>@item.AddedByNavigation.Name</td>
+                    }
 
-            <td>
-                <a asp-action="Update" asp-route-id="@item.ClassId" onclick="return ConfirmUpdate()">Update</a>
-                <a asp-action="Delete" asp-route-id="@item.ClassId" onclick="return ConfirmDelete()">Delete</a>
-            </td> 
+                <td>
+                    <a asp-action="Update" asp-route-id="@item.ClassId" onclick="return ConfirmUpdate()">Update</a>
+                    <!--<a asp-action="Delete" asp-route-id="@item.ClassId" onclick="return ConfirmDelete()">Delete</a>-->
+                </td>
                 </tr>
                 x++;
             }
