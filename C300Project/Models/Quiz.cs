@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
@@ -14,10 +15,15 @@ namespace fyp.Models
         }
 
         public int QuizId { get; set; }
+        [Required(ErrorMessage = "Title Required")]
         public string Title { get; set; }
+        [Required(ErrorMessage = "Topic Required")]
         public int Topic { get; set; }
+        [Required(ErrorMessage = "Level Required")]
         public int Sec { get; set; }
+        [Required(ErrorMessage = "Start Date Required")]
         public DateTime StartDt { get; set; }
+        [Required(ErrorMessage = "End Date Required")]
         public DateTime EndDt { get; set; }
         public int Duration { get; set; }
         public string UserCode { get; set; }

@@ -157,6 +157,7 @@
                     <input type="radio" id="rdOption2" value="@question.SecondOption" name="@("Answer" + x)" /> @question.SecondOption
                     <input type="radio" id="rdOption3" value="@question.ThirdOption" name="@("Answer" + x)" /> @question.ThirdOption
                     <input type="radio" id="rdOption4" value="@question.FourthOption" name="@("Answer" + x)" /> @question.FourthOption
+                    @x++;
                 </div>
 
 
@@ -188,21 +189,22 @@
                     {
 
 
-                        <div class="form-group" id="@("testdiv" + x)">
-                            <p>
-                                Question @x: @question.Questions
-                            </p>
-                            <div class="col-12">
-                                <input type="radio" id="rdOption1" value="@question.FirstOption" name="@("Answer" + x)" /> @question.FirstOption
-                                <input type="radio" id="rdOption2" value="@question.SecondOption" name="@("Answer" + x)" /> @question.SecondOption
-                                <input type="radio" id="rdOption3" value="@question.ThirdOption" name="@("Answer" + x)" /> @question.ThirdOption
-                                <input type="radio" id="rdOption4" value="@question.FourthOption" name="@("Answer" + x)" /> @question.FourthOption
-                            </div>
+            <div class="form-group" id="@("testdiv" + x)">
+                <p>
+                    Question @x: @question.Questions
+                </p>
+                <div class="col-12">
+                    <input type="radio" id="rdOption1" value="@question.FirstOption" name="@("Answer" + x)" /> @question.FirstOption
+                    <input type="radio" id="rdOption2" value="@question.SecondOption" name="@("Answer" + x)" /> @question.SecondOption
+                    <input type="radio" id="rdOption3" value="@question.ThirdOption" name="@("Answer" + x)" /> @question.ThirdOption
+                    <input type="radio" id="rdOption4" value="@question.FourthOption" name="@("Answer" + x)" /> @question.FourthOption
+                </div>
+                @x++;
 
 
 
-                        </div>
-                        x++;
+            </div>
+                        
                         <br />
                     }
             </div>
