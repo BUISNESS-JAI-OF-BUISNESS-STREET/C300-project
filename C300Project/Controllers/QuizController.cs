@@ -24,7 +24,7 @@ namespace fyp.Controllers
         }
 
         #region Index Action
-        [Authorize(Roles = "Student,Admin,Teacher,PartTimeTeacher")]
+        [Authorize(Roles = "Student,Admin,Teacher,Part-Time Teacher")]
         public IActionResult Index()
         {
             DbSet<Quiz> dbs = _dbContext.Quiz;
@@ -45,7 +45,10 @@ namespace fyp.Controllers
         public IActionResult Instruction(int id)
         {
             DbSet<Quiz> dbs = _dbContext.Quiz;
-            List<Quiz> model = dbs.Where(mo => mo.QuizId == id).ToList();
+            List<Quiz> model = dbs
+                .Where(mo => mo.QuizId == id)
+                .Include(mo =>mo.TopicNavigation)
+                .ToList();
 
          return View(model);
         }
@@ -573,7 +576,12 @@ namespace fyp.Controllers
             List<int> lstdb3 = dbs3.Select(mo => mo.QuizId).ToList();
             DbSet<Question> dbs = _dbContext.Question;
             List<Question> lstdb = dbs.ToList();
-            Question question = dbs.Where(mo => mo.QuestionId == id).FirstOrDefault();
+
+            Question question = dbs
+                .Where(mo => mo.QuestionId == id)
+                .Include(mo => mo.TopicNavigation)
+                .Include(mo => mo.SegmentNavigation)
+                .FirstOrDefault();
 
             DbSet<Topic> dbs4 = _dbContext.Topic;
             var lstTopic = dbs4.ToList();
@@ -612,15 +620,14 @@ namespace fyp.Controllers
             if (ModelState.IsValid)
             {
                 DbSet<Question> dbs = _dbContext.Question;
+                DbSet<QuizQuestionBindDb> dbs2 = _dbContext.QuizQuestionBindDb;
+                DbSet<Quiz> dbs3 = _dbContext.Quiz;
+
                 Question tOrder = dbs.Where(mo => mo.QuestionId == question.QuestionId).FirstOrDefault();
 
-                DbSet<Quiz> dbs3 = _dbContext.Quiz;
+                List<QuizQuestionBindDb> lstdb2 = dbs2.Where(mo => mo.QuestionId == question.QuestionId).ToList();
                 List<Quiz> lstQuiz = dbs3.ToList();
                 var dbcount = lstQuiz.Count();
-
-                DbSet<QuizQuestionBindDb> dbs2 = _dbContext.QuizQuestionBindDb;
-                List<QuizQuestionBindDb> lstdb2 = dbs2.Where(mo => mo.QuestionId == question.QuestionId).ToList();
-
                 List<int> lstoverlap = lstdb2.Select(mo => mo.QuizId).ToList();
                 List<int> lstdb3 = dbs2.Select(mo => mo.QuizId).ToList();
                 List<int> commonlist = lstoverlap.Intersect(lstdb3).ToList();
@@ -630,14 +637,17 @@ namespace fyp.Controllers
 
                     QuizQuestionBindDb quizQuestionBind = new QuizQuestionBindDb();
                     var y = x + 1;
+                    var quizcheck = Convert.ToInt32(form["currAddId" + y]);
                     var radiocheck = Convert.ToInt32(form["Add" + y]);
 
-                    if (commonlist.Contains(y) && radiocheck == -1)
+                    if (commonlist.Contains(quizcheck) && radiocheck == -1)
                     {
-                        dbs2.Remove(dbs2.Where(mo => mo.QuestionId == question.QuestionId).Where(mo => mo.QuizId == radiocheck).FirstOrDefault());
+                        dbs2.Remove(dbs2
+                            .Where(mo => mo.QuizId == quizcheck && mo.QuestionId == question.QuestionId  )
+                            .FirstOrDefault());
                         _dbContext.SaveChanges();
                     }
-                    else if (commonlist.Contains(y) && radiocheck > 0)
+                    else if (commonlist.Contains(quizcheck) && radiocheck > 0)
                     {
                         continue;
                     }
@@ -665,7 +675,7 @@ namespace fyp.Controllers
                     tOrder.CorrectAns = question.CorrectAns;
                     tOrder.Segment = question.Segment;
 
-                    if (_dbContext.SaveChanges() == 1)
+                    if (_dbContext.SaveChanges() >= 1)
                         TempData["Msg"] = "Question updated!";
                     else
                         TempData["Msg"] = "Failed to update database!";

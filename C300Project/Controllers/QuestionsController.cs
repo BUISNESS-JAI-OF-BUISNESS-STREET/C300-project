@@ -194,12 +194,13 @@ namespace fyp.Controllers
 
                     QuizQuestionBindDb quizQuestionBind = new QuizQuestionBindDb();
                     var y = x + 1;
+                    var quizcheck = Convert.ToInt32(form["currAddId" + y]);
                     var radiocheck = Convert.ToInt32(form["Add" + y]);
 
-                    if(commonlist.Contains(y) && radiocheck == -1)
+                    if(commonlist.Contains(quizcheck) && radiocheck == -1)
                     {
-                        dbs2.Remove(dbs2.Where(mo =>mo.QuestionId == question.QuestionId && mo.QuizId == radiocheck).FirstOrDefault());
-                    }else if (commonlist.Contains(y) && radiocheck > 0)
+                        dbs2.Remove(dbs2.Where(mo =>mo.QuestionId == question.QuestionId && mo.QuizId == quizcheck).FirstOrDefault());
+                    }else if (commonlist.Contains(quizcheck) && radiocheck > 0)
                     {
                         continue;
                     }
@@ -340,7 +341,7 @@ namespace fyp.Controllers
         #endregion
 
         #region GetQtnTableUpdate
-        public IActionResult GetQuizTableUpdate(int questionId, int quizId)
+        public IActionResult GetQtnTableUpdate(int topicId, int quizId)
         {
             DbSet<Quiz> dbs = _dbContext.Quiz;
             DbSet<Topic> dbs2 = _dbContext.Topic;
@@ -349,12 +350,8 @@ namespace fyp.Controllers
             DbSet<Segment> dbs5 = _dbContext.Segment;
             DbSet<Topic> dbs6 = _dbContext.Topic;
 
-            var lstTopic = dbs5.ToList();
-
-
             List<QuizQuestionBindDb> lstdb4 = dbs4.Where(mo => mo.QuizId == quizId).ToList();
             List<Quiz> lstdb = dbs.ToList();
-            var lstSegment = dbs4.ToList();
 
             List<int> lstoverlap = lstdb4.Select(mo => mo.QuestionId).ToList();
             List<int> lstdb3 = dbs3.Select(mo => mo.QuestionId).ToList();
@@ -364,7 +361,7 @@ namespace fyp.Controllers
 
             List<Question> question;
 
-            if (questionId == -1)
+            if (topicId == -1)
             {
                 question = dbs3
                     .Include(q => q.TopicNavigation)
@@ -375,7 +372,7 @@ namespace fyp.Controllers
             else
             {
                 question = dbs3
-                    .Where(q => q.Topic == questionId)
+                    .Where(q => q.Topic == topicId)
                     .Include(q => q.TopicNavigation)
                     .Include(q => q.SegmentNavigation)
                     .Include(q => q.UserCodeNavigation)
