@@ -147,7 +147,7 @@ namespace fyp.Controllers
         #endregion
 
         #region Create Quiz Action
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Teacher")]
         public IActionResult Create()
         {
             DbSet<Question> dbs = _dbContext.Question;
@@ -166,7 +166,7 @@ namespace fyp.Controllers
         #endregion
 
         #region Create Quiz Post Action
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Teacher")]
         [HttpPost]
         public IActionResult Create(Quiz quiz, IFormCollection form)
         {
@@ -487,7 +487,7 @@ namespace fyp.Controllers
         #endregion
 
         #region Create Question From Quiz Action
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Teacher")]
         public IActionResult CreateQuestions(int id)
         {
             ViewData["QuizId"] = id;
@@ -510,7 +510,7 @@ namespace fyp.Controllers
         #endregion Create Question From Quiz Action
 
         #region Create Question From Quiz Post
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Teacher")]
         [HttpPost]
         public IActionResult CreateQuestions(Question question, IFormCollection form)
         {
