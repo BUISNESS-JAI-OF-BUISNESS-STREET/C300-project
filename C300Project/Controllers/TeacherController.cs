@@ -75,14 +75,14 @@ namespace fyp.Controllers
 
                     TeacherClassBindDb teacherClassBindDb = new TeacherClassBindDb();
                     var y = x + 1;
-                    var radiocheck = form["Add" + y];
+                    var radiocheck = Convert.ToInt32(form["Add" + y]);
 
-                    if (radiocheck.Equals("True"))
+                    if (radiocheck > 0)
                     {
                         if (ModelState.IsValid)
                         {
                             teacherClassBindDb.TeacherId = teacher.TeacherId;
-                            teacherClassBindDb.ClassId = y;
+                            teacherClassBindDb.ClassId = radiocheck;
 
 
                             List<StudentClassBindDb> lstStdcls = 
@@ -194,23 +194,24 @@ namespace fyp.Controllers
 
                     TeacherClassBindDb teacherClassBindDb = new TeacherClassBindDb();
                     var y = x + 1;
-                    var radiocheck = form["Add" + y];
+                    var classcheck = Convert.ToInt32(form["currAddId" + y]);
+                    var radiocheck = Convert.ToInt32(form["Add" + y]);
 
-                    if (commonlist.Contains(y) && radiocheck.Equals("False"))
+                    if (commonlist.Contains(classcheck) && radiocheck == -1)
                     {
                         dbs2.Remove(dbs2.Where(mo => mo.TeacherId == teacher.TeacherId && mo.ClassId == y).FirstOrDefault());
                         _dbContext.SaveChanges();
                     }
-                    else if (commonlist.Contains(y) && radiocheck.Equals("True"))
+                    else if (commonlist.Contains(classcheck) && radiocheck > 0)
                     {
                         continue;
                     }
-                    else if (radiocheck.Equals("True"))
+                    else if (radiocheck > 0)
                     {
                         if (ModelState.IsValid)
                         {
                             teacherClassBindDb.TeacherId = teacher.TeacherId;
-                            teacherClassBindDb.ClassId = y;
+                            teacherClassBindDb.ClassId = radiocheck;
                             dbs2.Add(teacherClassBindDb);
 
                         }
