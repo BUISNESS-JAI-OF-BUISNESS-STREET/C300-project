@@ -200,7 +200,6 @@ namespace fyp.Controllers
                     if (commonlist.Contains(classcheck) && radiocheck == -1)
                     {
                         dbs2.Remove(dbs2.Where(mo => mo.TeacherId == teacher.TeacherId && mo.ClassId == y).FirstOrDefault());
-                        _dbContext.SaveChanges();
                     }
                     else if (commonlist.Contains(classcheck) && radiocheck > 0)
                     {
