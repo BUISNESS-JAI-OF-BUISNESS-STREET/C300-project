@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Update quiz!";
+    ViewBag.Title2 = "Assign quiz!";
     var a = ViewData["listClass"] as List<Class>;
     var d = ViewData["commonClass"] as List<int>;
     int s = 1;
@@ -20,7 +21,7 @@
             }
         }
 
-        function LoadQtnUpdateTable(questionId,quizId) {
+        function LoadQtnUpdateTable(questionId, quizId) {
             var url = "/Question/GetQuizTableUpdate?questionId=" + questionId + "&quizId=" + quizId;
 
             $("#divUpdateQuestion").html("");
@@ -43,9 +44,17 @@
 }
 
 
-<h2>@ViewData["Title"]</h2>
+@if (User.IsInRole("PartTimeTeacher"))
+{
+    <h2>@ViewData["Title2"]</h2>
 
- 
+}
+else
+{
+    @ViewData["Title"]
+}
+
+
 <div class="row">
     <div class="col-sm-7">
         <span style="color:red">@ViewData["Msg"]</span><br />
@@ -63,12 +72,12 @@
                         </div>
                     </div>
 
-                    @if(User.IsInRole("Admin") || User.IsInRole("Teacher"))
-            {
+                    @if (User.IsInRole("Admin") || User.IsInRole("Teacher"))
+                    {
                         <partial name="_Quiz" />
 
-            }
-                    
+                    }
+
 
                     <div>
                         <table class="table table-bordered table-condensed table-hover table-striped">

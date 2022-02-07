@@ -13,7 +13,7 @@ int d = 1;
         <th>Exam Date</th>
         <th>End Date</th>
         <th>Duration (Minutes)</th>
-        @if (User.IsInRole("Admin") || User.IsInRole("Teacher") || User.IsInRole("Part-Time Teacher"))
+        @if (User.IsInRole("Admin") || User.IsInRole("Teacher") || User.IsInRole("PartTimeTeacher"))
         {
         <th>Created By</th>
         }
@@ -57,7 +57,7 @@ int d = 1;
             <a asp-action="PreviewQuiz" asp-route-id="@item.QuizId">Preview Quiz</a>
         </td>
     }
-    @if (User.IsInRole("Part-Time Teacher"))
+    @if (User.IsInRole("PartTimeTeacher"))
     {
         <td>@item.UserCodeNavigation.Name</td>
         <td>

@@ -24,7 +24,7 @@ namespace fyp.Controllers
         }
 
         #region Index Action
-        [Authorize(Roles = "Student,Admin,Teacher,Part-Time Teacher")]
+        [Authorize(Roles = "Student,Admin,Teacher,PartTimeTeacher")]
         public IActionResult Index()
         {
             DbSet<Quiz> dbs = _dbContext.Quiz;
