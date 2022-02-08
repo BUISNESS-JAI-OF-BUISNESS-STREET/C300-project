@@ -27,6 +27,8 @@ namespace fyp
                     options.UseSqlServer(
                         Configuration.GetConnectionString("DefaultConnection")));
 
+
+
             services
                .AddAuthentication("UserSecurity")
                .AddCookie("UserSecurity",
