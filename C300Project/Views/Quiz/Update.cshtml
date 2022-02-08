@@ -69,13 +69,15 @@ else
 
                     @if (User.IsInRole("Admin") || User.IsInRole("Teacher"))
                     {
-                <partial name="_Quiz" />}
+                        <partial name="_Quiz" />
+                        }
 
-                    @if (User.IsInRole("Part-Time Teacher"))
+                    @if (User.IsInRole("PartTimeTeacher"))
                     {
-                <div style="display:none">
-                    <partial name="_Quiz" />
-                </div>}
+                        <div style="display:none">
+                            <partial name="_Quiz" />
+                        </div>
+                    }
 
                     <div>
                         <table class="table table-bordered table-condensed table-hover table-striped">
@@ -100,12 +102,14 @@ else
                             @if (d.Contains(item.ClassId))
                             {
                         <td>
+                            <input name="@("currClassId" +s)" value="@item.ClassId" hidden="hidden" />
                             <input type="radio" id="rdOption3" value="@item.ClassId" name="@("AddClass" + s)" checked="checked" /> Yes
                             <input type="radio" id="rdOption4" value="-1" name="@("AddClass" + s)" /> No
                         </td> }
                                         else
                                         {
                         <td>
+                            <input name="@("currClassId" +s)" value="@item.ClassId" hidden="hidden" />
                             <input type="radio" id="rdOption3" value="@item.ClassId" name="@("AddClass" + s)" /> Yes
                             <input type="radio" id="rdOption4" value="-1" name="@("AddClass" + s)" /> No
                         </td>}

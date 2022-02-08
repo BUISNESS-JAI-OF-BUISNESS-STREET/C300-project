@@ -349,14 +349,15 @@ namespace fyp.Controllers
 
                     QuizQuestionBindDb quizQuestionBind = new QuizQuestionBindDb();
                     var y = x + 1;
+                    var questcheck = Convert.ToInt32(form["currAddId" + y]);
                     var radiocheck = Convert.ToInt32(form["Add" + y]);
 
-                    if (commonlist.Contains(y) && radiocheck == -1)
+                    if (commonlist.Contains(questcheck) && radiocheck == -1)
                     {
                         dbs3.Remove(dbs3.Where(mo => mo.QuestionId == radiocheck && mo.QuizId == quiz.QuizId).FirstOrDefault());
                         _dbContext.SaveChanges();
                     }
-                    else if (commonlist.Contains(y) && radiocheck > 0)
+                    else if (commonlist.Contains(questcheck) && radiocheck > 0)
                     {
                         continue;
                     }
@@ -380,13 +381,14 @@ namespace fyp.Controllers
 
                     QuizClassBindDb quizClassBindDb = new QuizClassBindDb();
                     var y = x + 1;
+                    var classcheck = Convert.ToInt32(form["currAddId" + y]);
                     var radiocheck = Convert.ToInt32(form["AddClass" + y]);
 
-                    if (commonlist2.Contains(y) && radiocheck == -1)
+                    if (commonlist2.Contains(classcheck) && radiocheck == -1)
                     {
                         dbs5.Remove(dbs5.Where(mo => mo.ClassId == radiocheck && mo.QuizId == quiz.QuizId).FirstOrDefault());
                     }
-                    else if (commonlist2.Contains(y) && radiocheck > 0)
+                    else if (commonlist2.Contains(classcheck) && radiocheck > 0)
                     {
                         continue;
                     }
